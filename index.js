@@ -52,9 +52,7 @@ bot.on('message', msg => {
     // handle regex filtered strings
     } else if (preRegEx.test(msg.content)) {
       let query = msg.content.replace(preRegEx, "")
-      console.debug(query);
-      query.replace(sufRegEx, "");
-      console.debug(query);
+      query = query.replace(sufRegEx, "");
       try {
         console.log(bot.commands.get('handle-query').execute(msg, query));
       } catch (error) {

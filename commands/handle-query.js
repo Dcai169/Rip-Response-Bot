@@ -1,7 +1,9 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+require('dotenv').config({path: './config.env'});
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 const itemIndex = [];
-doc.useApiKey("AIzaSyA4tK4eitF1egnAIbXS77nzDQjn_cX0Kto");
+const KEY = process.env.GSHEETAPI;
+doc.useApiKey(KEY);
 doc.loadInfo().then(() => {
     doc.sheetsByIndex.forEach(sheet => {
         sheet.loadCells().then(() => {
