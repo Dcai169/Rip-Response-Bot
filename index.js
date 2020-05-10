@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const stripRegEx = require('./redrix.js').stripRegEx;
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -17,18 +18,20 @@ for (const file of commandFiles) {
 const TOKEN = process.env.TOKEN;
 bot.login(TOKEN);
 
-const preRegEx = /^has\sany(one|body)\sripped\s(the)?(\s)?/gmi;
-const sufRegEx = /(\syet)?(.)?$/gmi; // y no work?
-
 bot.on('ready', () => {
     console.info(`Logged in with username ${bot.user.tag} and id ${bot.user.id}`);
+    console.log();
 });
 
 bot.on('message', msg => {
     const args = msg.content.split(/ +/);
     const commandName = args.shift().toLowerCase();
-    // console.info(`Called command: ${commandName}`);
 
+    let query = null;
+    if (msg.author.id !== bot.user.id){
+      query = stripRegEx(msg.content);
+    }
+    
     // Handle if the command exists
     if (bot.commands.has(commandName)) {
       const command = bot.commands.get(commandName);
@@ -50,11 +53,11 @@ bot.on('message', msg => {
         msg.reply('there was an error trying to execute that command!');
       }
     // handle regex filtered strings
-    } else if (preRegEx.test(msg.content)) {
-      let query = msg.content.replace(preRegEx, "")
-      query = query.replace(sufRegEx, "");
+    } else if (query) {
       try {
+        console.debug(query);
         console.log(bot.commands.get('handle-query').execute(msg, query));
+        console.log();
       } catch (error) {
         console.error(error);
         msg.reply('there was an error trying to execute that command!');
