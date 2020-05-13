@@ -74,6 +74,8 @@ const positive_queries = [
     "what are your thoughts on ripping heir apparent?",
     "where i can find heir appasrent",
     "where i can get heir apparent",
+    "has the lantern of osiris been ripped yet?",
+    "does anyone have braytech werewolf ported?",
 ];
 
 negative_queries = [
