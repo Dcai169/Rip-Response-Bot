@@ -22,7 +22,12 @@ function tagClass(filterResults, tag) {
 // }
 function fallbackResponse(query) { return }
 
-setTimeout(() => { console.log("Ready\n") }, 5 * 1000);
+process.on('unhandledRejection', (_, error) => {
+    // console.log("Google Sheet API failed to connect.");
+    // console.log(error)
+    // process.kill(process.pid, 'SIGTERM');
+    console.log("This error is safe to ignore.");
+})
 
 doc.useApiKey(KEY);
 doc.loadInfo().then(() => {
@@ -53,6 +58,7 @@ doc.loadInfo().then(() => {
             })().then(() => console.log(`${sheet.title} indexed`));
         });
     });
+    setTimeout(() => { console.log("Ready\n") }, 5 * 1000);
 });
 
 module.exports = {
@@ -68,7 +74,7 @@ module.exports = {
             try {
                 armorClass = armorClass.toLowerCase();
             } catch (err) {
-
+                // Let the error go wild and free
             }
 
             if (!armorClass) {
@@ -94,7 +100,7 @@ module.exports = {
                 response = (!!result[0] ?
                     `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${result[0].entry.formattedValue} model is ${(result[0].entry.hyperlink ?
                         "available at " + result[0].entry.hyperlink + "." :
-                        "not available.")}` :
+                        "not available yet.")}` :
                     fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
             } else if (result.length === 0) {
                 response = fallbackResponse(`${(!!gender ? gender + " " : "")}${(!!armorClass ? armorClass + " " : "")}${args}`);
@@ -103,7 +109,7 @@ module.exports = {
                 result.forEach((i) => {
                     response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${i.entry.formattedValue} model is ${(i.entry.hyperlink ?
                         `available at ${i.entry.hyperlink}.` :
-                        "not available.")}\n`;
+                        "not available yet.")}\n`;
                 }
                 );
             }
@@ -113,13 +119,13 @@ module.exports = {
             result = result.concat(tagClass(titanArmor.filter(armorFilter, args), "Titan"));
             result = result.concat(tagClass(hunterArmor.filter(armorFilter, args), "Hunter"));
 
-            console.debug(result);
+            // console.debug(result);
 
             if (result.length === 1) {
                 response = (!!result[0] ?
                     `The ${result[0].entry.formattedValue} model is ${(result[0].entry.hyperlink ?
                         "available at " + result[0].entry.hyperlink + "." :
-                        "not available.")}` :
+                        "not available yet.")}` :
                     fallbackResponse(args));
             } else if (result.length === 0) {
                 response = fallbackResponse(args);
@@ -128,13 +134,13 @@ module.exports = {
                 result.forEach((i) => {
                     response += `The ${(!!i.gender ? i.gender + " " : "")}${(!!i.armorClass ? i.armorClass + " " : "")}${i.entry.formattedValue} model is ${(i.entry.hyperlink ?
                         `available at ${i.entry.hyperlink}.` :
-                        "not available.")}\n`;
+                        "not available yet.")}\n`;
                 }
                 );
             }
         }
 
-        if(response){
+        if (response) {
             message.channel.send((!!response ? response : fallbackResponse()));
         }
         // message.channel.send((!!response ? response : fallbackResponse()));

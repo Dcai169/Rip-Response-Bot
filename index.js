@@ -16,11 +16,10 @@ for (const file of commandFiles) {
 
 // Login with the bot token
 const TOKEN = process.env.TOKEN;
-bot.login(TOKEN);
+bot.login(TOKEN).then((data) => {console.log(`Logged in with username ${bot.user.tag} with id ${bot.user.id}`)}, (err) => {console.error(err);});
 
 bot.on('ready', () => {
-  console.info(`Logged in with username ${bot.user.tag} and id ${bot.user.id}`);
-  console.log();
+  console.info('Connected to Discord');
 });
 
 bot.on('message', msg => {
@@ -55,7 +54,8 @@ bot.on('message', msg => {
     // handle regex filtered strings
   } else if (query) {
     try {
-      console.debug(query);
+      // console.debug(query);
+      console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in channel \#${msg.channel.name} of server ${msg.guild.name} requested "${(!!query.gender ? query.gender + " " : "")}${(!!query.armorClass ? query.armorClass + " " : "")}${query.query}"`);
       console.log(bot.commands.get('handle-query').execute(msg, query.query, query.armorClass, query.gender));
       console.log();
     } catch (error) {
