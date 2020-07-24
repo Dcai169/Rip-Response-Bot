@@ -1,5 +1,15 @@
 const fs = require('fs');
-const filter_list = JSON.parse(fs.readFileSync('./redrix_config.json', 'utf8'));
+const filterJSONList = JSON.parse(fs.readFileSync('./redrix_config.json', 'utf8'));
+let filterList0 = [];
+let filterList1 = [];
+
+filterJSONList.regEx0.forEach(filter => {
+  filterList0.push(new RegExp(filter[0], filter[1]));
+});
+
+filterJSONList.regEx1.forEach(filter => {
+  filterList1.push(new RegExp(filter[0], filter[1]));
+});
 
 module.exports = {
   name: 'redrix',
@@ -19,7 +29,7 @@ module.exports = {
 
     // query = query.replace(/(\W)?$/gi, "");
 
-    filter_list.regEx0.forEach(regex => {
+    filterList0.forEach(regex => {
       query = query.replace(regex, "");
     });
 
@@ -55,7 +65,7 @@ module.exports = {
       retdat.gender = "male";
     }
 
-    filter_list.regEx1.forEach(regex => {
+    filterList1.forEach(regex => {
       retdat.query = retdat.query.replace(regex, "");
     });
 
