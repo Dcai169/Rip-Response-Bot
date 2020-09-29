@@ -1,97 +1,97 @@
 {
     "regEx0": [
         [
-            "^(i\\s)?(can't\\s(seem\\sto\\s(find|locate))|was\\swondering\\sif\\s(any|some)\\s?(one|body)\\s(here\\s?)?had\\s(ripped|extracted))\\s",
+            "^(i )?(can't (seem to (find|locate))|was wondering if (any|some) ?(one|body) (here)?had (ripped|extracted)) ",
             "gi"
         ],
         [
-            "^do\\s(we|you)\\shave\\s",
+            "^do (we|you) have ",
             "gi"
         ],
         [
-            "^has\\s((the\\s)?(model\\sfor\\s)?)?((any|some)\\s?(one|body)\\s((managed\\sto\\sget)?(rip(ped|s)?)?((had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?){1}((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))\\s)?",
+            "^has ((the )?(model for )?)?(any|some) ?(one|body) ((managed to get)?(rip(ped|s)?)?(had the chance of )?(done anything about )?)((finding)?(getting)?(ripping)?(extracting)?(grabbing)?) ",
             "gi"
         ],
         [
-            "^where\\s(is\\s|can\\sI\\s(get|find)\\s)",
+            "^where (is |can I ((get)?(find)?(download)?)? )",
             "gi"
         ],
         [
-            "^does\\s((any|some)\\s?(one|body)\\s)(here\\s)?((have\\s(the\\sripped)?)|know\\s((where)?(if)?(what\\sfolder)?){1})\\s((the\\s(rips?|model)\\sof\\s)|(we|i)\\scan\\s(find|get)(\\sthe\\s(ripped\\s)?files\\s(of|for))?)?\\s",
+            "^does ((any|some) ?(one|body) )(here )?((have (the ripped)?)|know ((where)?(if)?(what folder)?){1}) ((the (rips?|model) of )|(we|i) can (find|get)( the (ripped )?files (of|for))?)? ",
             "gi"
         ],
         [
-            "^please\\srip\\s",
+            "^please rip ",
             "gi"
         ],
         [
-            "^can\\s(((any|some)\\s?(one|body))|you)\\s(please\\s)?((rip)?(tell\\sme\\swhere)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,}){1}\\s",
+            "^can (((any|some) ?(one|body))|you) (please )?((rip)?(tell me where)?(get)?((help( me)?)?( (get|with getting)?)?){1,}){1} ",
             "gi"
         ],
         [
-            "^is\\sthere\\sa(ny)?\\schance\\s(that\\s)?((any|some)\\s?(one|body)\\s)(here\\shad\\s)?((ripped|extracted)\\s)?",
+            "^is there a(ny)? chance (that )?((any|some) ?(one|body) )(here ha(d|s) )?((ripped|extracted) )?",
             "gi"
         ],
         [
-            "^(i'?m\\s)?(looking\\sfor)?(((wondering\\sif\\s((there\\sis)?((we|i)\\shave)?){1})){1})?\\s",
+            "^(i'?m )?(looking for)?(((wondering if ((there is)?((we|i) have)?){1})){1})? ",
             "gi"
         ],
         [
-            "^where\\sI\\s((is\\s)|can\\s(get|find)\\s)",
+            "^where I ((is )|can (get|find) )",
             "gi"
         ],
         [
-            "^did\\s((any|some)\\s?(one|body)\\s)((get)?(rip)?(extract)?(datamine)?){1}\\s",
+            "^did ((any|some) ?(one|body) )((get)?(rip)?(extract)?(datamine)?){1} ",
             "gi"
         ],
         [
-            "^(has\\s)?((any|some)\\s?(one|body)\\s)(((found)?(have)?(ripped)?(extracted)?(pulled)?(grabbed)?)|((happen\\sto\\s)?(ripped|have)?(had\\sthe\\schance\\s(to|(of\\s((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))))))\\s",
+            "^(has )?((any|some) ?(one|body) )(((found)?(have)?(ripped)?(extracted)?(pulled)?(grabbed)?)|((happen to )?(ripped|have)?(had the chance (to|(of ((finding)?(getting)?(ripping)?(extracting)?(grabbing)?)))))) ",
             "gi"
         ],
         [
-            "^(what\\sare\\syour\\s)?(thoughts|opinions)\\son\\s((finding)?(getting)?(ripping)?(extracting)?(grabbing)?){1}\\s",
+            "^(what are your )?(thoughts|opinions) on ((finding)?(getting)?(ripping)?(extracting)?(grabbing)?){1} ",
             "gi"
         ],
         [
-            "(\\smodels?)?(\\shave)?(\\sbeen)(\\srip(ped)?)(\\syet)?$",
+            "( models?)?( have)?( been)( rip(ped)?)( yet)?$",
             "gi"
         ],
         [
-            "\\sis\\s((in)?(within)?(ripped(\\sright)?)?){1}(\\sthe\\s(files|drive)\\sthat\\s((we|i)\\scan\\sdownload|can\\sbe\\sdownloaded))?$",
+            " is ((in)?(within)?(ripped( right)?)?){1}( the (files|drive) that ((we|i) can download|can be downloaded))?$",
             "gi"
         ],
         [
-            "\\s(rip(ped)?)?$",
+            " (rip(ped)?)?$",
             "gi"
         ],
         [
-            "from\\sD(1|2)$",
+            "from D(1|2)$",
             "gi"
         ]
     ],
     "regEx1": [
         [
-            "\b(fe)?male\\s",
+            "\b(fe)?male ",
             "gi"
         ],
         [
-            "\brigged\\s",
+            "\brigged ",
             "gi"
         ],
         [
-            "\b(rips?|model)\\s((of|for)\\s)",
+            "\b(rips?|model) ((of|for) )",
             "gi"
         ],
         [
-            "\b[[:alnum:]]+\b\\sfiles?\\sfor\\s",
+            "\b[[:alnum:]]+\b files? for ",
             "gi"
         ],
         [
-            "\ban?\\s",
+            "\ban? ",
             "gi"
         ],
         [
-            "\b(\\syet)?",
+            "\b( yet)?",
             "gi"
         ],
         [
