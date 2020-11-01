@@ -1,6 +1,10 @@
 {
     "regEx0": [
         [
+            "\\?_",
+            "gi"
+        ],
+        [
             "^(i\\s)?(can't\\s(seem\\sto\\s(find|locate))|was\\swondering\\sif\\s(any|some)\\s?(one|body)\\s(here\\s?)?had\\s(ripped|extracted))\\s",
             "gi"
         ],
