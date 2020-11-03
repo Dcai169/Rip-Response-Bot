@@ -15,7 +15,7 @@ async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), 
 function armorFilter(cell) {
     return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
         cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
-        ""), this.toLowerCase()).similarity > 0.5; // the Damerau-Levenshtien distance must greater than 0.5
+        ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD; // the Damerau-Levenshtien distance must greater than the specified number
 }
 function tagClass(filterResults, tag) {
     filterResults.forEach((item) => { item.armorClass = tag; });
