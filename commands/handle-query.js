@@ -1,4 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const levenshtien = require("damerau-levenshtein");
 require('dotenv').config({ path: './config.env' });
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 
@@ -11,7 +12,11 @@ const titanArmor = [];
 const KEY = process.env.GSHEETAPI;
 
 async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), gender: sheet.getCell(row, 2).formattedValue }; }
-function armorFilter(cell) { return (cell.entry.formattedValue ? cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : null) === this.toLowerCase(); }
+function armorFilter(cell) {
+    return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
+        cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
+        ""), this.toLowerCase()).similarity > 0.5; // the Damerau-Levenshtien distance must greater than 0.5
+}
 function tagClass(filterResults, tag) {
     filterResults.forEach((item) => { item.armorClass = tag; });
     return filterResults;
