@@ -103,7 +103,7 @@ module.exports = {
 
             if (result.length === 1) {
                 response = (!!result[0] ?
-                    `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${result[0].entry.formattedValue.trim()} model is ${(result[0].entry.hyperlink ?
+                    `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${String(result[0].entry.formattedValue).trim()} model is ${(result[0].entry.hyperlink ?
                         "available at " + result[0].entry.hyperlink + "." :
                         "not available yet.")}` :
                     fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
@@ -112,7 +112,7 @@ module.exports = {
             } else {
                 response = "Your query returned multiple results.\n"
                 result.forEach((i) => {
-                    response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${i.entry.formattedValue.trim()} model is ${(i.entry.hyperlink ?
+                    response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
                         `available at ${i.entry.hyperlink}.` :
                         "not available yet.")}\n`;
                 }
@@ -128,7 +128,7 @@ module.exports = {
 
             if (result.length === 1) {
                 response = (!!result[0] ?
-                    `The ${result[0].entry.formattedValue.trim()} model is ${(result[0].entry.hyperlink ?
+                    `The ${String(result[0].entry.formattedValue).trim()} model is ${(result[0].entry.hyperlink ?
                         "available at " + result[0].entry.hyperlink + "." :
                         "not available yet.")}` :
                     fallbackResponse(args));
@@ -137,7 +137,7 @@ module.exports = {
             } else {
                 response = "Your query returned multiple results.\n"
                 result.forEach((i) => {
-                    response += `The ${(!!i.gender ? i.gender + " " : "")}${(!!i.armorClass ? i.armorClass + " " : "")}${i.entry.formattedValue.trim()} model is ${(i.entry.hyperlink ?
+                    response += `The ${(!!i.gender ? i.gender + " " : "")}${(!!i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
                         `available at ${i.entry.hyperlink}.` :
                         "not available yet.")}\n`;
                 }
