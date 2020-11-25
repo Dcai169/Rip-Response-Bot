@@ -3,10 +3,10 @@ const levenshtien = require("damerau-levenshtein");
 require('dotenv').config({ path: './config.env' });
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 
-const elseItems = [];
-const warlockArmor = [];
-const hunterArmor = [];
-const titanArmor = [];
+let elseItems = [];
+let warlockArmor = [];
+let hunterArmor = [];
+let titanArmor = [];
 // const itemIndex = elseItems.concat(warlockArmor, hunterArmor, titanArmor);
 
 const KEY = process.env.GSHEETAPI;
@@ -28,6 +28,13 @@ function tagClass(filterResults, tag) {
 function fallbackResponse(query) { return }
 
 async function loadSheetItems(callback=()=>{}){ // if unspecified the callback is an anonymous function that does nothing
+    // clear arrays
+    elseItems = [];
+    warlockArmor = [];
+    hunterArmor = [];
+    titanArmor = [];
+
+    // get new data
     doc.loadInfo().then(() => {
         doc.sheetsByIndex.forEach(sheet => {
             sheet.loadCells().then(() => {
