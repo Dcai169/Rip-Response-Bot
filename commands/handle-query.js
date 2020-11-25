@@ -27,6 +27,39 @@ function tagClass(filterResults, tag) {
 // }
 function fallbackResponse(query) { return }
 
+async function loadSheetItems(callback){
+    doc.loadInfo().then(() => {
+        doc.sheetsByIndex.forEach(sheet => {
+            sheet.loadCells().then(() => {
+                (async function () {
+                    if (sheet.title.toLowerCase().includes("hunter")) {
+                        for (let row = 0; row < sheet.rowCount; row++) {
+                            hunterArmor.push(await initItemObj(sheet, row));
+                        }
+                        // console.debug(hunterArmor);
+                    } else if (sheet.title.toLowerCase().includes("warlock")) {
+                        for (let row = 0; row < sheet.rowCount; row++) {
+                            warlockArmor.push(await initItemObj(sheet, row));
+                        }
+                        // console.debug(warlockArmor);
+                    } else if (sheet.title.toLowerCase().includes("titan")) {
+                        for (let row = 0; row < sheet.rowCount; row++) {
+                            titanArmor.push(await initItemObj(sheet, row));
+                        }
+                        // console.debug(titanArmor);
+                    } else {
+                        for (let row = 0; row < sheet.rowCount; row++) {
+                            elseItems.push(await (async function () { return { entry: sheet.getCell(row, 0), gender: null }; })());
+                        }
+                        // console.debug(elseItems);
+                    }
+                })().then(() => console.log(`${sheet.title} indexed`));
+            });
+        });
+        setTimeout(callback(), 5 * 1000);
+    });
+}
+
 process.on('unhandledRejection', (_, error) => {
     // console.log("Google Sheet API failed to connect.");
     // console.log(error)
@@ -35,36 +68,7 @@ process.on('unhandledRejection', (_, error) => {
 })
 
 doc.useApiKey(KEY);
-doc.loadInfo().then(() => {
-    doc.sheetsByIndex.forEach(sheet => {
-        sheet.loadCells().then(() => {
-            (async function () {
-                if (sheet.title.toLowerCase().includes("hunter")) {
-                    for (let row = 0; row < sheet.rowCount; row++) {
-                        hunterArmor.push(await initItemObj(sheet, row));
-                    }
-                    // console.debug(hunterArmor);
-                } else if (sheet.title.toLowerCase().includes("warlock")) {
-                    for (let row = 0; row < sheet.rowCount; row++) {
-                        warlockArmor.push(await initItemObj(sheet, row));
-                    }
-                    // console.debug(warlockArmor);
-                } else if (sheet.title.toLowerCase().includes("titan")) {
-                    for (let row = 0; row < sheet.rowCount; row++) {
-                        titanArmor.push(await initItemObj(sheet, row));
-                    }
-                    // console.debug(titanArmor);
-                } else {
-                    for (let row = 0; row < sheet.rowCount; row++) {
-                        elseItems.push(await (async function () { return { entry: sheet.getCell(row, 0), gender: null }; })());
-                    }
-                    // console.debug(elseItems);
-                }
-            })().then(() => console.log(`${sheet.title} indexed`));
-        });
-    });
-    setTimeout(() => { console.log("Ready\n") }, 5 * 1000);
-});
+loadSheetItems(() => { console.log("Ready\n") });
 
 module.exports = {
     name: 'handle-query',
@@ -115,7 +119,7 @@ module.exports = {
                     response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
                         `available at ${i.entry.hyperlink}.` :
                         "not available yet.")}\n`;
-                }
+                    }
                 );
             }
         } else {
