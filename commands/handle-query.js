@@ -27,7 +27,7 @@ function tagClass(filterResults, tag) {
 // }
 function fallbackResponse(query) { return }
 
-async function loadSheetItems(callback){
+async function loadSheetItems(callback=()=>{}){ // if unspecified the callback is an anonymous function that does nothing
     doc.loadInfo().then(() => {
         doc.sheetsByIndex.forEach(sheet => {
             sheet.loadCells().then(() => {
@@ -56,7 +56,7 @@ async function loadSheetItems(callback){
                 })().then(() => console.log(`${sheet.title} indexed`));
             });
         });
-        setTimeout(callback(), 5 * 1000);
+        setTimeout(() => { console.log("Ready\n"); callback(); }, 5 * 1000);
     });
 }
 
@@ -68,7 +68,7 @@ process.on('unhandledRejection', (_, error) => {
 })
 
 doc.useApiKey(KEY);
-loadSheetItems(() => { console.log("Ready\n") });
+loadSheetItems();
 
 module.exports = {
     name: 'handle-query',
@@ -81,7 +81,7 @@ module.exports = {
 
         if (args.toLowerCase() == "reload" && (message.author.tag === "Thejudsub#7823" || message.author.tag === "MrTrainCow#5154")) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
-            loadSheetItems().then(() => {message.channel.send("Item Index reloaded."); return;});
+            loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
         }
 
         if (!!armorClass || !!gender) {
