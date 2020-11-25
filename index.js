@@ -51,10 +51,11 @@ bot.on('message', msg => {
       console.error(error);
       msg.reply('there was an error trying to execute that command!');
     }
-    // handle regex filtered strings
+
+  // handle regex filtered strings
   } else if (query) {
     try {
-      // console.debug(query);
+      // Execute search command
       console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in channel \#${msg.channel.name} of server ${msg.guild.name} requested "${(!!query.gender ? query.gender + " " : "")}${(!!query.armorClass ? query.armorClass + " " : "")}${query.query}"`);
       console.log(bot.commands.get('handle-query').execute(msg, query.query, query.armorClass, query.gender));
       console.log();
@@ -62,8 +63,9 @@ bot.on('message', msg => {
       console.error(error);
       msg.reply('there was an error trying to execute that command!');
     }
+
   } else {
-    // Joke canned responses
+    // Canned responses
     if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, what is your promise?`) {
       try {
         console.log(bot.commands.get('bots-promise').execute(msg, args));
@@ -72,6 +74,7 @@ bot.on('message', msg => {
         console.error(error);
         msg.reply('there was an error trying to execute that command!');
       }
+
     } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, what is your purpose?`) {
       try {
         console.log(bot.commands.get('bots-purpose').execute(msg, args));
@@ -80,6 +83,7 @@ bot.on('message', msg => {
         console.error(error);
         msg.reply('there was an error trying to execute that command!');
       }
+
     } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, execute order 66.`) {
       try {
         console.log(bot.commands.get('order-66').execute(msg, args));
@@ -88,6 +92,7 @@ bot.on('message', msg => {
         console.error(error);
         msg.reply('there was an error trying to execute that command!');
       }
+
     }
   }
 });
