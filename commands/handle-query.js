@@ -86,9 +86,12 @@ module.exports = {
     execute(message, args, armorClass, gender) {
         let response = null;
 
-        if (args.toLowerCase() == "reload" && (message.author.tag === "Thejudsub#7823" || message.author.tag === "MrTrainCow#5154")) {
+        // Baked in commands
+        if (args.toLowerCase() === "reload" && (message.author.tag === "Thejudsub#7823" || message.author.tag === "MrTrainCow#5154")) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
             loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
+        } else if(args.toLowerCase() === "jub" || args.toLowerCase() === "thejubsub") {
+            args = "Servitor";
         }
 
         if (!!armorClass || !!gender) {
