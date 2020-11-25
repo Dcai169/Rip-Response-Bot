@@ -75,8 +75,14 @@ module.exports = {
     description: 'Handle query given',
     args: true,
     usage: '<query>, [<class>, [<gender>]]',
+    guildOnly: false,
     execute(message, args, armorClass, gender) {
         let response = null;
+
+        if (args.toLowerCase() == "reload" && (message.author.tag === "Thejudsub#7823" || message.author.tag === "MrTrainCow#5154")) {
+            message.channel.send("Reloading Item Index. This can take up to a minute.");
+            loadSheetItems().then(() => {message.channel.send("Item Index reloaded."); return;});
+        }
 
         if (!!armorClass || !!gender) {
             let result = null;
