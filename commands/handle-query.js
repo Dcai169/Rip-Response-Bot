@@ -88,6 +88,17 @@ function tagClass(filterResults, tag) {
     return filterResults;
 }
 
+function checkAbort(msg, args) { // this function checks if there should be any response at all 
+    if (args === "") {
+        return true;
+    }
+    if ([514949263403515926, 682687491899523072].includes(msg.channel.id)) {
+        return true;
+    }
+
+    return false;
+}
+
 // function fallbackResponse(query) {
 //     return (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") +
 //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
