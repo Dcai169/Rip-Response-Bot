@@ -7,7 +7,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const stripRegEx = require('./redrix.js').stripRegEx;
 
 function errorResponse(err, msg){
-  console.error(error);
+  console.error(err);
   msg.reply('There was an error trying to execute that command!');
 }
 
