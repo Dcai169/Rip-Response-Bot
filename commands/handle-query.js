@@ -90,9 +90,13 @@ module.exports = {
         if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
             loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
-        } else if(["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
+        } else if (["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
             args = "Servitor";
+        } else if (args === "") { // if someone tries to do ?_the or similar
+            return;
         }
+
+        // console.debug(`Args: ${args}`);
 
         if (!!armorClass || !!gender) {
             let result = null;
@@ -119,7 +123,7 @@ module.exports = {
                 result = result.filter((item) => { return item.gender.toLowerCase() === gender.toLowerCase() });
             }
 
-            // console.debug(result);
+            // console.debug(`Result: ${result}`);
 
             if (result.length === 1) {
                 response = (!!result[0] ?
