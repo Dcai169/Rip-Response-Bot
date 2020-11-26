@@ -138,71 +138,45 @@ module.exports = {
             }
 
             if (!armorClass) {
-                result = [];
-                result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
-                result = result.concat(tagClass(titanArmor.filter(itemFilter, args), "Titan"));
-                result = result.concat(tagClass(hunterArmor.filter(itemFilter, args), "Hunter"));
-            } else if (armorClass === "hunter") {
-                result = tagClass(hunterArmor.filter(itemFilter, args), "Hunter");
-            } else if (armorClass === "warlock") {
-                result = tagClass(warlockArmor.filter(itemFilter, args), "Warlock");
                 for(let key in itemsObj.items){
+                    results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), key.split("Armor").shift()));
+                }
             } else {
                 results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
             }
 
             if (gender) {
-                result = result.filter((item) => { return item.gender.toLowerCase() === gender.toLowerCase() });
+                results = results.filter((item) => { return item.gender.toLowerCase() === gender.toLowerCase() });
             }
 
             // console.debug(`Result: ${result}`);
-
-            if (result.length === 1) {
-                response = (!!result[0] ?
-                    `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${String(result[0].entry.formattedValue).trim()} model is ${(result[0].entry.hyperlink ?
-                        "available at " + result[0].entry.hyperlink + "." :
-                        "not available yet.")}` :
-                    fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
-            } else if (result.length === 0) {
-                response = fallbackResponse(`${(!!gender ? gender + " " : "")}${(!!armorClass ? armorClass + " " : "")}${args}`);
-            } else {
-                response = "Your query returned multiple results.\n"
-                result.forEach((i) => {
-                    response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
-                        `available at ${i.entry.hyperlink}.` :
-                        "not available yet.")}\n`;
-                    }
-                );
         } else { // otherwise...
+            for(let key in itemsObj.items){
+                if (key === "elseItems") {
+                    results = results.concat(itemsObj.items.elseItems.filter(itemFilter, args));
+                } else {
+                    results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), key.split("Armor").shift()));
+                }
             }
+
+            // console.debug(results);
+        }
+
+        if (results.length === 1) {
             response = (!!results[0] ?
+                `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${String(results[0].entry.formattedValue).trim()} model is ${(results[0].entry.hyperlink ?
+                    "available at " + results[0].entry.hyperlink + "." :
+                    "not available yet.")}` :
+                fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
+        } else if (results.length === 0) {
+            response = fallbackResponse(`${(!!gender ? gender + " " : "")}${(!!armorClass ? armorClass + " " : "")}${args}`);
         } else {
-            let result = itemsObj.items.elseItems.filter(itemFilter, args);
-            result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
-            result = result.concat(tagClass(titanArmor.filter(itemFilter, args), "Titan"));
-            result = result.concat(tagClass(hunterArmor.filter(itemFilter, args), "Hunter"));
-
-            // console.debug(result);
-
-            if (result.length === 1) {
-                response = (!!result[0] ?
-                    `The ${String(result[0].entry.formattedValue).trim()} model is ${(result[0].entry.hyperlink ?
-                        "available at " + result[0].entry.hyperlink + "." :
-                        "not available yet.")}` :
-                    fallbackResponse(args));
-            } else if (result.length === 0) {
-                response = fallbackResponse(args);
-            } else {
-                response = "Your query returned multiple results.\n"
-                result.forEach((i) => {
-                    response += `The ${(!!i.gender ? i.gender + " " : "")}${(!!i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
-                        "not available yet.")}\n`;
+            response = "Your query returned multiple results.\n"
+            results.forEach((i) => {
                 response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
                     `available at ${i.entry.hyperlink}.` :
                     "not available yet.")}\n`;
                 }
-                );
-            }
             );
         }
         
