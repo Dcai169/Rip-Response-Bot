@@ -10,12 +10,13 @@ let titanArmor = [];
 
 const KEY = process.env.GSHEETAPI;
 
-async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), gender: sheet.getCell(row, 2).formattedValue }; }
+async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), gender: sheet.getCell(row, 2).formattedValue, aliases: sheet.getCell(row, 4).formattedValue.split(", ") }; }
 
 function itemFilter(cell) {
     return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
         cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
         ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
+        || cell.aliases.includes(this.toLowerCase()); // or if the query matches the alias
 }
 
 function tagClass(filterResults, tag) {
