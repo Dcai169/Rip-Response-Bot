@@ -87,10 +87,10 @@ module.exports = {
         let response = null;
 
         // Baked in commands
-        if (args.toLowerCase() === "reload" && (message.author.tag === "Thejudsub#7823" || message.author.tag === "MrTrainCow#5154")) {
+        if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
             loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
-        } else if(args.toLowerCase() === "jud" || args.toLowerCase() === "thejudsub") {
+        } else if(["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
             args = "Servitor";
         }
 
@@ -164,9 +164,13 @@ module.exports = {
                 );
             }
         }
-
+        
         if (response) {
-            message.channel.send((!!response ? response : fallbackResponse()));
+            if (response.length >= 2000) { // discord has a limit of 2000 chars per message
+                message.reply('There was an error trying to execute that command!');
+            } else { 
+                message.channel.send((!!response ? response : fallbackResponse()));
+            }
         }
         // message.channel.send((!!response ? response : fallbackResponse()));
         return response;

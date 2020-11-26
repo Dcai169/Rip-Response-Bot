@@ -6,6 +6,11 @@ bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const stripRegEx = require('./redrix.js').stripRegEx;
 
+function errorResponse(err, msg){
+  console.error(error);
+  msg.reply('There was an error trying to execute that command!');
+}
+
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
 
@@ -48,8 +53,7 @@ bot.on('message', msg => {
     try {
       console.log(command.execute(msg, args));
     } catch (error) {
-      console.error(error);
-      msg.reply('there was an error trying to execute that command!');
+      errorResponse(error, msg);
     }
 
   // handle regex filtered strings
@@ -60,8 +64,7 @@ bot.on('message', msg => {
       console.log(bot.commands.get('handle-query').execute(msg, query.query, query.armorClass, query.gender));
       console.log();
     } catch (error) {
-      console.error(error);
-      msg.reply('there was an error trying to execute that command!');
+      errorResponse(error, msg);
     }
 
   } else {
@@ -71,8 +74,7 @@ bot.on('message', msg => {
         console.log(bot.commands.get('bots-promise').execute(msg, args));
         console.log();
       } catch (error) {
-        console.error(error);
-        msg.reply('there was an error trying to execute that command!');
+        errorResponse(error, msg);
       }
 
     } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, what is your purpose?`) {
@@ -80,8 +82,7 @@ bot.on('message', msg => {
         console.log(bot.commands.get('bots-purpose').execute(msg, args));
         console.log();
       } catch (error) {
-        console.error(error);
-        msg.reply('there was an error trying to execute that command!');
+        errorResponse(error, msg);
       }
 
     } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, execute order 66.`) {
@@ -89,8 +90,7 @@ bot.on('message', msg => {
         console.log(bot.commands.get('order-66').execute(msg, args));
         console.log();
       } catch (error) {
-        console.error(error);
-        msg.reply('there was an error trying to execute that command!');
+        errorResponse(error, msg);
       }
 
     }
