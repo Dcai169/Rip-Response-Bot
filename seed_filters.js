@@ -7,7 +7,7 @@ const regEx0 = [
   new RegExp('^do\\s(we|you)\\shave\\s', 'gi'),
   new RegExp('^has\\s((the\\s)?(model\\sfor\\s)?)?((any|some)\\s?(one|body)\\s((managed\\sto\\sget)?(rip(ped|s)?)?((had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?){1}((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))\\s)?', 'gi'),
   new RegExp('^where\\s(is\\s|can\\sI\\s(get|find)\\s)', 'gi'),
-  new RegExp('^does\\s((any|some)\\s?(one|body)\\s)(here\\s)?((have\\s(the\\sripped)?)|know\\s((where)?(if)?(what\\sfolder)?){1})\\s((the\\s(rips?|model)\\sof\\s)|(we|i)\\scan\\s(find|get)(\\sthe\\s(ripped\\s)?files\\s(of|for))?)?\\s', 'gi'),
+  new RegExp('^(does\\s)?((any|some)\\s?(one|body)\\s)(here\\s)?((have\\s(the\\sripped)?)|know\\s((where)?(if)?(what\\sfolder)?){1})\\s((the\\s(rips?|model)\\sof\\s)|(we|i)\\scan\\s(find|get)(\\sthe\\s(ripped\\s)?files\\s(of|for))?)?\\s', 'gi'),
   new RegExp('^please\\srip\\s', 'gi'),
   new RegExp('^can\\s(((any|some)\\s?(one|body))|you)\\s(please\\s)?((rip)?(tell\\sme\\swhere)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,}){1}\\s', 'gi'),
   new RegExp('^is\\sthere\\sa(ny)?\\schance\\s(that\\s)?((any|some)\\s?(one|body)\\s)(here\\shad\\s)?((ripped|extracted)\\s)?', 'gi'),

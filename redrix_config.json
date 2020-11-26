@@ -21,7 +21,7 @@
             "gi"
         ],
         [
-            "^does\\s((any|some)\\s?(one|body)\\s)(here\\s)?((have\\s(the\\sripped)?)|know\\s((where)?(if)?(what\\sfolder)?){1})\\s((the\\s(rips?|model)\\sof\\s)|(we|i)\\scan\\s(find|get)(\\sthe\\s(ripped\\s)?files\\s(of|for))?)?\\s",
+            "^(does\\s)?((any|some)\\s?(one|body)\\s)(here\\s)?((have\\s(the\\sripped)?)|know\\s((where)?(if)?(what\\sfolder)?){1})\\s((the\\s(rips?|model)\\sof\\s)|(we|i)\\scan\\s(find|get)(\\sthe\\s(ripped\\s)?files\\s(of|for))?)?\\s",
             "gi"
         ],
         [
