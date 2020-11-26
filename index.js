@@ -6,9 +6,9 @@ bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const stripRegEx = require('./redrix.js').stripRegEx;
 
-function errorResponse(err, msg){
+function errorResponse(err, msg, errCode=undefined){
   console.error(err);
-  msg.reply('There was an error trying to execute that command!');
+  msg.reply('There was an error trying to execute that command!'+(!!errCode ? ` Error Code: ${errCode}` : ""));
 }
 
 for (const file of commandFiles) {
