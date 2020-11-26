@@ -71,9 +71,8 @@ module.exports = {
 
     retdat.query = retdat.query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set");
     retdat.query = retdat.query.replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "");
+    retdat.query = retdat.query.replace(/\bthe\b/gi, "");
     retdat.query = retdat.query.trim();
-
-    retdat.query = retdat.query.replace(/\bthe\b/gi, "").trim();
 
     // console.debug(query !== inputText);
     // console.debug({query});

@@ -7,20 +7,22 @@ let elseItems = [];
 let warlockArmor = [];
 let hunterArmor = [];
 let titanArmor = [];
-// const itemIndex = elseItems.concat(warlockArmor, hunterArmor, titanArmor);
 
 const KEY = process.env.GSHEETAPI;
 
 async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), gender: sheet.getCell(row, 2).formattedValue }; }
-function armorFilter(cell) {
+
+function itemFilter(cell) {
     return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
         cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
-        ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD; // the Damerau-Levenshtien distance must greater than the specified number
+        ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
 }
+
 function tagClass(filterResults, tag) {
     filterResults.forEach((item) => { item.armorClass = tag; });
     return filterResults;
 }
+
 // function fallbackResponse(query) {
 //     return (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") +
 //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
@@ -84,6 +86,13 @@ module.exports = {
     usage: '<query>, [<class>, [<gender>]]',
     guildOnly: false,
     execute(message, args, armorClass, gender) {
+        /* 
+        message: Message object as described by the discord.js library.
+        args: The query the user searched.
+        armorClass: Class of the armor, if specified. null otherwise.
+        gender: Gender of the armor, if specified. null otherwise.
+        */
+
         let response = null;
 
         // Baked in commands
@@ -108,15 +117,15 @@ module.exports = {
 
             if (!armorClass) {
                 result = [];
-                result = result.concat(tagClass(warlockArmor.filter(armorFilter, args), "Warlock"));
-                result = result.concat(tagClass(titanArmor.filter(armorFilter, args), "Titan"));
-                result = result.concat(tagClass(hunterArmor.filter(armorFilter, args), "Hunter"));
+                result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
+                result = result.concat(tagClass(titanArmor.filter(itemFilter, args), "Titan"));
+                result = result.concat(tagClass(hunterArmor.filter(itemFilter, args), "Hunter"));
             } else if (armorClass === "hunter") {
-                result = tagClass(hunterArmor.filter(armorFilter, args), "Hunter");
+                result = tagClass(hunterArmor.filter(itemFilter, args), "Hunter");
             } else if (armorClass === "warlock") {
-                result = tagClass(warlockArmor.filter(armorFilter, args), "Warlock");
+                result = tagClass(warlockArmor.filter(itemFilter, args), "Warlock");
             } else if (armorClass === "titan") {
-                result = tagClass(titanArmor.filter(armorFilter, args), "Titan");
+                result = tagClass(titanArmor.filter(itemFilter, args), "Titan");
             }
 
             if (gender) {
@@ -143,10 +152,10 @@ module.exports = {
                 );
             }
         } else {
-            let result = elseItems.filter(armorFilter, args);
-            result = result.concat(tagClass(warlockArmor.filter(armorFilter, args), "Warlock"));
-            result = result.concat(tagClass(titanArmor.filter(armorFilter, args), "Titan"));
-            result = result.concat(tagClass(hunterArmor.filter(armorFilter, args), "Hunter"));
+            let result = elseItems.filter(itemFilter, args);
+            result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
+            result = result.concat(tagClass(titanArmor.filter(itemFilter, args), "Titan"));
+            result = result.concat(tagClass(hunterArmor.filter(itemFilter, args), "Hunter"));
 
             // console.debug(result);
 
