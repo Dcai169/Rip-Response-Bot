@@ -3,14 +3,78 @@ const levenshtien = require("damerau-levenshtein");
 require('dotenv').config({ path: './config.env' });
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 
-let elseItems = [];
-let warlockArmor = [];
-let hunterArmor = [];
-let titanArmor = [];
+class itemArray {
+    constructor(doc) {
+        this.doc = doc;
+        
+        this.items = {
+            hunterArmor: [],
+            titanArmor: [],
+            warlockArmor: [],
+            elseItems: [],
+        };
+        
+        const KEY = process.env.GSHEETAPI;
+        this.doc.useApiKey(KEY);
+        this.loadItemInfo();
+    }
 
-const KEY = process.env.GSHEETAPI;
+    resetArray() {
+        this.items = {
+            hunterArmor: [],
+            titanArmor: [],
+            warlockArmor: [],
+            elseItems: [],
+        };
+    }
 
-async function initItemObj(sheet, row) { return { entry: sheet.getCell(row, 0), gender: sheet.getCell(row, 2).formattedValue, aliases: sheet.getCell(row, 4).formattedValue.split(", ") }; }
+    async initItemObj(sheet, row) { 
+        return { 
+            entry: sheet.getCell(row, 0), 
+            gender: sheet.getCell(row, 2).formattedValue, 
+            aliases: String(sheet.getCell(row, 4).formattedValue).split(", ") 
+        }; 
+    }
+
+    loadItemInfo(callback=()=>{}) {
+        // clear arrays
+        this.resetArray();
+
+        // get new data
+        this.doc.loadInfo().then(() => {
+            this.doc.sheetsByIndex.forEach(sheet => { // for each sheet
+                sheet.loadCells().then(() => { // load the sheet
+                    for(let key in this.items) { // for each list
+                        // console.debug(sheet.title);
+                        if (sheet.title.toLowerCase().includes(key.split("Armor").shift())) { // if this sheet is the corresponding list
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    this.items[key].push(await this.initItemObj(sheet, row));
+                                })();
+                            }
+                        } else {
+                            for (let row = 0; row < sheet.rowCount; row++) {
+                                (async () => {
+                                    this.items.elseItems.push(await (async () => { 
+                                        let cell = this.initItemObj(sheet, row);
+                                        (await cell).gender = null;
+                                        return cell; 
+                                    })());
+                                })();
+                            }
+                        }
+                    }
+                }).then(console.log(`${sheet.title} indexed`));
+            });
+            // probably needs to be async
+            setTimeout(() => { console.log("Ready\n"); callback(); }, 5 * 1000);
+        });
+    }
+
+
+}
+
+const itemsObj = new itemArray(doc);
 
 function itemFilter(cell) {
     return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
@@ -29,56 +93,6 @@ function tagClass(filterResults, tag) {
 //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
 // }
 function fallbackResponse(query) { return }
-
-async function loadSheetItems(callback=()=>{}){ // if unspecified the callback is an anonymous function that does nothing
-    // clear arrays
-    elseItems = [];
-    warlockArmor = [];
-    hunterArmor = [];
-    titanArmor = [];
-
-    // get new data
-    doc.loadInfo().then(() => {
-        doc.sheetsByIndex.forEach(sheet => {
-            sheet.loadCells().then(() => {
-                (async function () {
-                    if (sheet.title.toLowerCase().includes("hunter")) {
-                        for (let row = 0; row < sheet.rowCount; row++) {
-                            hunterArmor.push(await initItemObj(sheet, row));
-                        }
-                        // console.debug(hunterArmor);
-                    } else if (sheet.title.toLowerCase().includes("warlock")) {
-                        for (let row = 0; row < sheet.rowCount; row++) {
-                            warlockArmor.push(await initItemObj(sheet, row));
-                        }
-                        // console.debug(warlockArmor);
-                    } else if (sheet.title.toLowerCase().includes("titan")) {
-                        for (let row = 0; row < sheet.rowCount; row++) {
-                            titanArmor.push(await initItemObj(sheet, row));
-                        }
-                        // console.debug(titanArmor);
-                    } else {
-                        for (let row = 0; row < sheet.rowCount; row++) {
-                            elseItems.push(await (async function () { return { entry: sheet.getCell(row, 0), gender: null }; })());
-                        }
-                        // console.debug(elseItems);
-                    }
-                })().then(() => console.log(`${sheet.title} indexed`));
-            });
-        });
-        setTimeout(() => { console.log("Ready\n"); callback(); }, 5 * 1000);
-    });
-}
-
-process.on('unhandledRejection', (_, error) => {
-    // console.log("Google Sheet API failed to connect.");
-    // console.log(error)
-    // process.kill(process.pid, 'SIGTERM');
-    console.log("This error is safe to ignore.");
-})
-
-doc.useApiKey(KEY);
-loadSheetItems();
 
 module.exports = {
     name: 'handle-query',
@@ -102,7 +116,7 @@ module.exports = {
             loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
         } else if (["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
             args = "Servitor";
-        } else if (args === "") { // if someone tries to do ?_the or similar
+        } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
             return;
         }
 
@@ -153,7 +167,7 @@ module.exports = {
                 );
             }
         } else {
-            let result = elseItems.filter(itemFilter, args);
+            let result = itemsObj.items.elseItems.filter(itemFilter, args);
             result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
             result = result.concat(tagClass(titanArmor.filter(itemFilter, args), "Titan"));
             result = result.concat(tagClass(hunterArmor.filter(itemFilter, args), "Hunter"));
