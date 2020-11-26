@@ -36,12 +36,12 @@ function capitalizeWord(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-function generateQualifiers(responseItem) {
-    return `${(!!gender ? responseItem.gender + " " : "")}${(!!armorClass ? capitalizeWord(responseItem.armorClass) + " " : "")}`;
+function generateQualifiers(gender, armorClass) {
+    return `${(!!gender ? gender + " " : "")}${(!!armorClass ? capitalizeWord(armorClass) + " " : "")}`;
 }
 
 function generateFullyQualifiedName(responseItem) {
-    return `${generateQualifiers(responseItem)}${String(responseItem.entry.formattedValue).trim()}`;
+    return `${generateQualifiers(responseItem.gender, responseItem.armorClass)}${String(responseItem.entry.formattedValue).trim()}`;
 }
 
 // function fallbackResponse(query) {
