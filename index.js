@@ -65,7 +65,7 @@ bot.on('message', msg => {
     try {
       // Execute search command
       console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!query.gender ? query.gender + " " : "")}${(!!query.armorClass ? query.armorClass + " " : "")}${query.query}"`);
-      console.log(bot.commands.get('handle-query').execute(msg, query.query, query.armorClass, query.gender));
+      console.log(bot.commands.get('search').execute(msg, query.query, query.armorClass, query.gender));
       console.log();
     } catch (error) {
       errorResponse(error, msg);
