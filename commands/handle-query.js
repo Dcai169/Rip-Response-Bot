@@ -39,15 +39,32 @@ class itemArray {
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => { // for each sheet
                 sheet.loadCells().then(() => { // load the sheet
-                    for(let key in this.items) { // for each list
-                        // console.debug(sheet.title);
-                        if (sheet.title.toLowerCase().includes(key.split("Armor").shift())) { // if this sheet is the corresponding list
+                    switch (sheet.title.toLowerCase().split(" ").shift()) {
+                        case "hunter":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
-                                    this.items[key].push(await this.initItemObj(sheet, row));
+                                    this.items.hunterArmor.push(await this.initItemObj(sheet, row));
                                 })();
                             }
-                        } else {
+                            break;
+
+                        case "warlock":
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    this.items.warlockArmor.push(await this.initItemObj(sheet, row));
+                                })();
+                            }
+                            break;
+
+                        case "titan":
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    this.items.titanArmor.push(await this.initItemObj(sheet, row));
+                                })();
+                            }
+                            break;
+
+                        default:
                             for (let row = 0; row < sheet.rowCount; row++) {
                                 (async () => {
                                     this.items.elseItems.push(await (async () => { 
@@ -57,7 +74,7 @@ class itemArray {
                                     })());
                                 })();
                             }
-                        }
+                            break;
                     }
                 }).then(console.log(`${sheet.title} indexed`));
             });
@@ -65,8 +82,6 @@ class itemArray {
             setTimeout(() => { console.log("Ready\n"); this.ready = true; callback(); }, 5 * 1000);
         });
     }
-
-
 }
 
 const itemsObj = new itemArray(doc);
