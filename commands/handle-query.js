@@ -6,13 +6,7 @@ const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'
 class itemArray {
     constructor(doc) {
         this.doc = doc;
-        
-        this.items = {
-            hunterArmor: [],
-            titanArmor: [],
-            warlockArmor: [],
-            elseItems: [],
-        };
+        this.resetArray() // or create it in this case
         
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
@@ -20,6 +14,7 @@ class itemArray {
     }
 
     resetArray() {
+        this.ready = false;
         this.items = {
             hunterArmor: [],
             titanArmor: [],
@@ -67,7 +62,7 @@ class itemArray {
                 }).then(console.log(`${sheet.title} indexed`));
             });
             // probably needs to be async
-            setTimeout(() => { console.log("Ready\n"); callback(); }, 5 * 1000);
+            setTimeout(() => { console.log("Ready\n"); this.ready = true; callback(); }, 5 * 1000);
         });
     }
 
@@ -92,7 +87,10 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     if (args === "") {
         return true;
     }
-    if ([514949263403515926, 682687491899523072].includes(msg.channel.id)) {
+    if ([514949263403515926n, 682687491899523072n].includes(msg.channel.id)) {
+        return true;
+    }
+    if (!itemsObj.ready) {
         return true;
     }
 
@@ -131,10 +129,8 @@ module.exports = {
             return;
         }
 
-        // console.debug(`Args: ${args}`);
-
-        if (!!armorClass || !!gender) {
-            let result = null;
+        let results = [];
+        if (!!armorClass || !!gender) { // if a class or gender is specified
             try {
                 armorClass = armorClass.toLowerCase();
             } catch (err) {
@@ -150,8 +146,9 @@ module.exports = {
                 result = tagClass(hunterArmor.filter(itemFilter, args), "Hunter");
             } else if (armorClass === "warlock") {
                 result = tagClass(warlockArmor.filter(itemFilter, args), "Warlock");
-            } else if (armorClass === "titan") {
-                result = tagClass(titanArmor.filter(itemFilter, args), "Titan");
+                for(let key in itemsObj.items){
+            } else {
+                results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
             }
 
             if (gender) {
@@ -176,7 +173,9 @@ module.exports = {
                         "not available yet.")}\n`;
                     }
                 );
+        } else { // otherwise...
             }
+            response = (!!results[0] ?
         } else {
             let result = itemsObj.items.elseItems.filter(itemFilter, args);
             result = result.concat(tagClass(warlockArmor.filter(itemFilter, args), "Warlock"));
@@ -197,16 +196,19 @@ module.exports = {
                 response = "Your query returned multiple results.\n"
                 result.forEach((i) => {
                     response += `The ${(!!i.gender ? i.gender + " " : "")}${(!!i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
-                        `available at ${i.entry.hyperlink}.` :
                         "not available yet.")}\n`;
+                response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
+                    `available at ${i.entry.hyperlink}.` :
+                    "not available yet.")}\n`;
                 }
                 );
             }
+            );
         }
         
         if (response) {
             if (response.length >= 2000) { // discord has a limit of 2000 chars per message
-                message.reply('There was an error trying to execute that command!');
+                message.reply('Your query generated a response that is too long!');
             } else { 
                 message.channel.send((!!response ? response : fallbackResponse()));
             }
