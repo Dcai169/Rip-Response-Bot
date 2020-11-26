@@ -1,6 +1,4 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
 require('dotenv').config({ path: './config.env' });
-const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 
 class itemArray {
     constructor(doc) {
