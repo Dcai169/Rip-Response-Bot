@@ -28,8 +28,11 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
-  const args = msg.content.split(/ +/);
-  const commandName = args.shift().toLowerCase();
+  // const args = msg.content.split(/ +/);
+  // const commandName = args.shift().toLowerCase();
+  const args = msg.content.split('?_');
+  args.shift(); // remove args[0] which is ""
+  const commandName = String(args.shift()).toLowerCase();
 
   let query = null;
   if (msg.author.id !== bot.user.id) {
@@ -50,14 +53,15 @@ bot.on('message', msg => {
       return msg.reply('I can\'t execute that command inside DMs!');
     }
 
+    // execute the command
     try {
       console.log(command.execute(msg, args));
+      return;
     } catch (error) {
       errorResponse(error, msg);
     }
-
-  // handle regex filtered strings
-  } else if (query) {
+  
+  } else if (query) { // if the filters found something
     try {
       // Execute search command
       console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!query.gender ? query.gender + " " : "")}${(!!query.armorClass ? query.armorClass + " " : "")}${query.query}"`);
@@ -65,34 +69,6 @@ bot.on('message', msg => {
       console.log();
     } catch (error) {
       errorResponse(error, msg);
-    }
-
-  } else {
-    // Canned responses
-    if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, what is your promise?`) {
-      try {
-        console.log(bot.commands.get('bots-promise').execute(msg, args));
-        console.log();
-      } catch (error) {
-        errorResponse(error, msg);
-      }
-
-    } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, what is your purpose?`) {
-      try {
-        console.log(bot.commands.get('bots-purpose').execute(msg, args));
-        console.log();
-      } catch (error) {
-        errorResponse(error, msg);
-      }
-
-    } else if (msg.content.toLowerCase() === `${process.env.NAME.toLowerCase()}, execute order 66.`) {
-      try {
-        console.log(bot.commands.get('order-66').execute(msg, args));
-        console.log();
-      } catch (error) {
-        errorResponse(error, msg);
-      }
-
     }
   }
 });
