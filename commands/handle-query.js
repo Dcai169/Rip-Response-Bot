@@ -110,7 +110,7 @@ module.exports = {
                 `The ${generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
                     `available at <${results[0].entry.hyperlink}>.` :
                     "not available yet.")}` :
-                fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
+                fallbackResponse(`${generateQualifiers(results[0])}${args}`));
         } else if (results.length === 0) {
             response = fallbackResponse(`${(!!gender ? gender + " " : "")}${(!!armorClass ? armorClass + " " : "")}${args}`);
         } else {
