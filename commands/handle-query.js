@@ -29,6 +29,19 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     return false;
 }
 
+function capitalizeWord(word) {
+    if (typeof word !== 'string') {return ''}
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function generateQualifiers(responseItem) {
+    return `${(!!gender ? responseItem.gender + " " : "")}${(!!armorClass ? capitalizeWord(responseItem.armorClass) + " " : "")}`;
+}
+
+function generateFullyQualifiedName(responseItem) {
+    return `${generateQualifiers(responseItem)}${String(responseItem.entry.formattedValue).trim()}`;
+}
+
 // function fallbackResponse(query) {
 //     return (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") +
 //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
@@ -81,7 +94,6 @@ module.exports = {
                 results = results.filter((item) => { return item.gender.toLowerCase() === gender.toLowerCase() });
             }
 
-            // console.debug(`Result: ${result}`);
         } else { // otherwise...
             for(let key in itemsObj.items){
                 if (key === "elseItems") {
@@ -90,14 +102,13 @@ module.exports = {
                     results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), key.split("Armor").shift()));
                 }
             }
-
-            // console.debug(results);
         }
 
+        // generate response text
         if (results.length === 1) {
             response = (!!results[0] ?
-                `The ${(!!gender ? response.gender + " " : "")}${(!!armorClass ? response.armorClass + " " : "")}${String(results[0].entry.formattedValue).trim()} model is ${(results[0].entry.hyperlink ?
-                    "available at " + results[0].entry.hyperlink + "." :
+                `The ${generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
+                    `available at <${results[0].entry.hyperlink}>.` :
                     "not available yet.")}` :
                 fallbackResponse(`${(!!gender ? gender : "")} ${(!!armorClass ? armorClass : "")} ${args}`));
         } else if (results.length === 0) {
@@ -105,8 +116,8 @@ module.exports = {
         } else {
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
-                response += `The ${(i.gender ? i.gender + " " : "")}${(i.armorClass ? i.armorClass + " " : "")}${String(i.entry.formattedValue).trim()} model is ${(i.entry.hyperlink ?
-                    `available at ${i.entry.hyperlink}.` :
+                response += `The ${generateFullyQualifiedName(results[0])} model is ${(i.entry.hyperlink ?
+                    `available at <${i.entry.hyperlink}>.` :
                     "not available yet.")}\n`;
                 }
             );
