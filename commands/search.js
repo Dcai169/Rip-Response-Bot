@@ -93,7 +93,10 @@ module.exports = {
             }
 
             if (gender) {
-                results = results.filter((item) => { return item.gender.toLowerCase() === gender.toLowerCase() });
+                results = results.filter((item) => { 
+                    if (!item.gender) { return true }
+                    return item.gender.toLowerCase() === gender.toLowerCase() 
+                });
             }
 
         } else { // otherwise...

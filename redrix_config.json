@@ -75,7 +75,7 @@
     ],
     "regEx1": [
         [
-            "\b(fe)?male\\s",
+            "(fe)?male\\s",
             "gi"
         ],
         [
