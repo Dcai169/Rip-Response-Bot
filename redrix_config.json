@@ -29,7 +29,7 @@
             "gi"
         ],
         [
-            "^can\\s(((any|some)\\s?(one|body))|you)\\s(please\\s)?((rip)?(tell\\sme\\swhere)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,}){1}\\s",
+            "^can\\s(((any|some)\\s?(one|body))?(you)?(I)?)\\s(please\\s)?((rip)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,})|((tell\\sme\\swhere)?(to\\sget)?)\\s",
             "gi"
         ],
         [
@@ -53,7 +53,7 @@
             "gi"
         ],
         [
-            "^(what\\sare\\syour\\s)?(thoughts|opinions)\\son\\s((finding)?(getting)?(ripping)?(extracting)?(grabbing)?){1}\\s",
+            "^(what\\sare\\syour\\s)?(thoughts|opinions)\\s(on|about)\\s((finding)?(getting)?(ripping)?(extracting)?(grabbing)?){1}\\s",
             "gi"
         ],
         [
