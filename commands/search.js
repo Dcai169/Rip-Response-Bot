@@ -121,7 +121,7 @@ module.exports = {
         } else {
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
-                response += `The ${generateFullyQualifiedName(results[0])} model is ${(i.entry.hyperlink ?
+                response += `The ${generateFullyQualifiedName(i)} model is ${(i.entry.hyperlink ?
                     `available at <${i.entry.hyperlink}>.` :
                     "not available yet.")}\n`;
                 }
