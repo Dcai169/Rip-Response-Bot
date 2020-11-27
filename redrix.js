@@ -1,20 +1,22 @@
 const fs = require('fs');
 const filterJSONList = JSON.parse(fs.readFileSync('./redrix_config.json', 'utf8'));
-let filterList0 = [];
-let filterList1 = [];
+let redrixPass0 = [];
+let redrixPass1 = [];
 
 filterJSONList.regEx0.forEach(filter => {
-  filterList0.push(new RegExp(filter[0], filter[1]));
+  redrixPass0.push(new RegExp(filter[0], filter[1]));
 });
 
 filterJSONList.regEx1.forEach(filter => {
-  filterList1.push(new RegExp(filter[0], filter[1]));
+  redrixPass1.push(new RegExp(filter[0], filter[1]));
 });
 
 module.exports = {
   name: 'redrix',
   description: 'Strip based on regex matching',
   stripRegEx(inputText) {
+    inputText = inputText.trim();
+    inputText = inputText.trim().replace(/[,.?:;!]$/, "");
     inputText = inputText.trim().replace(/(\W)?$/gi, "").trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     if (inputText.includes("\n")) {
@@ -23,7 +25,7 @@ module.exports = {
 
     let query = inputText;
 
-    filterList0.forEach(regex => {
+    redrixPass0.forEach(regex => {
       query = query.replace(regex, "");
     });
 
@@ -52,7 +54,7 @@ module.exports = {
       retdat.gender = "male";
     }
 
-    filterList1.forEach(regex => {
+    redrixPass1.forEach(regex => {
       retdat.query = retdat.query.replace(regex, "");
     });
 
