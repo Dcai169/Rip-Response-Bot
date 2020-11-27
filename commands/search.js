@@ -74,6 +74,10 @@ module.exports = {
             args = "Servitor";
         } else if ("besto" === args.toLowerCase()){
             args = "Telesto";
+        } else if ("ape" === args.toLowerCase()){
+            args = "Felwinter's Lie";
+        } else if ("monkey" === args.toLowerCase()){
+            args = "Mindbender's Ambition";
         } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
             return;
         }
