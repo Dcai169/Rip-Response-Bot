@@ -21,26 +21,13 @@ module.exports = {
       return null;
     }
 
-    let query = inputText
-    // console.debug({inputText});
-    // console.debug({query});
-    // console.debug(query !== inputText);
-    // console.debug();
-
-    // query = query.replace(/(\W)?$/gi, "");
+    let query = inputText;
 
     filterList0.forEach(regex => {
       query = query.replace(regex, "");
     });
 
-    // console.debug({query});
-    // console.debug(query !== inputText);
-
     // exit early if nothing has changed
-    // console.debug({query});
-    // console.debug();
-    // console.debug({inputText});
-    // console.debug(query.trim() === inputText);
     if (query === inputText) {
       return null;
     }
@@ -76,6 +63,6 @@ module.exports = {
 
     // console.debug(retdat.query);
 
-    return (retdat.query !== inputText ? retdat : null);
+    return retdat;
   }
 };
