@@ -32,7 +32,7 @@ bot.on('ready', () => {
 bot.on('message', msg => {
   // const args = msg.content.split(/ +/);
   // const commandName = args.shift().toLowerCase();
-  const args = msg.content.split('?_');
+  const args = msg.content.split(process.env.CMD_PREFIX);
   args.shift(); // remove args[0] which is ""
   const commandName = String(args.shift()).toLowerCase();
 
