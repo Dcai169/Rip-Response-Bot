@@ -8,9 +8,9 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const stripRegEx = require('./redrix.js').stripRegEx;
 const searchCmd = require('./commands/search.js');
 
-function errorResponse(err, msg, errCode=undefined){
+function errorResponse(err, msg, errCode = undefined) {
   console.error(err);
-  msg.reply('There was an error trying to execute that command!'+(!!errCode ? ` Error Code: ${errCode}` : ""));
+  msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ""));
 }
 
 for (const file of commandFiles) {
@@ -23,7 +23,7 @@ for (const file of commandFiles) {
 
 // Login with the bot token
 const TOKEN = process.env.TOKEN;
-bot.login(TOKEN).then((data) => {console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`)}, (err) => {console.error(err);});
+bot.login(TOKEN).then((data) => { console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`) }, (err) => { console.error(err); });
 
 bot.on('ready', () => {
   console.info('Connected to Discord');
@@ -39,6 +39,9 @@ bot.on('message', msg => {
   let query = null;
   if (msg.author.id !== bot.user.id) {
     query = stripRegEx(msg.content);
+    if (!Array.isArray(query) && query) {
+      query = [query];
+    }
   }
 
   // Handle if the command exists
@@ -62,13 +65,17 @@ bot.on('message', msg => {
     } catch (error) {
       errorResponse(error, msg);
     }
-  
+
   } else if (query) { // if the filters found something
     try {
-      // Execute search command
-      console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!query.gender ? query.gender + " " : "")}${(!!query.armorClass ? query.armorClass + " " : "")}${query.query}"`);
-      console.log(searchCmd.execute(msg, query.query, query.armorClass, query.gender));
-      console.log();
+      query.forEach((queryI) => {
+        // Execute search command
+        if (queryI) {
+          console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!queryI.gender ? queryI.gender + " " : "")}${(!!queryI.armorClass ? queryI.armorClass + " " : "")}${queryI.query}"`);
+          console.log(searchCmd.execute(msg, queryI.query, queryI.armorClass, queryI.gender));
+          console.log();
+        }
+      });
     } catch (error) {
       errorResponse(error, msg);
     }
