@@ -13,7 +13,7 @@
             "gi"
         ],
         [
-            "^has\\s((the\\s)?(model\\sfor\\s)?)?((any|some)\\s?(one|body)\\s((managed\\sto\\sget)?(rip(ped|s)?)?((had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?){1}((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))\\s)?",
+            "^(who\\shere\\s)?(has\\s)?((the\\s)?(model\\sfor\\s)?)?(any|some)\\s?(one|body)\\s((((managed\\sto\\sget)?(rip(ped|s)?)?(had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?(looked\\sinto\\s)?(datamined)?(been\\ssuccessful\\sin)?)((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))\\s)?",
             "gi"
         ],
         [
@@ -29,11 +29,11 @@
             "gi"
         ],
         [
-            "^can\\s(((any|some)\\s?(one|body))?(you)?(I)?)\\s(please\\s)?((rip)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,})|((tell\\sme\\swhere)?(to\\sget)?)",
+            "^can\\s(((any|some)\\s?(one|body))?(you)?(I)?)\\s(please\\s)?(((rip)?(get)?((help(\\sme)?)?(\\s(get|with\\sgetting)?)?){1,})?((tell\\sme\\swhere)?(to\\sget\\s)?(a\\smodel\\sof\\s)?)?)",
             "gi"
         ],
         [
-            "^is\\sthere\\sa(ny)?\\schance\\s(that\\s)?((any|some)\\s?(one|body)\\s)(here\\shad\\s)?((ripped|extracted)\\s)?",
+            "^is\\sthere\\sa(ny)?\\schance\\s(((that\\s)?((any|some)\\s?(one|body)\\s))?(to\\sget\\s))?(here\\sha(d|s)\\s)?((ripped|extracted)\\s)?",
             "gi"
         ],
         [
