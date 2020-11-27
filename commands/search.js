@@ -27,7 +27,7 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     if (!itemsObj.ready) {
         return true;
     }
-    console.debug(msg.channel.id);
+
     return false;
 }
 
