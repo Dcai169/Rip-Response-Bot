@@ -115,9 +115,9 @@ module.exports = {
                 `The ${generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
                     `available at <${results[0].entry.hyperlink}>.` :
                     "not available yet.")}` :
-                fallbackResponse(`${generateQualifiers(results[0])}${args}`));
+                fallbackResponse(`${generateQualifiers(results[0].gender, results[0].armorClass)}${args}`));
         } else if (results.length === 0) {
-            response = fallbackResponse(`${(!!gender ? gender + " " : "")}${(!!armorClass ? armorClass + " " : "")}${args}`);
+            response = fallbackResponse(`${generateQualifiers(results[0].gender, results[0].armorClass)}${args}`);
         } else {
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
