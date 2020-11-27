@@ -13,7 +13,7 @@
             "gi"
         ],
         [
-            "^(who\\shere\\s)?(has\\s)?((the\\s)?(model\\sfor\\s)?)?(any|some)\\s?(one|body)\\s((((managed\\sto\\sget)?(rip(ped|s)?)?(had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?(looked\\sinto\\s)?(datamined)?(been\\ssuccessful\\sin)?)((finding)?(getting)?(ripping)?(extracting)?(grabbing)?))\\s)?",
+            "^(who\\shere\\s)?(has\\s)?((the\\s)?(model\\sfor\\s)?)?(any|some)\\s?(one|body)\\s(((managed\\sto\\sget)?(rip(ped|s)?)?(had\\sthe\\schance\\sof\\s)?(done\\sanything\\sabout\\s)?(looked\\sinto\\s)?(datamined)?(been\\ssuccessful\\sin)?(grabbed)?)((finding)?(getting)?(ripping)?(extracting)?(grabbing)?)\\s)?",
             "gi"
         ],
         [
