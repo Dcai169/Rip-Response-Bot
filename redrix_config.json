@@ -79,27 +79,27 @@
             "gi"
         ],
         [
-            "\brigged\\s",
+            "\\brigged\\s",
             "gi"
         ],
         [
-            "\b(rips?|model)\\s((of|for)\\s)",
+            "\\b(rips?|model)\\s((of|for)\\s)",
             "gi"
         ],
         [
-            "\b[[:alnum:]]+\b\\sfiles?\\sfor\\s",
+            "\\b[[:alnum:]]+\b\\sfiles?\\sfor\\s",
             "gi"
         ],
         [
-            "\ban?\\s",
+            "\\ban?\\s",
             "gi"
         ],
         [
-            "\b(\\syet)?",
+            "\\b(\\syet)?(\\sfor\\sme)?",
             "gi"
         ],
         [
-            "\b(are|is)$",
+            "\\b(are|is)$",
             "gi"
         ],
         [
@@ -107,7 +107,7 @@
             "gi"
         ],
         [
-            "\b(models?)?$",
+            "\\b(models?)?$",
             "gi"
         ]
     ]
