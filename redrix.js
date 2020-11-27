@@ -1,5 +1,5 @@
 const fs = require('fs');
-const filterJSONList = JSON.parse(fs.readFileSync('./redrix_config.json', 'utf8'));
+const filterJSONList = JSON.parse(fs.readFileSync('./config/redrix_config.json', 'utf8'));
 let redrixPass0 = [];
 let redrixPass1 = [];
 
