@@ -2,6 +2,7 @@ const levenshtien = require("damerau-levenshtein");
 const itemArray = require("./../index_generator.js");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
+const fs = require('fs');
 const queryOverrides = JSON.parse(fs.readFileSync('./../config/query_overrides.json', 'utf8'));
 
 const itemsObj = new itemArray(doc);
