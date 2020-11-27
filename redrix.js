@@ -74,7 +74,7 @@ module.exports = {
     retdat.query = retdat.query.replace(/\bthe\b/gi, "");
     retdat.query = retdat.query.trim();
 
-    console.debug(retdat.query);
+    // console.debug(retdat.query);
 
     return (retdat.query !== inputText ? retdat : null);
   }
