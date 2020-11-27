@@ -2,6 +2,7 @@ const levenshtien = require("damerau-levenshtein");
 const itemArray = require("./../index_generator.js");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
+const queryOverrides = JSON.parse(fs.readFileSync('./../config/query_overrides.json', 'utf8'));
 
 const itemsObj = new itemArray(doc);
 
@@ -70,16 +71,14 @@ module.exports = {
         if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
             itemsObj.loadItemInfo(() => {message.channel.send("Item Index reloaded.")});
-        } else if (["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
-            args = "Servitor";
-        } else if ("besto" === args.toLowerCase()){
-            args = "Telesto";
-        } else if ("ape" === args.toLowerCase()){
-            args = "Felwinter's Lie";
-        } else if ("monkey" === args.toLowerCase()){
-            args = "Mindbender's Ambition";
         } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
             return;
+        } else {
+            queryOverrides.forEach((overridePair) => {
+                if (overridePair.replaces.includes(args.toLowerCase())) {
+                    args = overridePair.replacement;
+                }
+            });
         }
 
         let results = [];

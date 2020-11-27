@@ -1,0 +1,18 @@
+[
+    {
+        "replaces": ["thejudsub", "jud", "banana"],
+        "replacement": "Servitor"
+    },
+    {
+        "replaces": ["besto"],
+        "replacement": "Telesto"
+    },
+    {
+        "replaces": ["ape"],
+        "replacement": "Felwinter's Lie"
+    },
+    {
+        "replaces": ["monkey"],
+        "replacement": "Mindbender's Ambition"
+    }
+]
