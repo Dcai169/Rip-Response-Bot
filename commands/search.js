@@ -72,6 +72,8 @@ module.exports = {
             itemsObj.loadItemInfo(() => {message.channel.send("Item Index reloaded.")});
         } else if (["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
             args = "Servitor";
+        } else if ("besto" === args.toLowerCase()){
+            args = "Telesto";
         } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
             return;
         }
