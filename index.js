@@ -23,7 +23,7 @@ for (const file of commandFiles) {
 
 // Login with the bot token
 const TOKEN = process.env.TOKEN;
-bot.login(TOKEN).then((data) => {console.log(`Logged in with username ${bot.user.tag} with id ${bot.user.id}`)}, (err) => {console.error(err);});
+bot.login(TOKEN).then((data) => {console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`)}, (err) => {console.error(err);});
 
 bot.on('ready', () => {
   console.info('Connected to Discord');
