@@ -24,7 +24,7 @@ class itemArray {
         return { 
             entry: sheet.getCell(row, 0), 
             gender: sheet.getCell(row, 2).formattedValue, 
-            aliases: String(sheet.getCell(row, 4).formattedValue).split(", ") 
+            aliases: String(sheet.getCell(row, 3).formattedValue).split(", ") 
         }; 
     }
 
