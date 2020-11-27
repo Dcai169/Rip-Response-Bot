@@ -69,7 +69,7 @@ module.exports = {
         // Baked in commands
         if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
-            loadSheetItems(() => {message.channel.send("Item Index reloaded.")});
+            itemsObj.loadItemInfo(() => {message.channel.send("Item Index reloaded.")});
         } else if (["thejudsub", "jud", "banana"].includes(args.toLowerCase())) {
             args = "Servitor";
         } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
