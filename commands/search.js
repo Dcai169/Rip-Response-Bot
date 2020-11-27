@@ -117,7 +117,7 @@ module.exports = {
                     "not available yet.")}` :
                 fallbackResponse(`${generateQualifiers(results[0].gender, results[0].armorClass)}${args}`));
         } else if (results.length === 0) {
-            response = fallbackResponse(`${generateQualifiers(results[0].gender, results[0].armorClass)}${args}`);
+            response = fallbackResponse(`${generateQualifiers(gender, armorClass)}${args}`);
         } else {
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
