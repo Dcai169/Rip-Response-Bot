@@ -86,7 +86,7 @@ module.exports = {
 
             if (!armorClass) {
                 for(let key in itemsObj.items){
-                    results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), key.split("Armor").shift()));
+                    results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : null)));
                 }
             } else {
                 results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
