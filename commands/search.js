@@ -21,7 +21,7 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     if (args === "") {
         return true;
     }
-    if ([514949263403515926, 682687491899523072].includes(msg.channel.id)) {
+    if (["514949263403515926", "682687491899523072"].includes(msg.channel.id)) {
         return true;
     }
     if (!itemsObj.ready) {
