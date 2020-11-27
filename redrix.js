@@ -16,7 +16,7 @@ module.exports = {
   description: 'Strip based on regex matching',
   stripRegEx(inputText) {
     inputText = inputText.trim();
-    inputText = inputText.trim().replace(/[,.?:;!]$/, "");
+    inputText = inputText.trim().replace(/[,:;!?]$/, "");
     inputText = inputText.trim().replace(/(\W)?$/gi, "").trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     if (inputText.includes("\n")) {
