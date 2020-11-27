@@ -18,10 +18,12 @@ function escapeRegExp(string) {
 }
 
 function stripRegExRecursable(inputText) {
+  inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
+  inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
+
   let inProgress = inputText.trim().replace(new RegExp(escapeRegExp(process.env.CMD_PREFIX), "gi"), ""); // Command Prefix
-  inProgress = inProgress.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
-  inProgress = inProgress.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
   let sentences = inProgress.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
+
   if (sentences.length === 1) {
     inProgress = sentences.shift(); 
   } else if (sentences.length > 1) {
@@ -32,6 +34,7 @@ function stripRegExRecursable(inputText) {
     return null;
   }
 
+  
   let query = inProgress;
 
   redrixPass0.forEach(regex => {
