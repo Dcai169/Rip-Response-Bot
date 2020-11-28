@@ -4,7 +4,7 @@ class itemArray {
     constructor(doc) {
         this.doc = doc;
         this.resetArray() // or create it in this case
-        
+
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
         this.loadItemInfo();
@@ -28,7 +28,7 @@ class itemArray {
         };
     }
 
-    loadItemInfo(callback=()=>{}) {
+    loadItemInfo(callback = () => { }) {
         // clear arrays
         this.resetArray();
 
@@ -64,10 +64,10 @@ class itemArray {
                         default:
                             for (let row = 0; row < sheet.rowCount; row++) {
                                 (async () => {
-                                    this.items.elseItems.push(await (async () => { 
+                                    this.items.elseItems.push(await (async () => {
                                         let cell = this.initItemObj(sheet, row);
                                         (await cell).gender = null;
-                                        return cell; 
+                                        return cell;
                                     })());
                                 })();
                             }
