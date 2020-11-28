@@ -32,6 +32,10 @@ class itemArray {
         // clear arrays
         this.resetArray();
 
+        // start timer
+        let startTime = new Date();
+        let stopTime = undefined;
+
         // get new data
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => { // for each sheet
@@ -74,9 +78,15 @@ class itemArray {
                             break;
                     }
                 }).then(console.log(`${sheet.title} indexed`));
+            stopTime = new Date();
             });
             // probably needs to be async
-            setTimeout(() => { console.log("Ready\n"); this.ready = true; callback(); }, 5 * 1000);
+            setTimeout(() => { 
+                console.log("Ready\n"); 
+                console.log(`Indexed in ${stopTime-startTime}ms`);
+                this.ready = true; 
+                callback(); 
+            }, 5 * 1000);
         });
     }
 }
