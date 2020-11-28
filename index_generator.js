@@ -20,12 +20,12 @@ class itemArray {
         };
     }
 
-    async initItemObj(sheet, row) { 
-        return { 
-            entry: sheet.getCell(row, 0), 
-            gender: sheet.getCell(row, 2).formattedValue, 
-            aliases: String(sheet.getCell(row, 3).formattedValue).split(", ") 
-        }; 
+    async initItemObj(sheet, row) {
+        return {
+            entry: sheet.getCell(row, 0),
+            gender: sheet.getCell(row, 2).formattedValue,
+            aliases: (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ") : [])
+        };
     }
 
     loadItemInfo(callback=()=>{}) {
