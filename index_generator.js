@@ -80,10 +80,10 @@ class itemArray {
                 }).then(console.log(`${sheet.title} indexed`));
             stopTime = new Date();
             });
+            console.log(`Indexed in ${stopTime-startTime}ms`);
             // probably needs to be async
             setTimeout(() => { 
                 console.log("Ready\n"); 
-                console.log(`Indexed in ${stopTime-startTime}ms`);
                 this.ready = true; 
                 callback(); 
             }, 5 * 1000);
