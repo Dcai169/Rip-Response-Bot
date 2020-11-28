@@ -30,6 +30,8 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
+  let startTime = new Date();
+  let stopTime = undefined;
   // const args = msg.content.split(/ +/);
   // const commandName = args.shift().toLowerCase();
   const args = msg.content.split(process.env.CMD_PREFIX);
@@ -61,6 +63,8 @@ bot.on('message', msg => {
     // execute the command
     try {
       console.log(command.execute(msg, args));
+      stopTime = new Date();
+      console.log(`Responded in ${stopTime-startTime}ms`);
       return;
     } catch (error) {
       errorResponse(error, msg);
@@ -73,7 +77,10 @@ bot.on('message', msg => {
         if (queryI) {
           console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!queryI.gender ? queryI.gender + " " : "")}${(!!queryI.armorClass ? queryI.armorClass + " " : "")}${queryI.query}"`);
           console.log(searchCmd.execute(msg, queryI.query, queryI.armorClass, queryI.gender));
+          stopTime = new Date();
+          console.log(`Responded in ${stopTime-startTime}ms`);
           console.log();
+          return;
         }
       });
     } catch (error) {
