@@ -134,6 +134,7 @@ module.exports = {
             );
         }
         
+        response = response.trim();
         if (response) {
             if (response.length >= 2000) { // discord has a limit of 2000 chars per message
                 message.reply('Your query generated a response that is too long!');
