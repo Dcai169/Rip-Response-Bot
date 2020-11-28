@@ -73,8 +73,8 @@ bot.on('message', msg => {
         if (queryI) {
           console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!queryI.gender ? queryI.gender + " " : "")}${(!!queryI.armorClass ? queryI.armorClass + " " : "")}${queryI.query}"`);
           console.log(searchCmd.execute(msg, queryI.query, queryI.armorClass, queryI.gender));
+          console.log();
         }
-        console.log();
       });
     } catch (error) {
       errorResponse(error, msg);
