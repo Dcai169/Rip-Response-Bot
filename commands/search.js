@@ -53,8 +53,8 @@ function generateFullyQualifiedName(responseItem) {
 function fallbackResponse(query) { return }
 
 module.exports = {
-    name: 'handle-query',
-    description: 'Handle query given',
+    name: 'search',
+    description: 'Search query given',
     args: true,
     usage: '<query>, [<class>, [<gender>]]',
     guildOnly: false,
