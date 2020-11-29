@@ -13,8 +13,14 @@ filterJSONList.regEx1.forEach(filter => {
 });
 
 // shamelessly stolen from stack exchange
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+function escapeRegExp(inputString) {
+  return inputString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+function removeArticlesLocal(inputString){
+  inputString = inputString.replace(/\b((the\s)?((an?)\s)?(is)?)\b/gi, "");
+  inputString = inputString.replace(/\bthe\b/gi, "");
+  return inputString.trim();
 }
 
 function stripRegExRecursable(inputText) {
@@ -71,9 +77,7 @@ function stripRegExRecursable(inputText) {
   });
 
   retdat.query = retdat.query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set");
-  retdat.query = retdat.query.replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "");
-  retdat.query = retdat.query.replace(/\bthe\b/gi, "");
-  retdat.query = retdat.query.trim();
+  retdat.query = removeArticlesLocal(retdat.query);
 
   return retdat;
 }
@@ -84,5 +88,8 @@ module.exports = {
   description: 'Strip based on regex matching',
   stripRegEx(inputText) {
     return stripRegExRecursable(inputText);
+  },
+  removeArticles(inputString) {
+    return removeArticlesLocal(inputString);
   }
 };

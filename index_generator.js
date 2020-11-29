@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './config.env' });
+const removeArticles = require('./redrix.js').removeArticles;
 
 class itemArray {
     constructor(doc) {
@@ -24,7 +25,7 @@ class itemArray {
         return {
             entry: sheet.getCell(row, 0),
             gender: sheet.getCell(row, 2).formattedValue,
-            aliases: (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ") : [])
+            aliases: (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ").map(removeArticles) : [])
         };
     }
 
