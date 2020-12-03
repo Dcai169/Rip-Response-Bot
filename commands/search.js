@@ -10,7 +10,7 @@ function itemFilter(cell) {
     return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
         cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
         ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
-        || cell.aliases.includes(this.toLowerCase()); // or if the query matches the alias
+        || cell.aliases.includes(this.toLowerCase()); // or if the query matches an alias
 }
 
 function tagClass(filterResults, tag) {
@@ -22,7 +22,7 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     if (args === "") {
         return true;
     }
-    if (["514949263403515926", "682687491899523072"].includes(msg.channel.id)) {
+    if (["514949263403515926", "682687491899523072"].includes(msg.channel.id)) { // Do not respond in nsfw channels
         return true;
     }
     if (!itemsObj.ready) {
@@ -83,13 +83,7 @@ module.exports = {
 
         let results = [];
         if (!!armorClass || !!gender) { // if a class or gender is specified
-            try {
-                armorClass = armorClass.toLowerCase();
-            } catch (err) {
-                // Let the error go wild and free
-            }
-
-            if (armorClass) { // If a class is specified (Warlock, Titan, Hunter) only look at that classes armor
+            if (armorClass) { // If a class is specified, (Warlock, Titan, Hunter) only look at that classes armor
                 results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
             } else { // Otherwise look at all items
                 for (let key in itemsObj.items) { 
@@ -97,7 +91,7 @@ module.exports = {
                 }
             }
 
-            if (gender) { // If a gender is specified only search in the armors (WIP)
+            if (gender) { // If a gender is specified, search the armors
                 results = results.filter((item) => {
                     if (!item.gender) { return true }
                     return item.gender.toLowerCase() === gender.toLowerCase()
