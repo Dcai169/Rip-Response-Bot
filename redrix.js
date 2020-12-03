@@ -27,7 +27,7 @@ function stripRegExRecursable(inputText) {
   inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
   inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
 
-  let inProgress = inputText.trim().replace(new RegExp(escapeRegExp(process.env.CMD_PREFIX), "gi"), ""); // Command Prefix
+  let inProgress = inputText.trim().replace(new RegExp(`^${escapeRegExp(process.env.CMD_PREFIX)}`, "gi"), ""); // Command Prefix
   let sentences = inProgress.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
 
   if (sentences.length === 1) {
