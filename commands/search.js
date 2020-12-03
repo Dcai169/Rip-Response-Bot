@@ -4,7 +4,6 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const doc = new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ');
 const fs = require('fs');
 const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8'));
-
 const itemsObj = new itemArray(doc);
 
 function itemFilter(cell) {
@@ -34,7 +33,7 @@ function checkAbort(msg, args) { // this function checks if there should be any 
 }
 
 function capitalizeWord(word) {
-    if (typeof word !== 'string') {return ''}
+    if (typeof word !== 'string') { return '' }
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
@@ -71,10 +70,10 @@ module.exports = {
         // Baked in commands
         if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
             message.channel.send("Reloading Item Index. This can take up to a minute.");
-            itemsObj.loadItemInfo(() => {message.channel.send("Item Index reloaded.")});
+            itemsObj.loadItemInfo(() => { message.channel.send("Item Index reloaded.") });
         } else if (checkAbort(message, args)) { // if someone tries to do ?_the or similar
             return;
-        } else {
+        } else { // check if the query should be overridden
             queryOverrides.forEach((overridePair) => {
                 if (overridePair.replaces.includes(args.toLowerCase())) {
                     args = overridePair.replacement;
@@ -90,23 +89,23 @@ module.exports = {
                 // Let the error go wild and free
             }
 
-            if (!armorClass) {
-                for(let key in itemsObj.items){
+            if (armorClass) { // If a class is specified (Warlock, Titan, Hunter) only look at that classes armor
+                results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
+            } else { // Otherwise look at all items
+                for (let key in itemsObj.items) { 
                     results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : null)));
                 }
-            } else {
-                results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
             }
 
-            if (gender) {
-                results = results.filter((item) => { 
+            if (gender) { // If a gender is specified only search in the armors (WIP)
+                results = results.filter((item) => {
                     if (!item.gender) { return true }
-                    return item.gender.toLowerCase() === gender.toLowerCase() 
+                    return item.gender.toLowerCase() === gender.toLowerCase()
                 });
             }
 
         } else { // otherwise...
-            for(let key in itemsObj.items){
+            for (let key in itemsObj.items) {
                 if (key === "elseItems") {
                     results = results.concat(itemsObj.items.elseItems.filter(itemFilter, args));
                 } else {
@@ -124,25 +123,24 @@ module.exports = {
                 fallbackResponse(`${generateQualifiers(results[0].gender, results[0].armorClass)}${args}`));
         } else if (results.length === 0) {
             response = fallbackResponse(`${generateQualifiers(gender, armorClass)}${args}`);
-        } else {
+        } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
                 response += `The ${generateFullyQualifiedName(i)} model is ${(i.entry.hyperlink ?
                     `available at <${i.entry.hyperlink}>.` :
                     "not available yet.")}\n`;
-                }
+            }
             );
         }
-        
+
         if (response) {
             response = response.trim(); // remove extra whitespace
             if (response.length >= 2000) { // discord has a limit of 2000 chars per message
                 message.reply('Your query generated a response that is too long!');
-            } else { 
+            } else {
                 message.channel.send((!!response ? response : fallbackResponse()));
             }
         }
-        // message.channel.send((!!response ? response : fallbackResponse()));
         return response;
     },
 };
