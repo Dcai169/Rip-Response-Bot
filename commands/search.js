@@ -55,9 +55,9 @@ module.exports = {
     name: 'search',
     description: 'Search query given',
     args: true,
-    usage: '<query>, [<class>, [<gender>]]',
+    usage: '<query>',
     guildOnly: false,
-    execute(message, args, armorClass, gender) {
+    execute(message, args) {
         /* 
         message: Message object as described by the discord.js library.
         args: The query the user searched.
@@ -66,6 +66,26 @@ module.exports = {
         */
 
         let response = null;
+        let armorClass = null;
+        let gender = null;
+
+        if (query.toLowerCase().includes("hunter")) {
+          armorClass = "hunter";
+        } else if (query.toLowerCase().includes("warlock")) {
+          armorClass = "warlock";
+        } else if (query.toLowerCase().includes("titan")) {
+          armorClass = "titan";
+        }
+
+        query = query.replace(/((titans?)?(hunters?)?(warlocks?)?)/gi, '').trim();
+
+        if (query.toLowerCase().includes("female")) {
+          gender = "female";
+        } else if (query.toLowerCase().includes("male") && !query.toLowerCase().includes("fe")) {
+          gender = "male";
+        }
+
+        query = query.replace(/(fe)?male\s/gi, '').trim();
 
         // Baked in commands
         if (args.toLowerCase() === "reload" && ["Thejudsub#7823", "MrTrainCow#5154"].includes(message.author.tag)) {
@@ -86,7 +106,7 @@ module.exports = {
             if (armorClass) { // If a class is specified, (Warlock, Titan, Hunter) only look at that classes armor
                 results = tagClass(itemsObj.items[`${armorClass}Armor`].filter(itemFilter, args), armorClass);
             } else { // Otherwise look at all items
-                for (let key in itemsObj.items) { 
+                for (let key in itemsObj.items) {
                     results = results.concat(tagClass(itemsObj.items[key].filter(itemFilter, args), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : null)));
                 }
             }

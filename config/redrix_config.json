@@ -75,10 +75,6 @@
     ],
     "regEx1": [
         [
-            "(fe)?male\\s",
-            "gi"
-        ],
-        [
             "\\brigged\\s",
             "gi"
         ],
@@ -100,10 +96,6 @@
         ],
         [
             "\\b(are|is)$",
-            "gi"
-        ],
-        [
-            "((titans?)?(hunters?)?(warlocks?)?){1}",
             "gi"
         ],
         [

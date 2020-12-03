@@ -56,34 +56,14 @@ function stripRegExRecursable(inputText) {
     return null;
   } 
 
-  let retdat = {
-    query: query,
-    armorClass: null,
-    gender: null,
-  }
-
-  if (query.toLowerCase().includes("hunter")) {
-    retdat.armorClass = "hunter";
-  } else if (query.toLowerCase().includes("warlock")) {
-    retdat.armorClass = "warlock";
-  } else if (query.toLowerCase().includes("titan")) {
-    retdat.armorClass = "titan";
-  }
-
-  if (query.toLowerCase().includes("female")) {
-    retdat.gender = "female";
-  } else if (query.toLowerCase().includes("male") && !query.toLowerCase().includes("fe")) {
-    retdat.gender = "male";
-  }
-
   redrixPass1.forEach(regex => {
-    retdat.query = retdat.query.replace(regex, "");
+    query = query.replace(regex, "");
   });
 
-  retdat.query = retdat.query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set");
-  retdat.query = removeArticlesLocal(retdat.query);
+  query = query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set");
+  query = removeArticlesLocal(query);
 
-  return retdat;
+  return query;
 }
 
 // export the function
