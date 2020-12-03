@@ -14,5 +14,9 @@
     {
         "replaces": ["monkey"],
         "replacement": "Mindbender's Ambition"
+    },
+    {
+        "replaces": ["filo"],
+        "replacement": "First In, Last Out"
     }
 ]
