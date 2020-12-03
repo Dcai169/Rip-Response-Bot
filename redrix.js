@@ -36,7 +36,7 @@ function stripRegExRecursable(inputText) {
     return sentences.map(stripRegExRecursable);
   }
 
-  if (inputText.includes("\n")) {
+  if (inputText.includes("\n")) { // newlines bad
     return null;
   }
 
@@ -51,6 +51,10 @@ function stripRegExRecursable(inputText) {
   if (query === inputText) {
     return;
   }
+
+  if (query.length > 50) { // mostly to cut down on false positives
+    return null;
+  } 
 
   let retdat = {
     query: query,
