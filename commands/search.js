@@ -22,7 +22,7 @@ function checkAbort(msg, args) { // this function checks if there should be any 
     if (args === "") {
         return true;
     }
-    if (["514949263403515926", "682687491899523072"].includes(msg.channel.id)) { // Do not respond in nsfw channels
+    if (msg.channel.nsfw) { // Do not respond in nsfw channels
         return true;
     }
     if (!itemsObj.ready) {
