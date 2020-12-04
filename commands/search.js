@@ -13,9 +13,6 @@ function checkAbort(msg, query) { // this function checks if there should be any
     if (msg.channel.nsfw) { // Do not respond in nsfw channels
         return true;
     }
-    if (!itemsObj.ready) {
-        return true;
-    }
 
     return false;
 }
