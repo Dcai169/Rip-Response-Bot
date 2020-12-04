@@ -33,6 +33,10 @@ class HaloResponder extends BaseResponder {
         // clear arrays
         this.resetIndexes();
 
+        // start timer
+        let startTime = new Date();
+        let stopTime = undefined;
+
         // get new data
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => {
@@ -43,7 +47,9 @@ class HaloResponder extends BaseResponder {
                         })();
                     }
                 }).then(console.log(`${sheet.title} indexed`));
+                stopTime = new Date();
             });
+            console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             setTimeout(() => {
                 console.log("Ready\n");
                 this.ready = true;
@@ -70,7 +76,7 @@ class HaloResponder extends BaseResponder {
             // code
         } else {
             for (let key in this.items) {
-                results = results.concat(this.items[key].filter(itemFilter, query));
+                results = results.concat(this.items[key].filter(this.itemFilter, query));
             }
         }
     }
