@@ -79,7 +79,7 @@ class DestinyResponder extends BaseResponder {
                 }).then(console.log(`${sheet.title} indexed`));
                 stopTime = new Date();
             });
-            console.log(`${doc.title} indexed in ${stopTime - startTime}ms`);
+            console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
             setTimeout(() => {
                 console.log("Ready\n");
