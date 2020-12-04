@@ -106,6 +106,8 @@ class DestinyResponder extends BaseResponder {
         let armorClass = undefined;
         let gender = undefined;
 
+        query = query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set").trim();
+
         if (query.toLowerCase().includes("hunter")) {
             armorClass = "hunter";
         } else if (query.toLowerCase().includes("warlock")) {

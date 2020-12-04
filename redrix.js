@@ -52,16 +52,17 @@ function stripRegExRecursable(inputText) {
         return;
     }
 
-  redrixPass1.forEach(regex => {
-    query = query.replace(regex, "");
-  });
+    if (query.length > 50) { // mostly to cut down on false positives
+        return null;
+    }
 
-  query = query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set");
     redrixPass1.forEach(regex => {
         query = query.replace(regex, "");
     });
 
-  return query;
+    query = removeArticlesLocal(query);
+
+    return query;
 }
 
 // export the function
