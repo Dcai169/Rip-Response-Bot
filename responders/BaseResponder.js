@@ -1,5 +1,6 @@
 require('dotenv').config({ path: './config.env' });
 const levenshtien = require("damerau-levenshtein");
+const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
     constructor(doc){
@@ -58,19 +59,30 @@ class BaseResponder {
         // return a string that includes all qualifiers and the item name i.e. "male warlock seventh seraph"
     }
 
-    static resultResponse(result) {
-
+    static resultResponse(result, responderClass) {
+        return `The ${responderClass.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
     }
 
     static fallbackResponse(query){
-        // response when nothing is found
+        return;
     }
 
-    static respond(results) {
-        // provide a response given a list of results
-    }
+    static respond(results, responderClass) {
+        let response = "";
+        // generate response text
+        if (results.length === 1) {
+            response = this.resultResponse(results[0], responderClass); // fall back if no result
+        } else if (results.length === 0) {
+            response = this.fallbackResponse();
+        } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
+            response = "Your query returned multiple results.\n"
+            results.forEach((res) => {
+                response += `${this.resultResponse(res, responderClass)}\n`;
+            });
+        }
 
-    
+        return response;
+    }
 }
 
 module.exports = BaseResponder;
