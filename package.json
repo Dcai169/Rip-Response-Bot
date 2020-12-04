@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "DCai169",
   "license": "ISC",
   "dependencies": {
     "async-limiter": "^2.0.0",
