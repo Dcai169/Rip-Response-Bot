@@ -75,3 +75,5 @@ class HaloResponder extends BaseResponder {
         }
     }
 }
+
+module.exports = HaloResponder;
