@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './config.env' });
+const levenshtien = require("damerau-levenshtein");
 
 class BaseResponder {
     constructor(doc){

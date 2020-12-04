@@ -1,6 +1,6 @@
-const BaseResponder = require('./baseResponder.js');
-const levenshtien = require("damerau-levenshtein");
+const BaseResponder = require('./BaseResponder.js');
 const removeArticles = require('../redrix.js').removeArticles;
+const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8'));
 
 class DestinyResponder extends BaseResponder {
     constructor(doc) {
