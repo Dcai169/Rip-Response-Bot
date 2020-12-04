@@ -71,7 +71,19 @@ bot.on('message', msg => {
         }
 
     } else if (query) { // if the filters found something
-        let server = (msg.channel.guild ? ((msg.channel.guild.id === '514059860489404417') != (msg.channel.guild.id === '671183775454986240') ? "destiny" : "halo") : null);
+        let server = (() => { // determine what indexes should be queried
+            let serverId = (msg.channel.guild.id ? msg.channel.guild.id : undefined);
+
+            switch (serverId) {
+                case "514059860489404417":
+                    return "destiny";
+                case "671183775454986240":
+                    return "halo";
+            
+                default:
+                    return null;
+            }
+        })();
         try {
             query.forEach((queryI) => {
                 // Execute search command

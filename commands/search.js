@@ -34,9 +34,9 @@ module.exports = {
                 response = destinyResponder.respond(destiny.search(message, query));
             } else if (game === "halo") {
                 response = haloResponder.respond(halo.search(message, query));
-            } else {
-                response = `${destinyResponder.respond(destiny.search(message, query))}\n${haloResponder.respond(halo.search(message, query))}`;
-            }
+            } 
+        } else {
+            response = `${destinyResponder.respond(destiny.search(message, query))}\n${haloResponder.respond(halo.search(message, query))}`;
         }
 
         if (response) {

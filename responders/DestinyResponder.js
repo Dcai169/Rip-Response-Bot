@@ -138,7 +138,7 @@ class DestinyResponder extends BaseResponder {
                 results = this.tagClass(this.items[`${armorClass}Armor`].filter(itemFilter, query), armorClass);
             } else { // Otherwise look at all items
                 for (let key in this.items) {
-                    results = results.concat(tagClass(this.items[key].filter(itemFilter, query), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : null)));
+                    results = results.concat(DestinyResponder.tagClass(this.items[key].filter(this.itemFilter, query), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : undefined)));
                 }
             }
 
@@ -152,9 +152,9 @@ class DestinyResponder extends BaseResponder {
         } else { // otherwise...
             for (let key in this.items) {
                 if (key === "elseItems") {
-                    results = results.concat(this.items.elseItems.filter(itemFilter, query));
+                    results = results.concat(this.items.elseItems.filter(this.itemFilter, query));
                 } else {
-                    results = results.concat(tagClass(this.items[key].filter(itemFilter, query), key.split("Armor").shift()));
+                    results = results.concat(DestinyResponder.tagClass(this.items[key].filter(this.itemFilter, query), key.split("Armor").shift()));
                 }
             }
         }
@@ -164,11 +164,11 @@ class DestinyResponder extends BaseResponder {
 
     // RESPONDING
     static generateQualifierString(gender, armorClass) {
-        return `${(!!gender ? gender + " " : "")}${(!!armorClass ? capitalizeWord(armorClass) + " " : "")}`;
+        return `${(!!gender ? gender + " " : "")}${(!!armorClass ? this.capitalizeWord(armorClass) + " " : "")}`;
     }
 
     static generateFullyQualifiedName(responseItem) {
-        return `${generateQualifierString(responseItem.gender, responseItem.armorClass)}${String(responseItem.entry.formattedValue).trim()}`;
+        return `${DestinyResponder.generateQualifierString(responseItem.gender, responseItem.armorClass)}${String(responseItem.entry.formattedValue).trim()}`;
     }
 
     // function fallbackResponse(query) {
@@ -176,24 +176,25 @@ class DestinyResponder extends BaseResponder {
     //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
     // }
 
-    static fallbackResponse(_query) {
+    static fallbackResponse(query = "") {
         return;
     }
 
     static respond(results) {
+        let response = "";
         // generate response text
         if (results.length === 1) {
             response = (!!results[0] ?
-                `The ${generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
+                `The ${DestinyResponder.generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
                     `available at <${results[0].entry.hyperlink}>.` :
                     "not available yet.")}` :
-                fallbackResponse(`${generateQualifierString(results[0].gender, results[0].armorClass)}${args}`));
+                DestinyResponder.fallbackResponse(`${DestinyResponder.generateQualifierString(results[0].gender, results[0].armorClass)}${args}`));
         } else if (results.length === 0) {
-            response = fallbackResponse(`${generateQualifierString(gender, armorClass)}${args}`);
+            response = DestinyResponder.fallbackResponse();
         } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
             response = "Your query returned multiple results.\n"
             results.forEach((i) => {
-                response += `The ${generateFullyQualifiedName(i)} model is ${(i.entry.hyperlink ?
+                response += `The ${DestinyResponder.generateFullyQualifiedName(i)} model is ${(i.entry.hyperlink ?
                     `available at <${i.entry.hyperlink}>.` :
                     "not available yet.")}\n`;
             }
