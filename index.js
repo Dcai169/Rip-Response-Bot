@@ -64,11 +64,11 @@ bot.on('message', msg => {
     try {
       console.log(command.execute(msg, args));
       stopTime = new Date();
-      console.log(`Responded in ${stopTime - startTime}ms`);
-      return;
+      console.log(`Responded in ${stopTime - startTime}ms`);  
     } catch (error) {
       errorResponse(error, msg);
     }
+    return;
 
   } else if (query) { // if the filters found something
     try {
