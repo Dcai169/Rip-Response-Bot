@@ -70,17 +70,22 @@ bot.on('message', msg => {
             errorResponse(error, msg);
         }
 
-  } else if (query) { // if the filters found something
-    try {
-      query.forEach((queryI) => {
-        // Execute search command
-        if (queryI) {
-          console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${(!!queryI.gender ? queryI.gender + " " : "")}${(!!queryI.armorClass ? queryI.armorClass + " " : "")}${queryI.query}"`);
-          console.log(searchCmd.execute(msg, queryI.query, queryI.armorClass, queryI.gender));
-          stopTime = new Date();
-          console.log(`Responded in ${stopTime - startTime}ms`);
-          console.log();
-          return;
+    } else if (query) { // if the filters found something
+        let server = (msg.channel.guild ? ((msg.channel.guild.id === '514059860489404417') != (msg.channel.guild.id === '671183775454986240') ? "destiny" : "halo") : null);
+        try {
+            query.forEach((queryI) => {
+                // Execute search command
+                if (queryI) {
+                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${queryI.query}"`);
+                    console.log(searchCmd.execute(msg, queryI, server));
+                }
+            });
+            stopTime = new Date();
+            console.log(`Responded in ${stopTime - startTime}ms`);
+            console.log();
+            return;
+        } catch (error) {
+            errorResponse(error, msg);
         }
     }
 
