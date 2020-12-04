@@ -22,5 +22,9 @@
     {
         "replaces": ["craig"],
         "replacement": "Brute"
+    },
+    {
+        "replaces": ["good boy", "good boi", "doggo"],
+        "replacement": "Warbeast"
     }
 ]
