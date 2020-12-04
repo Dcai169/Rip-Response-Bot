@@ -1,5 +1,5 @@
 const BaseResponder = require('./BaseResponder.js');
-const evaluateReplace = require('./evaluateReplace.js');
+const evaluateReplace = require('../evaluateReplace.js');
 
 class HaloResponder extends BaseResponder {
     constructor(doc) {
@@ -89,6 +89,8 @@ class HaloResponder extends BaseResponder {
     static generateFullyQualifiedName(responseItem) {
         return `${HaloResponder.generateQualifierString(responseItem.installment)}${String(responseItem.entry.formattedValue).trim()}`;
     } 
+
+
 }
 
 module.exports = HaloResponder;

@@ -1,7 +1,8 @@
+const baseResponder = require("../responders/BaseResponder.js");
 const destinyResponder = require("../responders/DestinyResponder.js");
 const haloResponder = require("../responders/HaloResponder.js");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const evaluateReplace = require('./evaluateReplace.js');
+const evaluateReplace = require('../evaluateReplace.js');
 
 const destiny = new destinyResponder(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'));
 const halo = new haloResponder(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'));
@@ -31,12 +32,12 @@ module.exports = {
         let response = "";
         if (game) {
             if (game === "destiny") {
-                response = destinyResponder.respond(destiny.search(message, query));
+                response = baseResponder.respond(destiny.search(message, query), destinyResponder);
             } else if (game === "halo") {
-                response = haloResponder.respond(halo.search(message, query));
+                response = baseResponder.respond(halo.search(message, query), haloResponder);
             } 
         } else {
-            response = `${evaluateReplace(destinyResponder.respond(destiny.search(message, query)), {replacement: ''})}${evaluateReplace(haloResponder.respond(halo.search(message, query)), {replacement: '', callback: (res) => {return `\n${res}`}})}`;
+            response = `${evaluateReplace(baseResponder.respond(destiny.search(message, query), destinyResponder), {replacement: ''})}${evaluateReplace(baseResponder.respond(halo.search(message, query), haloResponder), {replacement: '', callback: (res) => {return `\n${res}`}})}`;
         }
 
         if (response) {
