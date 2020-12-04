@@ -2,6 +2,7 @@ const fs = require('fs');
 const BaseResponder = require('./BaseResponder.js');
 const removeArticles = require('../redrix.js').removeArticles;
 const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8'));
+const evaluateReplace = require('./evaluateReplace.js');
 
 class DestinyResponder extends BaseResponder {
     constructor(doc) {
@@ -23,7 +24,7 @@ class DestinyResponder extends BaseResponder {
         return {
             entry: sheet.getCell(row, 0),
             gender: sheet.getCell(row, 2).formattedValue,
-            aliases: (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ").map(removeArticles) : [])
+            aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(", ").map(removeArticles) } })
         };
     }
 
@@ -164,41 +165,33 @@ class DestinyResponder extends BaseResponder {
 
     // RESPONDING
     static generateQualifierString(gender, armorClass) {
-        return `${(!!gender ? gender + " " : "")}${(!!armorClass ? this.capitalizeWord(armorClass) + " " : "")}`;
+        return `${evaluateReplace(gender, { replacement: '', callback: (res) => { return `${res} ` } })}${evaluateReplace(armorClass, { replacement: '', callback: (res) => { return `${this.capitalizeWord(res)} ` } })}`;
     }
 
     static generateFullyQualifiedName(responseItem) {
         return `${DestinyResponder.generateQualifierString(responseItem.gender, responseItem.armorClass)}${String(responseItem.entry.formattedValue).trim()}`;
     }
 
-    // function fallbackResponse(query) {
-    //     return (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") +
-    //         "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
-    // }
+    static resultResponse(result) {
+        return `The ${DestinyResponder.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
+    }
 
     static fallbackResponse(query = "") {
-        return;
+        return; // (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") + "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>";
     }
 
     static respond(results) {
         let response = "";
         // generate response text
         if (results.length === 1) {
-            response = (!!results[0] ?
-                `The ${DestinyResponder.generateFullyQualifiedName(results[0])} model is ${(results[0].entry.hyperlink ?
-                    `available at <${results[0].entry.hyperlink}>.` :
-                    "not available yet.")}` :
-                DestinyResponder.fallbackResponse(`${DestinyResponder.generateQualifierString(results[0].gender, results[0].armorClass)}${args}`));
+            response = DestinyResponder.resultResponse(results[0]);
         } else if (results.length === 0) {
             response = DestinyResponder.fallbackResponse();
         } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
             response = "Your query returned multiple results.\n"
-            results.forEach((i) => {
-                response += `The ${DestinyResponder.generateFullyQualifiedName(i)} model is ${(i.entry.hyperlink ?
-                    `available at <${i.entry.hyperlink}>.` :
-                    "not available yet.")}\n`;
-            }
-            );
+            results.forEach((res) => {
+                response += `${this.resultResponse(res)}\n`;
+            });
         }
 
         return response;

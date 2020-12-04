@@ -1,4 +1,5 @@
 const BaseResponder = require('./BaseResponder.js');
+const evaluateReplace = require('./evaluateReplace.js');
 
 class HaloResponder extends BaseResponder {
     constructor(doc) {
@@ -60,10 +61,10 @@ class HaloResponder extends BaseResponder {
 
     // SEARCHING
     search(_msg, query) {
-        let game = undefined;
+        let installment = undefined;
 
         // Detect what game the user wants (CE, 2A, Reach, etc)
-        let installment = (() => {
+        installment = (() => {
             if (query.split("halo ").length > 1) {
 
             } else {
@@ -72,7 +73,7 @@ class HaloResponder extends BaseResponder {
         })();
 
         let results = [];
-        if (game) {
+        if (installment) {
             // code
         } else {
             for (let key in this.items) {
@@ -80,6 +81,14 @@ class HaloResponder extends BaseResponder {
             }
         }
     }
+
+    static generateQualifierString(installment){ // only here for compatibility
+        return evaluateReplace(installment, {replacement: '', callback: (res) => {return `${res} `}});
+    }
+
+    static generateFullyQualifiedName(responseItem) {
+        return `${HaloResponder.generateQualifierString(responseItem.installment)}${String(responseItem.entry.formattedValue).trim()}`;
+    } 
 }
 
 module.exports = HaloResponder;

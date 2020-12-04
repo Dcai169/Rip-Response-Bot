@@ -54,8 +54,12 @@ class BaseResponder {
         // return a string with all qualifiers i.e. "male warlock"
     }
 
-    generateFullyQualifiedName(){
+    static generateFullyQualifiedName(){
         // return a string that includes all qualifiers and the item name i.e. "male warlock seventh seraph"
+    }
+
+    static resultResponse(result) {
+
     }
 
     static fallbackResponse(query){

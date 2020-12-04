@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const evaluateReplace = require('./evaluateReplace.js');
 
 const stripRegEx = require('./redrix.js').stripRegEx;
 const searchCmd = require('./commands/search.js');
@@ -72,7 +73,7 @@ bot.on('message', msg => {
 
     } else if (query) { // if the filters found something
         let server = (() => { // determine what indexes should be queried
-            let serverId = (msg.channel.guild.id ? msg.channel.guild.id : undefined);
+            let serverId = evaluateReplace(msg.channel.guild.id);
 
             switch (serverId) {
                 case "514059860489404417":
