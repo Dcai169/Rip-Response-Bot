@@ -68,17 +68,19 @@ class BaseResponder {
     }
 
     static respond(results, responderClass) {
-        let response = "";
+        let response = '';
         // generate response text
-        if (results.length === 1) {
-            response = this.resultResponse(results[0], responderClass); // fall back if no result
-        } else if (results.length === 0) {
-            response = this.fallbackResponse();
-        } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
-            response = "Your query returned multiple results.\n"
-            results.forEach((res) => {
-                response += `${this.resultResponse(res, responderClass)}\n`;
-            });
+        if (results) {
+            if (results.length === 1) {
+                response = this.resultResponse(results[0], responderClass); // fall back if no result
+            } else if (results.length === 0) {
+                response = this.fallbackResponse();
+            } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
+                response = "Your query returned multiple results.\n"
+                results.forEach((res) => {
+                    response += `${this.resultResponse(res, responderClass)}\n`;
+                });
+            }
         }
 
         return response;
