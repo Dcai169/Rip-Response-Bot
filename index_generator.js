@@ -25,7 +25,7 @@ class itemArray {
         return {
             entry: sheet.getCell(row, 0),
             gender: sheet.getCell(row, 2).formattedValue,
-            aliases: (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ").map(removeArticles) : [])
+            aliases: [] // (sheet.getCell(row, 3).formattedValue ? sheet.getCell(row, 3).formattedValue.split(", ").map(removeArticles) : [])
         };
     }
 
