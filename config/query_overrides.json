@@ -5,6 +5,7 @@
     },
     {
         "replaces": ["besto"],
+
         "replacement": "Telesto"
     },
     {
@@ -26,5 +27,21 @@
     {
         "replaces": ["good boy", "good boi", "doggo"],
         "replacement": "Warbeast"
+    },
+    {
+        "replaces": ["toaster"],
+        "replacement": "Jötunn"
+    },
+    {
+        "replaces": ["skyburners girth"],
+        "replacement": "Heir Apparent"
+    },
+    {
+        "replaces": ["terrible"],
+        "replacement": "Tarrabah"
+    },
+    {
+        "replaces": ["chicken vex", "leggy vex", "harpy with legs"],
+        "replacement": "Wyvern"
     }
 ]
