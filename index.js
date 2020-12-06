@@ -92,11 +92,11 @@ bot.on('message', msg => {
                 if (queryI) {
                     console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${queryI}"`);
                     console.log(searchCmd.execute(msg, queryI, server));
+                    stopTime = new Date();
+                    console.log(`Responded in ${stopTime - startTime}ms`);
+                    console.log();
+                    return;
                 }
-                stopTime = new Date();
-                console.log(`Responded in ${stopTime - startTime}ms`);
-                console.log();
-                return;
             });
         } catch (error) {
             errorResponse(error, msg);
