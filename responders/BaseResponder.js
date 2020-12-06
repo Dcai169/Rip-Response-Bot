@@ -15,14 +15,14 @@ class BaseResponder {
         }
     }
 
-    get ready() {
-        return this.ready;
-    }
+    // get ready() {
+    //     return this.ready;
+    // }
 
-    set ready(val) {
-        this.ready = !!val;
-        this.readyListener(val);
-    }
+    // set ready(val) {
+    //     this.ready = !!val;
+    //     this.readyListener(val);
+    // }
 
     // INDEXING
     resetIndexes() {
