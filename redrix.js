@@ -3,6 +3,7 @@ const filterJSONList = JSON.parse(fs.readFileSync('./config/redrix_config.json',
 require('dotenv').config({ path: './config/config.env' });
 let redrixPass0 = [];
 let redrixPass1 = [];
+let redrixPass2 = [];
 
 filterJSONList.regEx0.forEach(filter => {
     redrixPass0.push(new RegExp(filter[0], filter[1]));
@@ -10,6 +11,10 @@ filterJSONList.regEx0.forEach(filter => {
 
 filterJSONList.regEx1.forEach(filter => {
     redrixPass1.push(new RegExp(filter[0], filter[1]));
+});
+
+filterJSONList.regEx2.forEach(filter => {
+    redrixPass2.push(new RegExp(filter[0], filter[1]));
 });
 
 // shamelessly stolen from stack exchange
@@ -27,8 +32,11 @@ function stripRegExRecursable(inputText) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
     inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
 
-    let inProgress = inputText.trim().replace(new RegExp(`^${escapeRegExp(process.env.CMD_PREFIX)}`, "gi"), ""); // Command Prefix
-    let sentences = inProgress.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
+    redrixPass0.forEach(regex => { // Command Prefix
+        inputText = inputText.replace(regex, "");
+    });
+
+    let sentences = inputText.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
 
     if (sentences.length === 1) {
         inProgress = sentences.shift();
@@ -43,7 +51,7 @@ function stripRegExRecursable(inputText) {
 
     let query = inProgress;
 
-    redrixPass0.forEach(regex => {
+    redrixPass1.forEach(regex => {
         query = query.replace(regex, "");
     });
 
@@ -56,7 +64,7 @@ function stripRegExRecursable(inputText) {
         return null;
     }
 
-    redrixPass1.forEach(regex => {
+    redrixPass2.forEach(regex => {
         query = query.replace(regex, "");
     });
 
