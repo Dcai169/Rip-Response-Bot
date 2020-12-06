@@ -38,5 +38,13 @@
     {
         "replaces": ["chicken vex", "leggy vex", "harpy with legs"],
         "replacement": "Wyvern"
+    },
+    {
+        "replaces": ["salad bar", "saladman", "lord saladman"],
+        "replacement": "Lord Saladin"
+    },
+    {
+        "replaces": ["bird", "birb", "borb"],
+        "replacement": "Louis"
     }
 ]
