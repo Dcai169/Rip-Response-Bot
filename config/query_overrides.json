@@ -46,5 +46,13 @@
     {
         "replaces": ["bird", "birb", "borb"],
         "replacement": "Louis"
+    },
+    {
+        "replaces": ["exo cat girl"],
+        "replacement": "Ada-1"
+    },
+    {
+        "replaces": ["exo with cake"],
+        "replacement": "The Exo Stranger"
     }
 ]
