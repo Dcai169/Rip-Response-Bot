@@ -132,7 +132,7 @@ class DestinyResponder extends BaseResponder {
         let results = [];
         if (!!armorClass || !!gender) { // if a class or gender is specified
             if (armorClass) { // If a class is specified, (Warlock, Titan, Hunter) only look at that classes armor
-                results = BaseResponder.addParam(this.items[`${armorClass}Armor`].filter(itemFilter, query), 'armorClass', armorClass);
+                results = BaseResponder.addParam(this.items[`${armorClass}Armor`].filter(this.itemFilter, query), 'armorClass', armorClass);
             } else { // Otherwise look at all items
                 for (let key in this.items) {
                     results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : undefined)));
