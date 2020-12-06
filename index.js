@@ -10,7 +10,7 @@ const searchCmd = require('./commands/search.js');
 
 function errorResponse(err, msg, errCode = undefined) {
     console.error(err);
-    msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ""));
+    msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ''));
 }
 
 for (const file of commandFiles) {
@@ -35,7 +35,7 @@ bot.on('message', msg => {
     // const args = msg.content.split(/ +/);
     // const commandName = args.shift().toLowerCase();
     const args = msg.content.split(process.env.CMD_PREFIX);
-    args.shift(); // remove args[0] which is ""
+    args.shift(); // remove args[0] which is ''
     const commandName = String(args.shift()).toLowerCase();
 
     let query = null;
@@ -73,25 +73,29 @@ bot.on('message', msg => {
         }
 
     } else if (query) { // if the filters found something
-        let server = (() => { // determine what indexes should be queried
-            let serverId = evaluateReplace(msg.channel.guild.id);
-
-            switch (serverId) {
-                case "514059860489404417":
-                    return "destiny";
-                case "671183775454986240":
-                    return "halo";
-
-                default:
-                    return null;
+        let game = (() => { // determine what indexes should be queried
+            if (msg.content.includes('?D')) {
+                return 'destiny';
+            } else if (msg.content.includes('?H')) {
+                return 'halo';
+            } else {
+                switch (evaluateReplace(msg.channel.guild.id)) {
+                    case '514059860489404417':
+                        return 'destiny';
+                    case '671183775454986240':
+                        return 'halo';
+                    default:
+                        return null;
+                }
             }
+
         })();
         try {
             query.forEach((queryI) => {
                 // Execute search command
                 if (queryI) {
-                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested "${queryI}"`);
-                    console.log(searchCmd.execute(msg, queryI, server));
+                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI}'`);
+                    console.log(searchCmd.execute(msg, queryI, game));
                     stopTime = new Date();
                     console.log(`Responded in ${stopTime - startTime}ms`);
                     console.log();
