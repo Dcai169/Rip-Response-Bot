@@ -83,7 +83,7 @@ class DestinyResponder extends BaseResponder {
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
             setTimeout(() => {
-                console.log("Ready\n");
+                console.log("Destiny Ready");
                 this.ready = true;
                 callback();
             }, 5 * 1000);

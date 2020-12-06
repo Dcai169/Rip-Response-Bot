@@ -55,7 +55,7 @@ class HaloResponder extends BaseResponder {
             });
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             setTimeout(() => {
-                console.log("Ready\n");
+                console.log("Halo Ready");
                 this.ready = true;
                 callback();
             }, 5 * 1000);

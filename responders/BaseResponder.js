@@ -8,10 +8,20 @@ class BaseResponder {
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
         this.loadIndexes();
+        this.readyListener = (val) => {};
 
         if (new.target === BaseResponder) {
             throw new TypeError("BaseResponder instances should not be constructed directly!");
         }
+    }
+
+    get ready() {
+        return this.ready;
+    }
+
+    set ready(val) {
+        this.ready = !!val;
+        this.readyListener(val);
     }
 
     // INDEXING
