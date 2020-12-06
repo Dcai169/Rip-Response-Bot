@@ -82,13 +82,13 @@ class HaloResponder extends BaseResponder {
         }
     }
 
-    static generateQualifierString(installment){ // only here for compatibility
-        return evaluateReplace(installment, {replacement: '', callback: (res) => {return `${res} `}});
+    static generateQualifierString(game) {
+        return evaluateReplace(game, { replacement: '', callback: (res) => { return `${res} ` } });
     }
 
     static generateFullyQualifiedName(responseItem) {
-        return `${HaloResponder.generateQualifierString(responseItem.installment)}${String(responseItem.entry.formattedValue).trim()}`;
-    } 
+        return `${HaloResponder.generateQualifierString(responseItem.game)}${String(responseItem.entry.formattedValue).trim()}`;
+    }
 
 
 }
