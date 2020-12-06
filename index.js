@@ -5,7 +5,6 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const evaluateReplace = require('./evaluateReplace.js');
-
 const stripRegEx = require('./redrix.js').stripRegEx;
 const searchCmd = require('./commands/search.js');
 
