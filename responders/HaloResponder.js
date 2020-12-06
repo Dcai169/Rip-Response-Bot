@@ -6,7 +6,7 @@ const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json
 class HaloResponder extends BaseResponder {
     constructor(doc) {
         super(doc);
-        this.gameRegex = /^(h)?(alo)?(\s)?(\d)?(((ce)?((c|a)\s)?:?g?))?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
+        this.gameRegex = /^(h)?(alo)?(\s)?(\d)?(((ce)?((c|a)\s)?:?))?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
     }
 
     // INDEXING
