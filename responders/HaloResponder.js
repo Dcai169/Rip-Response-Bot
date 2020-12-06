@@ -6,7 +6,7 @@ class HaloResponder extends BaseResponder {
         super(doc);
     }
 
-    static gameRegex = /^(h)?(alo)?(\s)?(\d)?([aceg:]{1,3})?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
+    static gameRegex = new RegExp(/^(h)?(alo)?(\s)?(\d)?([aceg:]{1,3})?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi);
 
     // INDEXING
     resetIndexes() {
