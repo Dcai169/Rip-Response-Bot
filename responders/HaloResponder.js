@@ -73,11 +73,11 @@ class HaloResponder extends BaseResponder {
         })();
 
         let results = [];
-        if (installment) {
-            // code
+        if (gameToQuery) {
+            results = results.concat(BaseResponder.addParam(this.items[gameToQuery].filter(this.itemFilter, query), 'game', gameToQuery));
         } else {
             for (let key in this.items) {
-                results = results.concat(this.items[key].filter(this.itemFilter, query));
+                results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'game', key));
             }
         }
     }

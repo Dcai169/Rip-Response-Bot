@@ -95,11 +95,6 @@ class DestinyResponder extends BaseResponder {
         return super.itemFilter(cell) || cell.aliases.includes(this.toLowerCase()); // or if the query matches an alias
     }
 
-    static tagClass(filterResults, tag) {
-        filterResults.forEach((item) => { item.armorClass = tag; });
-        return filterResults;
-    }
-
     search(_msg, query) {
         /* 
         message: Message object as described by the discord.js library.
@@ -136,10 +131,10 @@ class DestinyResponder extends BaseResponder {
         let results = [];
         if (!!armorClass || !!gender) { // if a class or gender is specified
             if (armorClass) { // If a class is specified, (Warlock, Titan, Hunter) only look at that classes armor
-                results = this.tagClass(this.items[`${armorClass}Armor`].filter(itemFilter, query), armorClass);
+                results = BaseResponder.addParam(this.items[`${armorClass}Armor`].filter(itemFilter, query), 'armorClass', armorClass);
             } else { // Otherwise look at all items
                 for (let key in this.items) {
-                    results = results.concat(DestinyResponder.tagClass(this.items[key].filter(this.itemFilter, query), (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : undefined)));
+                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : undefined)));
                 }
             }
 
@@ -155,7 +150,7 @@ class DestinyResponder extends BaseResponder {
                 if (key === "elseItems") {
                     results = results.concat(this.items.elseItems.filter(this.itemFilter, query));
                 } else {
-                    results = results.concat(DestinyResponder.tagClass(this.items[key].filter(this.itemFilter, query), key.split("Armor").shift()));
+                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', key.split("Armor").shift()));
                 }
             }
         }

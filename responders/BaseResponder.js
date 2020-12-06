@@ -3,7 +3,7 @@ const levenshtien = require("damerau-levenshtein");
 const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
-    constructor(doc){
+    constructor(doc) {
         this.doc = doc;
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
@@ -11,13 +11,13 @@ class BaseResponder {
 
         if (new.target === BaseResponder) {
             throw new TypeError("BaseResponder instances should not be constructed directly!");
-          }
+        }
     }
 
     // INDEXING
-    resetIndexes(){
+    resetIndexes() {
         this.ready = false;
-        
+
     }
 
     async createItemObj(sheet, row) {
@@ -51,11 +51,16 @@ class BaseResponder {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }
 
+    static addParam(filterResults, param, tag) {
+        filterResults.forEach((item) => { item[param] = tag; });
+        return filterResults;
+    }
+
     static generateQualifierString() {
         // return a string with all qualifiers i.e. "male warlock"
     }
 
-    static generateFullyQualifiedName(){
+    static generateFullyQualifiedName() {
         // return a string that includes all qualifiers and the item name i.e. "male warlock seventh seraph"
     }
 
@@ -63,7 +68,7 @@ class BaseResponder {
         return `The ${responderClass.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
     }
 
-    static fallbackResponse(query){
+    static fallbackResponse(query) {
         return;
     }
 
