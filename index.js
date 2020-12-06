@@ -63,9 +63,6 @@ bot.on('message', msg => {
         // execute the command
         try {
             console.log(command.execute(msg, args));
-            stopTime = new Date();
-            console.log(`Responded in ${stopTime - startTime}ms`);
-            return;
         } catch (error) {
             errorResponse(error, msg);
         }
@@ -92,13 +89,12 @@ bot.on('message', msg => {
                     console.log(searchCmd.execute(msg, queryI, server));
                 }
             });
-            stopTime = new Date();
-            console.log(`Responded in ${stopTime - startTime}ms`);
-            console.log();
-            return;
         } catch (error) {
             errorResponse(error, msg);
         }
     }
-
+    stopTime = new Date();
+    console.log(`Responded in ${stopTime - startTime}ms`);
+    console.log();
+    return;
 });
