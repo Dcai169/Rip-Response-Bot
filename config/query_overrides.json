@@ -1,58 +1,100 @@
-[
-    {
-        "replaces": ["thejudsub", "jud", "banana"],
-        "replacement": "Servitor"
-    },
-    {
-        "replaces": ["besto"],
-        "replacement": "Telesto"
-    },
-    {
-        "replaces": ["ape"],
-        "replacement": "Felwinter's Lie"
-    },
-    {
-        "replaces": ["monkey"],
-        "replacement": "Mindbender's Ambition"
-    },
-    {
-        "replaces": ["craig"],
-        "replacement": "Brute"
-    },
-    {
-        "replaces": ["good boy", "good boi", "doggo"],
-        "replacement": "Warbeast"
-    },
-    {
-        "replaces": ["toaster"],
-        "replacement": "Jotunn"
-    },
-    {
-        "replaces": ["skyburners girth"],
-        "replacement": "Heir Apparent"
-    },
-    {
-        "replaces": ["terrible"],
-        "replacement": "Tarrabah"
-    },
-    {
-        "replaces": ["chicken vex", "leggy vex", "harpy with legs"],
-        "replacement": "Wyvern"
-    },
-    {
-        "replaces": ["salad bar", "saladman", "lord saladman"],
-        "replacement": "Lord Saladin"
-    },
-    {
-        "replaces": ["bird", "birb", "borb"],
-        "replacement": "Louis"
-    },
-    {
-        "replaces": ["exo cat girl"],
-        "replacement": "Ada-1"
-    },
-    {
-        "replaces": ["exo with cake"],
-        "replacement": "The Exo Stranger"
-    }
-]
+{
+    "destiny": [
+        {
+            "replaces": [
+                "thejudsub",
+                "jud",
+                "banana"
+            ],
+            "replacement": "Servitor"
+        },
+        {
+            "replaces": [
+                "besto"
+            ],
+            "replacement": "Telesto"
+        },
+        {
+            "replaces": [
+                "ape"
+            ],
+            "replacement": "Felwinter's Lie"
+        },
+        {
+            "replaces": [
+                "monkey"
+            ],
+            "replacement": "Mindbender's Ambition"
+        },
+        {
+            "replaces": [
+                "good boy",
+                "good boi",
+                "doggo"
+            ],
+            "replacement": "Warbeast"
+        },
+        {
+            "replaces": [
+                "toaster"
+            ],
+            "replacement": "Jotunn"
+        },
+        {
+            "replaces": [
+                "skyburners girth"
+            ],
+            "replacement": "Heir Apparent"
+        },
+        {
+            "replaces": [
+                "terrible"
+            ],
+            "replacement": "Tarrabah"
+        },
+        {
+            "replaces": [
+                "chicken vex",
+                "leggy vex",
+                "harpy with legs"
+            ],
+            "replacement": "Wyvern"
+        },
+        {
+            "replaces": [
+                "salad bar",
+                "saladman",
+                "lord saladman"
+            ],
+            "replacement": "Lord Saladin"
+        },
+        {
+            "replaces": [
+                "bird",
+                "birb",
+                "borb"
+            ],
+            "replacement": "Louis"
+        },
+        {
+            "replaces": [
+                "exo cat girl"
+            ],
+            "replacement": "Ada-1"
+        },
+        {
+            "replaces": [
+                "exo with cake"
+            ],
+            "replacement": "The Exo Stranger"
+        }
+    ],
+    "halo": [
+        {
+            "replaces": [
+                "craig"
+            ],
+            "replacement": "Brute"
+        }
+    ]
+}

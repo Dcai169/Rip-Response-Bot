@@ -1,5 +1,7 @@
 const BaseResponder = require('./BaseResponder.js');
 const evaluateReplace = require('../evaluateReplace.js');
+const fs = require('fs');
+const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8')).halo;
 
 class HaloResponder extends BaseResponder {
     constructor(doc) {
@@ -112,8 +114,15 @@ class HaloResponder extends BaseResponder {
                 return;
             }
         })();
+
         query = query.replace(this.gameRegex, '').trim();
         if (query === 'chief') { query = 'master chief'; }
+        // check if the query should be overridden
+        queryOverrides.forEach((overridePair) => {
+            if (overridePair.replaces.includes(query.toLowerCase())) {
+                query = overridePair.replacement;
+            }
+        });
 
         let results = [];
         if (gameToQuery) {

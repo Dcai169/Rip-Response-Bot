@@ -1,7 +1,7 @@
 const fs = require('fs');
 const BaseResponder = require('./BaseResponder.js');
 const removeArticles = require('../redrix.js').removeArticles;
-const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8'));
+const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8')).destiny;
 const evaluateReplace = require('../evaluateReplace.js');
 
 class DestinyResponder extends BaseResponder {
