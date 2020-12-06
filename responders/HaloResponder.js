@@ -113,7 +113,7 @@ class HaloResponder extends BaseResponder {
             }
         })();
         query = query.replace(this.gameRegex, '').trim();
-        if (query === 'chief') { query = 'Master Chief'; }
+        if (query === 'chief') { query = 'master chief'; }
 
         let results = [];
         if (gameToQuery) {
