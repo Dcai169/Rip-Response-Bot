@@ -6,8 +6,6 @@ class HaloResponder extends BaseResponder {
         super(doc);
     }
 
-    static gameRegex = /^(h)?(alo)?(\s)?(\d)?([aceg:]{1,3})?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
-
     // INDEXING
     resetIndexes() {
         this.ready = false;
@@ -65,8 +63,8 @@ class HaloResponder extends BaseResponder {
     search(_msg, query) {
         // Detect what game the user wants (CE, 2A, Reach, etc)
         let gameToQuery = (() => {
-            if (HaloResponder.gameRegex.test(query)) {
-                let game = query.match(HaloResponder.gameRegex).shift().replace(/^(h)?(alo)?/gmi, '').toLowerCase();
+            let game = query.match(/^(h)?(alo)?(\s)?(\d)?([aceg:]{1,3})?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi).shift().replace(/^(h)?(alo)?/gmi, '').toLowerCase();
+            if (game) {
                 if (/\d/.test(game)) { // if is h2, h2a, h3, h3 odst, h4, h5, hw2
                     switch (evaluateReplace(game.match(/[2-5]/), {replacement: []}).shift()) { // match only numbers 2 through 5
                         case '2':
