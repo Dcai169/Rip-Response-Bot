@@ -65,6 +65,11 @@ bot.on('message', msg => {
             console.log(command.execute(msg, args));
         } catch (error) {
             errorResponse(error, msg);
+        } finally {
+            stopTime = new Date();
+            console.log(`Responded in ${stopTime - startTime}ms`);
+            console.log();
+            return;
         }
 
     } else if (query) { // if the filters found something
@@ -76,7 +81,7 @@ bot.on('message', msg => {
                     return "destiny";
                 case "671183775454986240":
                     return "halo";
-            
+
                 default:
                     return null;
             }
@@ -91,10 +96,11 @@ bot.on('message', msg => {
             });
         } catch (error) {
             errorResponse(error, msg);
+        } finally {
+            stopTime = new Date();
+            console.log(`Responded in ${stopTime - startTime}ms`);
+            console.log();
+            return;
         }
     }
-    stopTime = new Date();
-    console.log(`Responded in ${stopTime - startTime}ms`);
-    console.log();
-    return;
 });
