@@ -44,14 +44,16 @@ class HaloResponder extends BaseResponder {
         // get new data
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => {
-                sheet.loadCells().then(() => {
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            this.items[sheet.title].push(await this.createItemObj(sheet, row));
-                        })();
-                    }
-                }).then(console.log(`${sheet.title} indexed`));
-                stopTime = new Date();
+                if (!['Halo Wars', 'Halo Wars 2'].includes(sheet.title)) {
+                    sheet.loadCells().then(() => {
+                        for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                            (async () => {
+                                this.items[sheet.title].push(await this.createItemObj(sheet, row));
+                            })();
+                        }
+                    }).then(console.log(`${sheet.title} indexed`));
+                    stopTime = new Date();
+                }
             });
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             setTimeout(() => {
