@@ -22,8 +22,8 @@ class HaloResponder extends BaseResponder {
             "Halo Reach": [],
             "Halo 4": [],
             "Halo 5": [],
-            "Halo Wars": [],
-            "Halo Wars 2": []
+            // "Halo Wars": [],
+            // "Halo Wars 2": []
         };
     }
 
@@ -72,7 +72,7 @@ class HaloResponder extends BaseResponder {
                     switch (evaluateReplace(game.match(/[2-5]/), {replacement: []}).shift()) { // match only numbers 2 through 5
                         case '2':
                             if (game.includes('wars')) {
-                                return 'Halo Wars 2';
+                                // return 'Halo Wars 2';
                             } else {
                                 if (game.includes('a')) {
                                     return 'Halo 2 Anniversary';
@@ -100,8 +100,8 @@ class HaloResponder extends BaseResponder {
                 } else { // else hce, hcea, reach, hw
                     if (game.includes('reach')) {
                         return 'Halo Reach';
-                    } else if (game.includes('wars')) {
-                        return 'Halo Wars';
+                    // } else if (game.includes('wars')) {
+                    //     return 'Halo Wars';
                     } else { // ce or cea
                         if (game.includes('cea')) {
                             return 'Halo CEA';
