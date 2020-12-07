@@ -87,6 +87,12 @@
                 "exo with cake"
             ],
             "replacement": "The Exo Stranger"
+        },
+        {
+            "replaces": [
+                "lemon arc"
+            ],
+            "replacement": "Le Monarch"
         }
     ],
     "halo": [
