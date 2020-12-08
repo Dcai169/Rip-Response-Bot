@@ -101,6 +101,12 @@
                 "craig"
             ],
             "replacement": "Brute"
+        },
+        {
+            "replaces": [
+                "puma"
+            ],
+            "replacement": "Warthog"
         }
     ]
 }
