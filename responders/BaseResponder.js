@@ -87,8 +87,8 @@ class BaseResponder {
         // generate response text
         if (results) {
             if (results.length === 1) {
-                response = this.resultResponse(results[0], responderClass); // fall back if no result
-            } else if (results.length === 0) {
+                response = this.resultResponse(results[0], responderClass); 
+            } else if (results.length === 0) { // fall back if no result
                 response = this.fallbackResponse();
             } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
                 response = "Your query returned multiple results.\n"

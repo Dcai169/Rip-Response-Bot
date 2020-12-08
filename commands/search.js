@@ -4,8 +4,16 @@ const haloResponder = require("../responders/HaloResponder.js");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const evaluateReplace = require('../evaluateReplace.js');
 
-const destiny = new destinyResponder(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'));
-const halo = new haloResponder(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'));
+const games = {
+    destiny: {
+        obj: new destinyResponder(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ')),
+        proto: destinyResponder
+    },
+    halo: {
+        obj: new haloResponder(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo')),
+        proto: haloResponder
+    }
+};
 
 function checkAbort(msg, query) { // this function checks if there should be any response at all 
     if (query === "") {
@@ -29,15 +37,14 @@ module.exports = {
             return;
         }
 
-        let response = "";
+        let response = '';
         if (game) {
-            if (game === "destiny") {
-                response = baseResponder.respond(destiny.search(message, query), destinyResponder);
-            } else if (game === "halo") {
-                response = baseResponder.respond(halo.search(message, query), haloResponder);
-            } 
+            response = baseResponder.respond(games[game].obj.search(message, query), games[game].proto);
         } else {
-            response = `${evaluateReplace(baseResponder.respond(destiny.search(message, query), destinyResponder), {replacement: ''})}${evaluateReplace(baseResponder.respond(halo.search(message, query), haloResponder), {replacement: '', callback: (res) => {return `\n${res}`}})}`;
+            Object.values(games).forEach(responder => {
+                response += `${evaluateReplace(baseResponder.respond(responder.obj.search(message, query), responder.proto), {replacement: ''})}\n`;
+            });
+            
         }
 
         if (response) {
@@ -52,4 +59,9 @@ module.exports = {
         }
         return response;
     },
+    reload(game) {
+        if (game) {
+            games[game].loadIndexes();
+        }
+    }
 };
