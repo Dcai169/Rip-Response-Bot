@@ -4,15 +4,15 @@ const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
     constructor(doc) {
+        if (new.target === BaseResponder) {
+            throw new TypeError("BaseResponder instances should not be constructed directly!");
+        }
+
         this.doc = doc;
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
         this.loadIndexes();
-        this.readyListener = (val) => {};
-
-        if (new.target === BaseResponder) {
-            throw new TypeError("BaseResponder instances should not be constructed directly!");
-        }
+        // this.readyListener = (val) => {};
     }
 
     // get ready() {
