@@ -79,7 +79,7 @@ bot.on('message', msg => {
             } else if (msg.content.includes('?H')) {
                 return 'halo';
             } else {
-                switch (evaluateReplace(msg.channel.guild.id)) {
+                switch (evaluateReplace(msg.channel.guild, {replacement: msg.channel.guild.id})) {
                     case '514059860489404417':
                         return 'destiny';
                     case '671183775454986240':
@@ -89,7 +89,7 @@ bot.on('message', msg => {
                 }
             }
         })();
-        
+
         try {
             query.forEach((queryI) => {
                 // Execute search command
