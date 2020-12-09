@@ -94,7 +94,7 @@ bot.on('message', msg => {
             query.forEach((queryI) => {
                 // Execute search command
                 if (queryI) {
-                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI}'`);
+                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI}' of game ${game}`);
                     console.log(searchCmd.execute(msg, queryI, game));
                     stopTime = new Date();
                     console.log(`Responded in ${stopTime - startTime}ms`);
