@@ -1,13 +1,13 @@
 {
   "name": "rip_response_bot",
-  "version": "1.4.1",
-  "description": "",
+  "version": "1.4.2",
+  "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DCai169",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "async-limiter": "^2.0.0",
     "compromise": "^13.2.0",

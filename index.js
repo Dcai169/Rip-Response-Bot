@@ -88,8 +88,8 @@ bot.on('message', msg => {
                         return null;
                 }
             }
-
         })();
+        
         try {
             query.forEach((queryI) => {
                 // Execute search command
