@@ -6,7 +6,7 @@ const evaluateReplace = require('../evaluateReplace.js');
 
 class DestinyResponder extends BaseResponder {
     constructor(doc) {
-        super(doc);
+        super(doc, 'destiny', '461093992499773440');
     }
 
     // INDEXING
@@ -82,11 +82,9 @@ class DestinyResponder extends BaseResponder {
             });
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
-            setTimeout(() => {
-                console.log("Destiny Ready");
-                this.ready = true;
-                callback();
-            }, 5 * 1000);
+            console.log("Destiny Ready");
+            this.ready = true;
+            callback();
         });
     }
 

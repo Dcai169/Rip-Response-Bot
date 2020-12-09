@@ -3,12 +3,15 @@ const levenshtien = require("damerau-levenshtein");
 const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
-    constructor(doc) {
+    constructor(doc, game, ownerId) {
         if (new.target === BaseResponder) {
             throw new TypeError("BaseResponder instances should not be constructed directly!");
         }
 
         this.doc = doc;
+        this.game = game;
+        this.ownerId = ownerId;
+        
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
         this.loadIndexes();

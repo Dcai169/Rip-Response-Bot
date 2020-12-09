@@ -37,6 +37,12 @@ module.exports = {
             return;
         }
 
+        if (!!game && query.trim() === 'reload' && ['191624702614175744', games[game].ownerId].includes(message.author.id)) {
+            message.channel.send(`Reloading ${baseResponder.capitalizeWord(game)} indexes. This can take up to a minute.`);
+            games[game].obj.loadIndexes(() => {message.channel.send(`${baseResponder.capitalizeWord(game)} indexes reloaded.`)});
+            return;
+        }
+
         let response = '';
         if (game) {
             response = baseResponder.respond(games[game].obj.search(message, query), games[game].proto);
@@ -44,7 +50,6 @@ module.exports = {
             Object.values(games).forEach(responder => {
                 response += `${evaluateReplace(baseResponder.respond(responder.obj.search(message, query), responder.proto), {replacement: ''})}\n`;
             });
-            
         }
 
         if (response) {
@@ -58,10 +63,5 @@ module.exports = {
             }
         }
         return response;
-    },
-    reload(game) {
-        if (game) {
-            games[game].loadIndexes();
-        }
     }
 };

@@ -5,7 +5,7 @@ const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json
 
 class HaloResponder extends BaseResponder {
     constructor(doc) {
-        super(doc);
+        super(doc, 'halo', '341213672947056651');
         this.gameRegex = /^(h)?(alo)?(\s)?(\d)?(((ce)?((c|a)\s)?:?))?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
     }
 
@@ -56,11 +56,9 @@ class HaloResponder extends BaseResponder {
                 }
             });
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
-            setTimeout(() => {
-                console.log("Halo Ready");
-                this.ready = true;
-                callback();
-            }, 5 * 1000);
+            console.log("Halo Ready");
+            this.ready = true;
+            callback();
         });
     }
 
