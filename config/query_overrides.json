@@ -93,6 +93,12 @@
                 "lemon arc"
             ],
             "replacement": "Le Monarch"
+        },
+        {
+            "replaces": [
+                "toes"
+            ],
+            "replacement": "Promethium Spur"
         }
     ],
     "halo": [
