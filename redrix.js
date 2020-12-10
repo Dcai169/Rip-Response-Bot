@@ -21,9 +21,9 @@ function removeArticlesLocal(inputString) {
     return inputString.trim();
 }
 
-function stripRegExRecursable(inputText) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
     inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
+function parseQueryRecursable(inputText, msg = undefined) {
 
     let game;
     let normalized = inputText;
@@ -39,13 +39,12 @@ function stripRegExRecursable(inputText) {
     if (sentences.length === 1) {
         normalized = sentences.shift();
     } else if (sentences.length > 1) {
-        return sentences.map(stripRegExRecursable);
+        return sentences.map(sentence => parseQueryRecursable(sentence, msg));
     }
 
     if (inputText.includes("\n")) { // newlines bad
         return null;
     }
-
 
     let query = normalized;
 
@@ -68,15 +67,32 @@ function stripRegExRecursable(inputText) {
 
     query = removeArticlesLocal(query);
 
-    return query;
+    if (!game && msg) { // if game was not defined by the prefix
+        let serverId = (msg.channel.guild ? msg.channel.guild.id : null);
+        switch (serverId) {
+            case '514059860489404417':
+                game = 'destiny';
+                break;
+            case '671183775454986240':
+                game = 'halo';
+                break;
+            default:
+                break;
+        }
+    }
+
+    return {
+        queryText: query,
+        game: game
+    };
 }
 
 // export the function
 module.exports = {
     name: 'redrix',
     description: 'Strip based on regex matching',
-    stripRegEx(inputText) {
-        return stripRegExRecursable(inputText);
+    parseQuery(inputText, msg) {
+        return parseQueryRecursable(inputText, msg);
     },
     removeArticles(inputString) {
         return removeArticlesLocal(inputString);
