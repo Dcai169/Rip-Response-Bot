@@ -23,7 +23,7 @@ class DestinyResponder extends BaseResponder {
     static async createItemObj(sheet, row) {
         return {
             entry: sheet.getCell(row, 0),
-            gender: sheet.getCell(row, 2).formattedValue,
+            gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : null),
             aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(", ").map(removeArticles) } })
         };
     }
