@@ -39,6 +39,8 @@ class BaseResponder {
     }
 
     async addItem(arr, responder, sheet, row) {
+        let cellCol0 = await sheet.getCell(row, 0); // Header row detection
+        if (!!cellCol0.formattedValue && cellCol0.textFormat.fontSize < responder.headerSize) {
             arr.push(await responder.createItemObj(sheet, row));
         }
     }
