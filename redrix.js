@@ -13,11 +13,6 @@ Object.keys(filterJSONList).forEach((pass, index) => {
     });
 });
 
-// shamelessly stolen from stack exchange
-function escapeRegExp(inputString) {
-    return inputString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
 function removeArticlesLocal(inputString) {
     inputString = inputString.replace(/\b((the\s)?((an?)\s)?(is)?)\b/gi, "");
     inputString = inputString.replace(/\bthe\b/gi, "");
