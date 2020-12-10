@@ -38,8 +38,8 @@ class BaseResponder {
         // create an object that represents an item
     }
 
-    static async addItem(arr, responder, sheet, row) {
         if (await sheet.getCell(row, 0).textFormat.fontSize < this.headerSize) {
+    async addItem(arr, responder, sheet, row) {
             arr.push(await responder.createItemObj(sheet, row));
         }
     }
