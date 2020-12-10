@@ -7,7 +7,7 @@ let regexPasses = [
     []
 ];
 
-let prefixBindings = filterJSONList.regexPass0.map(regex => regex[2]);
+let prefixBindings = filterJSONList.regEx0.map(regex => regex[2]);
 
 Object.keys(filterJSONList).forEach((pass, index) => {
     filterJSONList[pass].forEach(regex => {
