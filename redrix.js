@@ -34,14 +34,15 @@ function stripRegExRecursable(inputText) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
     inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
 
+    let normalized = inputText;
     regexPasses[0].forEach(regex => { // Command Prefix
-        inputText = inputText.replace(regex, "");
+        normalized = normalized.replace(regex, "");
     });
 
-    let sentences = inputText.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
+    let sentences = normalized.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
 
     if (sentences.length === 1) {
-        inProgress = sentences.shift();
+        normalized = sentences.shift();
     } else if (sentences.length > 1) {
         return sentences.map(stripRegExRecursable);
     }
@@ -51,7 +52,7 @@ function stripRegExRecursable(inputText) {
     }
 
 
-    let query = inProgress;
+    let query = normalized;
 
     regexPasses[1].forEach(regex => {
         query = query.replace(regex, "");
