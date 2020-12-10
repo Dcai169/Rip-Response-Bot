@@ -7,16 +7,10 @@ let regexPasses = [
     []
 ];
 
-filterJSONList.regEx0.forEach(filter => {
-    regexPasses[0].push(new RegExp(filter[0], filter[1]));
-});
-
-filterJSONList.regEx1.forEach(filter => {
-    regexPasses[1].push(new RegExp(filter[0], filter[1]));
-});
-
-filterJSONList.regEx2.forEach(filter => {
-    regexPasses[2].push(new RegExp(filter[0], filter[1]));
+Object.keys(filterJSONList).forEach((pass, index) => {
+    filterJSONList[pass].forEach(regex => {
+        regexPasses[index].push(new RegExp(regex[0], regex[1]))
+    });
 });
 
 // shamelessly stolen from stack exchange
