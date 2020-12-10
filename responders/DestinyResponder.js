@@ -6,7 +6,7 @@ const evaluateReplace = require('../evaluateReplace.js');
 
 class DestinyResponder extends BaseResponder {
     constructor(doc) {
-        super(doc, 'destiny', '461093992499773440');
+        super(doc, 'destiny', '461093992499773440', 12);
     }
 
     // INDEXING
@@ -20,7 +20,7 @@ class DestinyResponder extends BaseResponder {
         };
     }
 
-    async createItemObj(sheet, row) {
+    static async createItemObj(sheet, row) {
         return {
             entry: sheet.getCell(row, 0),
             gender: sheet.getCell(row, 2).formattedValue,
@@ -43,36 +43,32 @@ class DestinyResponder extends BaseResponder {
                     switch (sheet.title.toLowerCase().split(" ").shift()) {
                         case "hunter":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                (async () => {
-                                    this.items.hunterArmor.push(await this.createItemObj(sheet, row));
-                                })();
+                                this.addItem(this.items.hunterArmor, DestinyResponder, sheet, row);
                             }
                             break;
 
                         case "warlock":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                (async () => {
-                                    this.items.warlockArmor.push(await this.createItemObj(sheet, row));
-                                })();
+                                this.addItem(this.items.warlockArmor, DestinyResponder, sheet, row);
                             }
                             break;
 
                         case "titan":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                (async () => {
-                                    this.items.titanArmor.push(await this.createItemObj(sheet, row));
-                                })();
+                                this.addItem(this.items.titanArmor, DestinyResponder, sheet, row);
                             }
                             break;
 
                         default:
                             for (let row = 0; row < sheet.rowCount; row++) {
                                 (async () => {
-                                    this.items.elseItems.push(await (async () => {
-                                        let cell = this.createItemObj(sheet, row);
-                                        (await cell).gender = null;
-                                        return cell;
-                                    })());
+                                    if (await sheet.getCell(row, 0).textFormat.fontSize < this.headerSize) {
+                                        this.items.elseItems.push(await (async () => {
+                                            let cell = this.createItemObj(sheet, row);
+                                            (await cell).gender = null;
+                                            return cell;
+                                        })());
+                                    }
                                 })();
                             }
                             break;

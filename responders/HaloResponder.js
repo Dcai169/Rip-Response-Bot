@@ -27,7 +27,7 @@ class HaloResponder extends BaseResponder {
         };
     }
 
-    async createItemObj(sheet, row) {
+    static async createItemObj(sheet, row) {
         return {
             entry: sheet.getCell(row, 0)
         };
@@ -47,9 +47,7 @@ class HaloResponder extends BaseResponder {
                 if (!['Halo Wars', 'Halo Wars 2'].includes(sheet.title)) {
                     sheet.loadCells().then(() => {
                         for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                            (async () => {
-                                this.items[sheet.title].push(await this.createItemObj(sheet, row));
-                            })();
+                            this.addItem(this.items[sheet.title], HaloResponder, sheet, row);
                         }
                     }).then(console.log(`${sheet.title} indexed`));
                     stopTime = new Date();
