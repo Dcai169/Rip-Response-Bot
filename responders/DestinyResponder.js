@@ -43,31 +43,52 @@ class DestinyResponder extends BaseResponder {
                     switch (sheet.title.toLowerCase().split(" ").shift()) {
                         case "hunter":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                this.addItem(this.items.hunterArmor, sheet, row);
+                                (async () => {
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.hunterArmor.push(item);
+                                    }
+                                })();
                             }
                             break;
 
                         case "warlock":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                this.addItem(this.items.warlockArmor, sheet, row);
+                                (async () => {
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.warlockArmor.push(item);
+                                    }
+                                })();
                             }
                             break;
 
                         case "titan":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                                this.addItem(this.items.titanArmor, sheet, row);
+                                (async () => {
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.titanArmor.push(item);
+                                    }
+                                })();
                             }
                             break;
 
                         default:
                             for (let row = 0; row < sheet.rowCount; row++) {
-                                this.addItem(this.items.elseItems, sheet, row);
+                                (async () => {
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.elseItems.push(item);
+                                    }
+                                })();
                             }
                             break;
                     }
                 }).then(console.log(`${sheet.title} indexed`));
-                stopTime = new Date();
             });
+        }).then(() => {
+            stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
             console.log("Destiny Ready");

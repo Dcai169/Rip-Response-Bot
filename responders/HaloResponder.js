@@ -5,7 +5,7 @@ const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json
 
 class HaloResponder extends BaseResponder {
     constructor(doc) {
-        super(doc, 'halo', '341213672947056651');
+        super(doc, 'halo', '341213672947056651', 18);
         this.gameRegex = /^(h)?(alo)?(\s)?(\d)?(((ce)?((c|a)\s)?:?))?((\s)?((anniversary)?(classic)?(guardians)?(odst)?(reach)?))?/gmi;
     }
 
@@ -47,12 +47,19 @@ class HaloResponder extends BaseResponder {
                 if (!['Halo Wars', 'Halo Wars 2'].includes(sheet.title)) {
                     sheet.loadCells().then(() => {
                         for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                            this.addItem(this.items[sheet.title], sheet, row);
+                            (async () => {
+                                let item = await BaseResponder.getItem(sheet, row, HaloResponder, this.headerSize);
+                                if (item) {
+                                    this.items[sheet.title].push(item);
+                                }
+                            })();
                         }
                     }).then(console.log(`${sheet.title} indexed`));
-                    stopTime = new Date();
                 }
             });
+            
+        }).then(() => {
+            stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             console.log("Halo Ready");
             this.ready = true;

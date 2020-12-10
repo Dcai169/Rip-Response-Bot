@@ -38,10 +38,10 @@ class BaseResponder {
         // create an object that represents an item
     }
 
-    async addItem(arr, sheet, row) {
-        let cellCol0 = await sheet.getCell(row, 0); // Header row detection
-        if (!!cellCol0.formattedValue && cellCol0.textFormat.fontSize < this.headerSize) {
-            arr.push(await this.createItemObj(sheet, row));
+    static async getItem(sheet, row, responder, headerSize) {
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).textFormat.fontSize < headerSize) { // Header and empty row detection
+            // console.log(responder.createItemObj)
+            return await responder.createItemObj(sheet, row);
         }
     }
 
