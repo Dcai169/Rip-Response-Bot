@@ -47,7 +47,7 @@ class HaloResponder extends BaseResponder {
                 if (!['Halo Wars', 'Halo Wars 2'].includes(sheet.title)) {
                     sheet.loadCells().then(() => {
                         for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                            this.addItem(this.items[sheet.title], HaloResponder, sheet, row);
+                            this.addItem(this.items[sheet.title], sheet, row);
                         }
                     }).then(console.log(`${sheet.title} indexed`));
                     stopTime = new Date();
