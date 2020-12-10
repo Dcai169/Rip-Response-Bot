@@ -7,6 +7,8 @@ let regexPasses = [
     []
 ];
 
+let prefixBindings = filterJSONList.regexPass0.map(regex => regex[2]);
+
 Object.keys(filterJSONList).forEach((pass, index) => {
     filterJSONList[pass].forEach(regex => {
         regexPasses[index].push(new RegExp(regex[0], regex[1]))
@@ -23,9 +25,13 @@ function stripRegExRecursable(inputText) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
     inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
 
+    let game;
     let normalized = inputText;
-    regexPasses[0].forEach(regex => { // Command Prefix
-        normalized = normalized.replace(regex, "");
+    regexPasses[0].forEach((regex, index) => { // Command Prefix
+        if (regex.test(normalized) && prefixBindings[index]) {
+            game = prefixBindings[index];
+        }
+        normalized = normalized.replace(regex, '');
     });
 
     let sentences = normalized.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
