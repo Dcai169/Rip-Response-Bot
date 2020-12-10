@@ -33,7 +33,7 @@ module.exports = {
     usage: '<query>, [<game>]',
     guildOnly: false,
     execute(message, query, game) {
-        if (checkAbort(message, query)) {
+        if (checkAbort(message, query)) { // check if there should be any response
             return;
         }
 

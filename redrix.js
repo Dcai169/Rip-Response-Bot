@@ -16,14 +16,14 @@ Object.keys(filterJSONList).forEach((pass, index) => {
 });
 
 function removeArticlesLocal(inputString) {
-    inputString = inputString.replace(/\b((the\s)?((an?)\s)?(is)?)\b/gi, "");
-    inputString = inputString.replace(/\bthe\b/gi, "");
+    inputString = inputString.replace(/\b((the\s)?((an?)\s)?(is)?)\b/gi, '');
+    inputString = inputString.replace(/\bthe\b/gi, '');
     return inputString.trim();
 }
 
-    inputText = inputText.trim().replace(/(\W)?$/gi, ""); // remove punctuation from the end of the string
-    inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // remove diacritics
 function parseQueryRecursable(inputText, msg = undefined) {
+    inputText = inputText.trim().replace(/(\W)?$/gi, ''); // remove punctuation from the end of the string
+    inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ''); // remove diacritics
 
     let game;
     let normalized = inputText;
