@@ -57,7 +57,6 @@ class HaloResponder extends BaseResponder {
                     }).then(console.log(`${sheet.title} indexed`));
                 }
             });
-            
         }).then(() => {
             stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
