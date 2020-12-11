@@ -1,6 +1,6 @@
 {
   "name": "rip_response_bot",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "main": "index.js",
   "scripts": {
