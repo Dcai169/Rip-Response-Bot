@@ -1,5 +1,6 @@
 const BaseResponder = require('./BaseResponder.js');
 const evaluateReplace = require('../evaluateReplace.js');
+const levenshtien = require("damerau-levenshtein");
 const fs = require('fs');
 
 class WarframeResponder extends BaseResponder {
@@ -56,9 +57,16 @@ class WarframeResponder extends BaseResponder {
     }
 
     // SEARCHING
+    itemFilter(cell) { // return true or false based on if the item should be included or not
+        return levenshtien((!!cell.name ? // if the cell's formattedValue exists i.e. is not empty
+            cell.name.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
+            ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
+    }
+
     search(_msg, query) {
         let results = [];
         results = results.concat(this.items.filter(this.itemFilter, query));
+        return results
     }
 
     static generateFullyQualifiedName(responseItem) {
@@ -66,8 +74,7 @@ class WarframeResponder extends BaseResponder {
     }
 
     static resultResponse(result) {
-        return `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}\n\
-        SFM ports may be available. See the spreadsheet for further information.`;
+        return `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}\nSFM ports may be available. See the spreadsheet for further information.`;
     }
 }
 
