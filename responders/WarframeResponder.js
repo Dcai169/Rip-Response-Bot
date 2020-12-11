@@ -17,11 +17,11 @@ class WarframeResponder extends BaseResponder {
     static async createItemObj(sheet, row) {
         return {
             name: sheet.getCell(row, 0).formattedValue,
-            baseRip: evaluateReplace(sheet.getCell(row, 4).hyperlink),
-            skins: evaluateReplace(sheet.getCell(row, 5).hyperlink),
-            sfm1: evaluateReplace(sheet.getCell(row, 6).hyperlink),
-            sfm2: evaluateReplace(sheet.getCell(row, 7).hyperlink),
-            sfm3: evaluateReplace(sheet.getCell(row, 8).hyperlink),
+            baseRip: evaluateReplace(sheet.getCell(row, 3).hyperlink),
+            skins: evaluateReplace(sheet.getCell(row, 4).hyperlink),
+            sfm1: evaluateReplace(sheet.getCell(row, 5).hyperlink),
+            sfm2: evaluateReplace(sheet.getCell(row, 6).hyperlink),
+            sfm3: evaluateReplace(sheet.getCell(row, 7).hyperlink),
         };
     }
 
