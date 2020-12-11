@@ -3,7 +3,7 @@ const levenshtien = require("damerau-levenshtein");
 const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
-    constructor(doc, game, ownerId, headerSize = undefined) {
+    constructor(doc, game, ownerId, headerSize = 12) {
         if (new.target === BaseResponder) {
             throw new TypeError("BaseResponder instances should not be constructed directly!");
         }
@@ -39,7 +39,7 @@ class BaseResponder {
     }
 
     static async getItem(sheet, row, responder, headerSize) {
-        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).textFormat.fontSize < headerSize) { // Header and empty row detection
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < headerSize) { // Header and empty row detection
             // console.log(responder.createItemObj)
             return await responder.createItemObj(sheet, row);
         }
