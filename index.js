@@ -1,7 +1,8 @@
 const fs = require('fs');
 require('dotenv').config({ path: './config/config.env' });
+const version = require('./package.json').version
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const bot = new Discord.Client({presence: {activity: {name: version, type: 'PLAYING'}}});
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const evaluateReplace = require('./evaluateReplace.js');
