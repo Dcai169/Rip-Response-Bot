@@ -1,6 +1,6 @@
 const BaseResponder = require('./BaseResponder.js');
 const evaluateReplace = require('../evaluateReplace.js');
-const levenshtien = require("damerau-levenshtein");
+const levenshtien = require('damerau-levenshtein');
 const fs = require('fs');
 
 class WarframeResponder extends BaseResponder {
@@ -50,7 +50,7 @@ class WarframeResponder extends BaseResponder {
         }).then(() => {
             stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
-            console.log("Warframe Ready");
+            console.log('Warframe Ready');
             this.ready = true;
             callback();
         });
@@ -59,8 +59,8 @@ class WarframeResponder extends BaseResponder {
     // SEARCHING
     itemFilter(cell) { // return true or false based on if the item should be included or not
         return levenshtien((!!cell.name ? // if the cell's formattedValue exists i.e. is not empty
-            cell.name.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
-            ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
+            cell.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
+            ''), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
     }
 
     search(_msg, query) {

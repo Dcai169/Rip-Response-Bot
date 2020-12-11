@@ -1,7 +1,7 @@
-const baseResponder = require("../responders/BaseResponder.js");
-const destinyResponder = require("../responders/DestinyResponder.js");
-const haloResponder = require("../responders/HaloResponder.js");
-const warframeResponder = require("../responders/WarframeResponder.js");
+const baseResponder = require('../responders/BaseResponder.js');
+const destinyResponder = require('../responders/DestinyResponder.js');
+const haloResponder = require('../responders/HaloResponder.js');
+const warframeResponder = require('../responders/WarframeResponder.js');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const evaluateReplace = require('../evaluateReplace.js');
 
@@ -21,7 +21,7 @@ const games = {
 };
 
 function checkAbort(msg, query) { // this function checks if there should be any response at all 
-    if (query === "") {
+    if (query === '') {
         return true;
     }
     if (msg.channel.nsfw) { // Do not respond in nsfw channels

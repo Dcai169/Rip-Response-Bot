@@ -24,7 +24,7 @@ class DestinyResponder extends BaseResponder {
         return {
             entry: sheet.getCell(row, 0),
             gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : null),
-            aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(", ").map(removeArticles) } })
+            aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(', ').map(removeArticles) } })
         };
     }
 
@@ -40,8 +40,8 @@ class DestinyResponder extends BaseResponder {
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => { // for each sheet
                 sheet.loadCells().then(() => { // load the sheet
-                    switch (sheet.title.toLowerCase().split(" ").shift()) {
-                        case "hunter":
+                    switch (sheet.title.toLowerCase().split(' ').shift()) {
+                        case 'hunter':
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
                                     let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
@@ -52,7 +52,7 @@ class DestinyResponder extends BaseResponder {
                             }
                             break;
 
-                        case "warlock":
+                        case 'warlock':
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
                                     let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
@@ -63,7 +63,7 @@ class DestinyResponder extends BaseResponder {
                             }
                             break;
 
-                        case "titan":
+                        case 'titan':
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
                                     let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
@@ -91,7 +91,7 @@ class DestinyResponder extends BaseResponder {
             stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
-            console.log("Destiny Ready");
+            console.log('Destiny Ready');
             this.ready = true;
             callback();
         });
@@ -111,21 +111,21 @@ class DestinyResponder extends BaseResponder {
         let gender = undefined;
 
         query = query.toLowerCase();
-        query = query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, "set").trim();
+        query = query.replace(/\barmor(\s)?(for\s((titans?)?(hunters?)?(warlocks?)?))?/gi, 'set').trim();
 
-        if (query.includes("hunter")) {
-            armorClass = "hunter";
-        } else if (query.includes("warlock")) {
-            armorClass = "warlock";
-        } else if (query.includes("titan")) {
-            armorClass = "titan";
+        if (query.includes('hunter')) {
+            armorClass = 'hunter';
+        } else if (query.includes('warlock')) {
+            armorClass = 'warlock';
+        } else if (query.includes('titan')) {
+            armorClass = 'titan';
         }
         query = query.replace(/((titans?)?(hunters?)?(warlocks?)?)/gmi, '').trim();
 
-        if (query.includes("female")) {
-            gender = "female";
-        } else if (query.includes("male") && !query.includes("fe")) {
-            gender = "male";
+        if (query.includes('female')) {
+            gender = 'female';
+        } else if (query.includes('male') && !query.includes('fe')) {
+            gender = 'male';
         }
         query = query.replace(/(fe)?male\s/gi, '').trim();
 
@@ -142,7 +142,7 @@ class DestinyResponder extends BaseResponder {
                 results = BaseResponder.addParam(this.items[`${armorClass}Armor`].filter(this.itemFilter, query), 'armorClass', armorClass);
             } else { // Otherwise look at all items
                 for (let key in this.items) {
-                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', (key.toLowerCase().includes('armor') ? key.split("Armor").shift() : undefined)));
+                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', (key.toLowerCase().includes('armor') ? key.split('Armor').shift() : undefined)));
                 }
             }
 
@@ -155,10 +155,10 @@ class DestinyResponder extends BaseResponder {
 
         } else { // otherwise...
             for (let key in this.items) {
-                if (key === "elseItems") {
+                if (key === 'elseItems') {
                     results = results.concat(this.items.elseItems.filter(this.itemFilter, query));
                 } else {
-                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', key.split("Armor").shift()));
+                    results = results.concat(BaseResponder.addParam(this.items[key].filter(this.itemFilter, query), 'armorClass', key.split('Armor').shift()));
                 }
             }
         }
@@ -175,7 +175,7 @@ class DestinyResponder extends BaseResponder {
         return `${DestinyResponder.generateQualifierString(responseItem.gender, responseItem.armorClass)}${String(responseItem.entry.formattedValue).trim()}`;
     }
 
-    // static fallbackResponse(query = "") { (!!query ? `The ${query} model was not found.` : "Your query did not return a valid result.") + "\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>"; }
+    // static fallbackResponse(query = '') { (!!query ? `The ${query} model was not found.` : 'Your query did not return a valid result.') + '\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>'; }
 }
 
 module.exports = DestinyResponder;
