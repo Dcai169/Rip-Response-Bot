@@ -74,7 +74,17 @@ class WarframeResponder extends BaseResponder {
     }
 
     static resultResponse(result) {
-        return `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}\nSFM ports may be available. See the spreadsheet for further information.`;
+        let response = `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}\n`;
+        let sfmPortCount = !!result.sfm1 + !!result.sfm2 + !!result.sfm3;
+        if (sfmPortCount === 1) {
+            response += `A SFM port is available at <${[result.sfm1, result.sfm2, result.sfm3].filter((res) => {return !!res}).join('')}>`;
+        } else if (sfmPortCount === 2) {
+            response += `SFM ports are available at ${[result.sfm1, result.sfm2, result.sfm3].filter((res) => {return !!res}).map((res) => {return `<${res}>`}).join(' and ')}`;
+        } else if (sfmPortCount === 3) {
+            response += `SFM ports are available at ${[result.sfm1, result.sfm2].map((res) => {return `<${res}>`}).join(', ')}, and <${result.sfm3}>.`
+        }
+        
+        return response;
     }
 }
 
