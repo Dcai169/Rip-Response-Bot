@@ -22,8 +22,8 @@ class HaloResponder extends BaseResponder {
             "Halo Reach": [],
             "Halo 4": [],
             "Halo 5": [],
-            // "Halo Wars": [],
-            // "Halo Wars 2": []
+            "Halo Wars": [],
+            "Halo Wars 2": []
         };
     }
 
@@ -44,18 +44,16 @@ class HaloResponder extends BaseResponder {
         // get new data
         this.doc.loadInfo().then(() => {
             this.doc.sheetsByIndex.forEach(sheet => {
-                if (!['Halo Wars', 'Halo Wars 2'].includes(sheet.title)) {
-                    sheet.loadCells().then(() => {
-                        for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                            (async () => {
-                                let item = await BaseResponder.getItem(sheet, row, HaloResponder, this.headerSize);
-                                if (item) {
-                                    this.items[sheet.title].push(item);
-                                }
-                            })();
-                        }
-                    }).then(console.log(`${sheet.title} indexed`));
-                }
+                sheet.loadCells().then(() => {
+                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                        (async () => {
+                            let item = await BaseResponder.getItem(sheet, row, HaloResponder, this.headerSize);
+                            if (item) {
+                                this.items[sheet.title].push(item);
+                            }
+                        })();
+                    }
+                }).then(console.log(`${sheet.title} indexed`));
             });
         }).then(() => {
             stopTime = new Date();
@@ -73,10 +71,10 @@ class HaloResponder extends BaseResponder {
             if (query.replace(this.gameRegex, '') !== query) {
                 let game = query.match(this.gameRegex).shift().replace(/^(h)?(alo)?/gmi, '').toLowerCase();
                 if (/\d/.test(game)) { // if is h2, h2a, h3, h3 odst, h4, h5, hw2
-                    switch (evaluateReplace(game.match(/[2-5]/), {replacement: []}).shift()) { // match only numbers 2 through 5
+                    switch (evaluateReplace(game.match(/[2-5]/), { replacement: [] }).shift()) { // match only numbers 2 through 5
                         case '2':
                             if (game.includes('wars')) {
-                                // return 'Halo Wars 2';
+                                return 'Halo Wars 2';
                             } else {
                                 if (game.includes('a')) {
                                     return 'Halo 2 Anniversary';
@@ -104,8 +102,8 @@ class HaloResponder extends BaseResponder {
                 } else { // else hce, hcea, reach, hw
                     if (game.includes('reach')) {
                         return 'Halo Reach';
-                    // } else if (game.includes('wars')) {
-                    //     return 'Halo Wars';
+                    } else if (game.includes('wars')) {
+                        return 'Halo Wars';
                     } else { // ce or cea
                         if (game.includes('cea')) {
                             return 'Halo CEA';
