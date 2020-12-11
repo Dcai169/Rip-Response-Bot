@@ -6,7 +6,7 @@ const evaluateReplace = require('../evaluateReplace.js');
 
 class DestinyResponder extends BaseResponder {
     constructor(doc) {
-        super(doc, 'destiny', '461093992499773440');
+        super(doc, 'destiny', '461093992499773440', 12);
     }
 
     // INDEXING
@@ -20,10 +20,10 @@ class DestinyResponder extends BaseResponder {
         };
     }
 
-    async createItemObj(sheet, row) {
+    static async createItemObj(sheet, row) {
         return {
             entry: sheet.getCell(row, 0),
-            gender: sheet.getCell(row, 2).formattedValue,
+            gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : null),
             aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(", ").map(removeArticles) } })
         };
     }
@@ -44,7 +44,10 @@ class DestinyResponder extends BaseResponder {
                         case "hunter":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
-                                    this.items.hunterArmor.push(await this.createItemObj(sheet, row));
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.hunterArmor.push(item);
+                                    }
                                 })();
                             }
                             break;
@@ -52,7 +55,10 @@ class DestinyResponder extends BaseResponder {
                         case "warlock":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
-                                    this.items.warlockArmor.push(await this.createItemObj(sheet, row));
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.warlockArmor.push(item);
+                                    }
                                 })();
                             }
                             break;
@@ -60,7 +66,10 @@ class DestinyResponder extends BaseResponder {
                         case "titan":
                             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                                 (async () => {
-                                    this.items.titanArmor.push(await this.createItemObj(sheet, row));
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.titanArmor.push(item);
+                                    }
                                 })();
                             }
                             break;
@@ -68,18 +77,18 @@ class DestinyResponder extends BaseResponder {
                         default:
                             for (let row = 0; row < sheet.rowCount; row++) {
                                 (async () => {
-                                    this.items.elseItems.push(await (async () => {
-                                        let cell = this.createItemObj(sheet, row);
-                                        (await cell).gender = null;
-                                        return cell;
-                                    })());
+                                    let item = await BaseResponder.getItem(sheet, row, DestinyResponder, this.headerSize);
+                                    if (item) {
+                                        this.items.elseItems.push(item);
+                                    }
                                 })();
                             }
                             break;
                     }
                 }).then(console.log(`${sheet.title} indexed`));
-                stopTime = new Date();
             });
+        }).then(() => {
+            stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
             console.log("Destiny Ready");

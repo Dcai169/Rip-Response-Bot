@@ -33,11 +33,11 @@ module.exports = {
     usage: '<query>, [<game>]',
     guildOnly: false,
     execute(message, query, game) {
-        if (checkAbort(message, query)) {
+        if (checkAbort(message, query)) { // check if there should be any response
             return;
         }
 
-        if (!!game && query.trim() === 'reload' && ['191624702614175744', games[game].obj.ownerId].includes(message.author.id)) {
+        if (game && query.trim() === 'reload' && ['191624702614175744', games[game].obj.ownerId].includes(message.author.id)) {
             message.channel.send(`Reloading ${baseResponder.capitalizeWord(game)} indexes. This can take up to a minute.`);
             games[game].obj.loadIndexes(() => {message.channel.send(`${baseResponder.capitalizeWord(game)} indexes reloaded.`)});
             return;

@@ -3,7 +3,7 @@ const levenshtien = require("damerau-levenshtein");
 const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
-    constructor(doc, game, ownerId) {
+    constructor(doc, game, ownerId, headerSize = undefined) {
         if (new.target === BaseResponder) {
             throw new TypeError("BaseResponder instances should not be constructed directly!");
         }
@@ -11,6 +11,7 @@ class BaseResponder {
         this.doc = doc;
         this.game = game;
         this.ownerId = ownerId;
+        this.headerSize = headerSize;
         
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
@@ -35,6 +36,13 @@ class BaseResponder {
 
     async createItemObj(sheet, row) {
         // create an object that represents an item
+    }
+
+    static async getItem(sheet, row, responder, headerSize) {
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).textFormat.fontSize < headerSize) { // Header and empty row detection
+            // console.log(responder.createItemObj)
+            return await responder.createItemObj(sheet, row);
+        }
     }
 
     loadIndexes(callback = () => { }) {

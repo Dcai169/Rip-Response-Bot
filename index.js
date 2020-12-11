@@ -5,7 +5,7 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const evaluateReplace = require('./evaluateReplace.js');
-const stripRegEx = require('./redrix.js').stripRegEx;
+const parseQuery = require('./redrix.js').parseQuery;
 const searchCmd = require('./commands/search.js');
 
 function errorResponse(err, msg, errCode = undefined) {
@@ -40,7 +40,7 @@ bot.on('message', msg => {
 
     let query = null;
     if (msg.author.id !== bot.user.id) {
-        query = stripRegEx(msg.content);
+        query = parseQuery(msg.content, msg);
         if (!Array.isArray(query) && query) {
             query = [query];
         }
@@ -73,29 +73,12 @@ bot.on('message', msg => {
         }
 
     } else if (query) { // if the filters found something
-        let game = (() => { // determine what indexes should be queried
-            if (msg.content.includes('?D')) {
-                return 'destiny';
-            } else if (msg.content.includes('?H')) {
-                return 'halo';
-            } else {
-                switch (evaluateReplace(msg.channel.guild, {replacement: msg.channel.guild.id})) {
-                    case '514059860489404417':
-                        return 'destiny';
-                    case '671183775454986240':
-                        return 'halo';
-                    default:
-                        return null;
-                }
-            }
-        })();
-
         try {
             query.forEach((queryI) => {
                 // Execute search command
                 if (queryI) {
-                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI}' of game ${game}`);
-                    console.log(searchCmd.execute(msg, queryI, game));
+                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI.queryText}' of game ${queryI.game}`);
+                    console.log(searchCmd.execute(msg, queryI.queryText, queryI.game));
                     stopTime = new Date();
                     console.log(`Responded in ${stopTime - startTime}ms`);
                     console.log();

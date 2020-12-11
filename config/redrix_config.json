@@ -2,19 +2,23 @@
     "regEx0": [
         [
             "^\\?_",
-            "gi"
+            "gi",
+            null
         ],
         [
             "^\\?I",
-            "gi"
+            "gi",
+            null
         ],
         [
             "^\\?D",
-            "gi"
+            "gi",
+            "destiny"
         ],
         [
             "^\\?H",
-            "gi"
+            "gi",
+            "halo"
         ]
     ],
     "regEx1": [
