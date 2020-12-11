@@ -98,13 +98,13 @@ class BaseResponder {
         // generate response text
         if (results) {
             if (results.length === 1) {
-                response = this.resultResponse(results[0], responderClass); 
+                response = responderClass.resultResponse(results[0], responderClass); 
             } else if (results.length === 0) { // fall back if no result
-                response = this.fallbackResponse();
+                response = responderClass.fallbackResponse();
             } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
                 response = "Your query returned multiple results.\n"
                 results.forEach((res) => {
-                    response += `${this.resultResponse(res, responderClass)}\n`;
+                    response += `${responderClass.resultResponse(res, responderClass)}\n`;
                 });
             }
         }
