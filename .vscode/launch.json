@@ -23,8 +23,4 @@
             "program": "${workspaceFolder}/index.js"
         }
     ],
-    "resolveSourceMapLocations": [
-        "${workspaceFolder}/**",
-        "!**/node_modules/**"
-    ]
 }
