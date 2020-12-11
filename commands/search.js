@@ -55,13 +55,12 @@ module.exports = {
         if (response) {
             response = response.trim(); // remove extra whitespace
             if (response.length >= 2000) { // discord has a limit of 2000 chars per message
-                message.reply('Your query generated a response that is too long!');
+                return message.reply('Your query generated a response that is too long!');
             } else if (response === '') {
                 return; // Can't send an empty message
             } else {
-                message.channel.send(response);
+                return message.channel.send(response);
             }
         }
-        return response;
     }
 };
