@@ -13,17 +13,17 @@ class HaloResponder extends BaseResponder {
     resetIndexes() {
         this.ready = false;
         this.items = {
-            "Halo CE": [],
-            "Halo CEA": [],
-            "Halo 2 Classic": [],
-            "Halo 2 Anniversary": [],
-            "Halo 3": [],
-            "Halo 3: ODST": [],
-            "Halo Reach": [],
-            "Halo 4": [],
-            "Halo 5": [],
-            "Halo Wars": [],
-            "Halo Wars 2": []
+            'Halo CE': [],
+            'Halo CEA': [],
+            'Halo 2 Classic': [],
+            'Halo 2 Anniversary': [],
+            'Halo 3': [],
+            'Halo 3: ODST': [],
+            'Halo Reach': [],
+            'Halo 4': [],
+            'Halo 5': [],
+            'Halo Wars': [],
+            'Halo Wars 2': []
         };
     }
 
@@ -58,7 +58,7 @@ class HaloResponder extends BaseResponder {
         }).then(() => {
             stopTime = new Date();
             console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
-            console.log("Halo Ready");
+            console.log('Halo Ready');
             this.ready = true;
             callback();
         });

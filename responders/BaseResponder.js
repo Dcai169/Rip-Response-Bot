@@ -1,11 +1,11 @@
 require('dotenv').config({ path: './config.env' });
-const levenshtien = require("damerau-levenshtein");
+const levenshtien = require('damerau-levenshtein');
 const evaluateReplace = require('../evaluateReplace.js');
 
 class BaseResponder {
-    constructor(doc, game, ownerId, headerSize = undefined) {
+    constructor(doc, game, ownerId, headerSize = 12) {
         if (new.target === BaseResponder) {
-            throw new TypeError("BaseResponder instances should not be constructed directly!");
+            throw new TypeError('BaseResponder instances should not be constructed directly!');
         }
 
         this.doc = doc;
@@ -39,7 +39,7 @@ class BaseResponder {
     }
 
     static async getItem(sheet, row, responder, headerSize) {
-        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).textFormat.fontSize < headerSize) { // Header and empty row detection
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < headerSize) { // Header and empty row detection
             // console.log(responder.createItemObj)
             return await responder.createItemObj(sheet, row);
         }
@@ -58,8 +58,8 @@ class BaseResponder {
     // SEARCHING
     itemFilter(cell) { // return true or false based on if the item should be included or not
         return levenshtien((!!cell.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
-            cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, "").replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, "") : // if it does exist, do more filtering
-            ""), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
+            cell.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
+            ''), this.toLowerCase()).similarity > process.env.SIMILARITY_THRESHOLD // the Damerau-Levenshtien distance must greater than the specified number
     }
 
     search() {
@@ -78,11 +78,11 @@ class BaseResponder {
     }
 
     static generateQualifierString() {
-        // return a string with all qualifiers i.e. "male warlock"
+        // return a string with all qualifiers i.e. 'male warlock'
     }
 
     static generateFullyQualifiedName() {
-        // return a string that includes all qualifiers and the item name i.e. "male warlock seventh seraph"
+        // return a string that includes all qualifiers and the item name i.e. 'male warlock seventh seraph'
     }
 
     static resultResponse(result, responderClass) {
@@ -98,13 +98,13 @@ class BaseResponder {
         // generate response text
         if (results) {
             if (results.length === 1) {
-                response = this.resultResponse(results[0], responderClass); 
+                response = responderClass.resultResponse(results[0], responderClass); 
             } else if (results.length === 0) { // fall back if no result
-                response = this.fallbackResponse();
+                response = responderClass.fallbackResponse();
             } else { // TODO: If an entry matches the query with 100% similarity, respond with only that entry
-                response = "Your query returned multiple results.\n"
+                response = 'Your query returned multiple results.\n'
                 results.forEach((res) => {
-                    response += `${this.resultResponse(res, responderClass)}\n`;
+                    response += `${responderClass.resultResponse(res, responderClass)}\n`;
                 });
             }
         }

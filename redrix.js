@@ -23,7 +23,7 @@ function removeArticlesLocal(inputString) {
 
 function parseQueryRecursable(inputText, msg = undefined) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ''); // remove punctuation from the end of the string
-    inputText = inputText.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, ''); // remove diacritics
+    inputText = inputText.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove diacritics
 
     let game;
     let normalized = inputText;
@@ -34,7 +34,7 @@ function parseQueryRecursable(inputText, msg = undefined) {
         normalized = normalized.replace(regex, '');
     });
 
-    let sentences = normalized.trim().replace(/([.?!])\s*(?=[A-Z])/gi, "$1|").split("|");
+    let sentences = normalized.trim().replace(/([.?!])\s*(?=[A-Z])/gi, '$1|').split('|');
 
     if (sentences.length === 1) {
         normalized = sentences.shift();
@@ -42,14 +42,14 @@ function parseQueryRecursable(inputText, msg = undefined) {
         return sentences.map(sentence => parseQueryRecursable(sentence, msg));
     }
 
-    if (inputText.includes("\n")) { // newlines bad
+    if (inputText.includes('\n')) { // newlines bad
         return null;
     }
 
     let query = normalized;
 
     regexPasses[1].forEach(regex => {
-        query = query.replace(regex, "");
+        query = query.replace(regex, '');
     });
 
     // exit early if nothing has changed
@@ -62,7 +62,7 @@ function parseQueryRecursable(inputText, msg = undefined) {
     }
 
     regexPasses[2].forEach(regex => {
-        query = query.replace(regex, "");
+        query = query.replace(regex, '');
     });
 
     query = removeArticlesLocal(query);
