@@ -74,8 +74,9 @@ class WarframeResponder extends BaseResponder {
     }
 
     static resultResponse(result) {
-        let response = `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}\n`;
+        let response = `The ${this.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.baseRip, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
         // let sfmPortCount = !!result.sfm1 + !!result.sfm2 + !!result.sfm3;
+        // response += '\n';
         // if (sfmPortCount === 1) {
         //     response += `A SFM port is available at <${[result.sfm1, result.sfm2, result.sfm3].filter((res) => {return !!res}).join('')}>`;
         // } else if (sfmPortCount === 2) {
