@@ -1,19 +1,36 @@
-const fs = require('fs');
-require('dotenv').config({ path: './config/config.env' });
-const version = require('./package.json').version
+// require('dotenv').config({ path: './config/config.env' });
 const Discord = require('discord.js');
-const bot = new Discord.Client({presence: {activity: {name: version, type: 'PLAYING'}}});
-bot.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const evaluateReplace = require('./evaluateReplace.js');
+const express = require('express');
+const fs = require('fs');
+const version = require('./package.json').version
+// const evaluateReplace = require('./evaluateReplace.js');
 const parseQuery = require('./redrix.js').parseQuery;
 const searchCmd = require('./commands/search.js');
+const bot = new Discord.Client({ presence: { activity: { name: version, type: 'PLAYING' } } });
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+// Express Config
+const web = express();
+const PORT = process.env.PORT || 3000;
+
+web.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
+web.get('/auth', (req, res) => {
+    res.send('OAuth2 Flow Completed');
+});
+
+web.listen(PORT, () => {
+    console.log(`Express running on port ${PORT}`);
+});
 
 function errorResponse(err, msg, errCode = undefined) {
     console.error(err);
     msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ''));
 }
 
+bot.commands = new Discord.Collection();
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
 
