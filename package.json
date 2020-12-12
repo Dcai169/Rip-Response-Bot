@@ -4,6 +4,7 @@
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DCai169",
