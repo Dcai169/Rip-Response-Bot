@@ -2,7 +2,7 @@
   "name": "rip_response_bot",
   "version": "1.5.1",
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
