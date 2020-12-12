@@ -62,6 +62,9 @@ bot.on('message', msg => {
         if (!Array.isArray(query) && query) {
             query = [query];
         }
+    } else { // do not respond to self
+        // record the message and channel id somewhere
+        return;
     }
 
     // Handle if the command exists
