@@ -1,0 +1,131 @@
+# Halo
+Master Chief
+Cortana
+Keyes
+Sargent Johnson
+Marine
+Insurrectionist
+Pilot
+Miranda Keyes
+Lasky
+Spartan
+Buck
+Rookie
+Dutch
+Mickey
+Romeo
+Dare
+Carter
+Kat
+Jun
+Emile
+Jorge
+Noble 6
+Fred
+Kelly
+Linda
+Locke
+Tanaka
+Vale
+
+Assault Rifle
+Magnum
+Shotgun
+Sniper Rifle
+Rocket Launcher, SPNKR
+Frag Grenade
+Battle Rifle
+Mounted Light Machine Gun, LMG
+Sub Machine Gun, SMG
+Directed Marksman Rifle, DMR
+Grenade Launcher
+Target Locator
+Target Designator
+Spartan Laser
+Flamethrower
+Saw
+Sticky Detenator
+Railgun
+
+Warthog
+Scorpion
+Pelican
+Longsword
+Albatross
+Elephant
+Hornet
+Falcon
+Sabre
+Forklift
+Mongoose
+Gungoose
+Wasp
+Mantis
+Escape Pod
+ODST Drop Pod
+
+Arbiter
+Shipmaster
+Heretic Leader
+Prophet of Regret
+Prophet of Mercy
+Propet of Truth
+Tartarus
+
+Elite
+Grunt
+Jackal
+Hunter
+Brute
+Skirmisher
+Drone
+Engineer
+
+Needler
+Plasma Rifle
+Plasma Pistol
+Carbine
+Energy Sword
+Gravity Hammer
+Beam Rifle
+Brute Shot
+Fuel Rod Cannon
+Brute Spiker
+Focus Rifle
+Concussion Rifle
+Plasma Repeater
+Plasma Launcher
+Storm Rifle
+Plasma Grenade
+Spike Grenade
+
+Phantom
+Shadow
+Spectre
+Spirit
+Ghost
+Banshee
+Wraith
+Scarab
+Shade Turret
+Prowler
+Chopper
+Revenant
+Lich
+
+Sentinel
+Guilty Spark
+
+Sentinel Beam
+Boltshot
+Suppressor
+Incineration Cannon
+Lightrifle
+Pulse Grenade
+Scattershot
+Binary Rifle
+Splinter Grenade
+Splinter Turret
+Suppressor
+
+Phaeton
