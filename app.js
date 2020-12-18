@@ -13,24 +13,7 @@ function errorResponse(err, msg, errCode = undefined) {
     msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ''));
 }
 
-bot.commands = new Discord.Collection();
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-
-    // set a new item in the Collection
-    // with the key as the command name and the value as the exported module
-    bot.commands.set(command.name, command);
-}
-
-// Login with the bot token
-const TOKEN = process.env.TOKEN;
-bot.login(TOKEN).then((data) => { console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`) }, (err) => { console.error(err); });
-
-bot.on('ready', () => {
-    console.info('Connected to Discord');
-});
-
-bot.on('message', msg => {
+function messageEventHandler(msg) {
     let startTime = new Date();
     let stopTime = undefined;
     // const args = msg.content.split(/ +/);
@@ -93,4 +76,20 @@ bot.on('message', msg => {
             errorResponse(error, msg);
         }
     }
-});
+}
+
+bot.commands = new Discord.Collection();
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+
+    // set a new item in the Collection
+    // with the key as the command name and the value as the exported module
+    bot.commands.set(command.name, command);
+}
+
+// Login with the bot token
+bot.login(process.env.TOKEN).then((data) => { console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`) }, (err) => { console.error(err); });
+
+bot.on('ready', () => { console.info('Connected to Discord') });
+
+bot.on('message', messageEventHandler);

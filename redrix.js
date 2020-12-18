@@ -20,18 +20,41 @@ function removeArticlesLocal(inputString) {
     return inputString.trim();
 }
 
+function expandGamePrefix(inputString) {
+    let game;
+    regexPasses[0].forEach((regex, index) => { // Command Prefix
+        if (regex.test(inputString) && prefixBindings[index]) {
+            game = prefixBindings[index];
+        }
+        inputString = inputString.replace(regex, '');
+    });
+    return {normalized: inputString, game: game};
+}
+
+function expandGameServerID(msg) {
+    let game;
+    let serverId = (msg.channel.guild ? msg.channel.guild.id : null);
+    switch (serverId) {
+        case '514059860489404417':
+            game = 'destiny';
+            break;
+        case '671183775454986240':
+            game = 'halo';
+            break;
+        case '724365082787708949':
+            game = 'warframe';
+            break;
+        default:
+            break;
+    }
+    return game;
+}
+
 function parseQueryRecursable(inputText, msg = undefined) {
     inputText = inputText.trim().replace(/(\W)?$/gi, ''); // remove punctuation from the end of the string
     inputText = inputText.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove diacritics
-
-    let game;
-    let normalized = inputText;
-    regexPasses[0].forEach((regex, index) => { // Command Prefix
-        if (regex.test(normalized) && prefixBindings[index]) {
-            game = prefixBindings[index];
-        }
-        normalized = normalized.replace(regex, '');
-    });
+    
+    let {normalized, game} = expandGamePrefix(inputText);
 
     let sentences = normalized.trim().replace(/([.?!])\s*(?=[A-Z])/gi, '$1|').split('|');
 
@@ -41,9 +64,9 @@ function parseQueryRecursable(inputText, msg = undefined) {
         return sentences.map(sentence => parseQueryRecursable(sentence, msg));
     }
 
-    if (inputText.includes('\n')) { // newlines bad
-        return null;
-    }
+    // if (inputText.includes('\n')) { // newlines bad
+    //     return null;
+    // }
 
     let query = normalized;
 
@@ -51,13 +74,10 @@ function parseQueryRecursable(inputText, msg = undefined) {
         query = query.replace(regex, '');
     });
 
-    // exit early if nothing has changed
-    if (query === inputText) {
+    // exit early if nothing has changed or if the query to too long
+    // if its too long its likely to be a false positive
+    if (query.length > 50 && query === inputText) {
         return;
-    }
-
-    if (query.length > 50) { // mostly to cut down on false positives
-        return null;
     }
 
     regexPasses[2].forEach(regex => {
@@ -67,17 +87,7 @@ function parseQueryRecursable(inputText, msg = undefined) {
     query = removeArticlesLocal(query);
 
     if (!game && msg) { // if game was not defined by the prefix
-        let serverId = (msg.channel.guild ? msg.channel.guild.id : null);
-        switch (serverId) {
-            case '514059860489404417':
-                game = 'destiny';
-                break;
-            case '671183775454986240':
-                game = 'halo';
-                break;
-            default:
-                break;
-        }
+        game = expandGameServerID(msg);
     }
 
     return {
