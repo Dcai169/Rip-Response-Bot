@@ -16,8 +16,7 @@ Object.keys(filterJSONList).forEach((pass, index) => {
 });
 
 function removeArticlesLocal(inputString) {
-    inputString = inputString.replace(/\b((the\s)?((an?)\s)?(is)?)\b/gi, '');
-    inputString = inputString.replace(/\bthe\b/gi, '');
+    inputString = inputString.replace(/\b((the\s)?((an?\s))?(is\s)?)\b/gi, '');
     return inputString.trim();
 }
 
