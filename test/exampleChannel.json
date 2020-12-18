@@ -1,0 +1,17 @@
+{
+    "type": "text",
+    "deleted": false,
+    "id": "705230123745542188",
+    "name": "general",
+    "nsfw": false,
+    "rawPosition": 0,
+    "parentID": "705230123745542185",
+    "permissionOverwrites": [],
+    "topic": null,
+    "lastMessageID": "789604197888557086",
+    "rateLimitPerUser": 0,
+    "lastPinTimestamp": 1607742233214,
+    "guild": "705230123745542184",
+    "messages": [],
+    "createdTimestamp": 1588210364043
+}

@@ -1,6 +1,10 @@
 const assert = require('assert');
-
-const redrix = require('../redrix.js')
+// require('dotenv').config({path:'../config/config.env'});
+// const searchCmd = require('../commands/search.js').execute;
+const redrix = require('../redrix.js');
+// const Discord = require('discord.js');
+// const testBot = new Discord.Client();
+// testBot.login(process.env.TOKEN);
 
 describe('Redrix', () => {
     describe('Query Parsing', () => {
@@ -24,3 +28,9 @@ describe('Redrix', () => {
         });
     });
 });
+
+// describe('Search Command', () => {
+//     describe('');
+// });
+
+// testBot.destroy();
