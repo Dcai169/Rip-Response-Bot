@@ -101,8 +101,17 @@
             "replacement": "Promethium Spur"
         },
         {
-            "replaces": ["purple shooty cunt"],
+            "replaces": [
+                "purple shooty cunt"
+            ],
             "replacement": "shrieker"
+        },
+        {
+            "replaces": [
+                "croatia",
+                "croissant"
+            ],
+            "replacement": "Crota"
         }
     ],
     "halo": [
@@ -119,7 +128,5 @@
             "replacement": "Warthog"
         }
     ],
-    "warframe": [
-
-    ]
+    "warframe": []
 }
