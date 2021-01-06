@@ -9,6 +9,10 @@
   },
   "author": "DCai169",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Dcai169/Rip-Response-Bot.git"
+  },
   "dependencies": {
     "async-limiter": "^2.0.0",
     "compromise": "^13.2.0",
