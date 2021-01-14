@@ -112,6 +112,12 @@
                 "croissant"
             ],
             "replacement": "Crota"
+        },
+        {
+            "replaces": [
+                "space of aids"
+            ],
+            "replacement": "Ace of Spades"
         }
     ],
     "halo": [
