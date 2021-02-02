@@ -86,7 +86,8 @@ class BaseResponder {
     }
 
     static resultResponse(result, responderClass) {
-        return `The ${responderClass.generateFullyQualifiedName(result)} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
+        let name = responderClass.generateFullyQualifiedName(result)
+        return `${(name.substring(0, 4) === 'The ' ? '' : 'The ')}${name} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
     }
 
     static fallbackResponse(query) {
