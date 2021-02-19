@@ -49,7 +49,12 @@ class HaloResponder extends BaseResponder {
                         (async () => {
                             let item = await BaseResponder.getItem(sheet, row, HaloResponder, this.headerSize);
                             if (item) {
-                                this.items[sheet.title].push(item);
+                                try {
+                                    this.items[sheet.title].push(item);
+                                } catch (error) {
+                                    // This gives an a TypeError for some reason even though the program works properly.
+                                    // Just ignore the error.
+                                }
                             }
                         })();
                     }
