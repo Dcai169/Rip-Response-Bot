@@ -1,15 +1,25 @@
-// require('dotenv').config({ path: './config/config.env' });
-const Discord = require('discord.js');
+const env = process.env.NODE_ENV || 'development';
 const fs = require('fs');
-const version = require('./package.json').version
-// const evaluateReplace = require('./evaluateReplace.js');
+const log = require('pino')();
+
+const Discord = require('discord.js');
+const { CommandoClient } = require('discord.js-commando');
+
+const client = CommandoClient({ commandPrefix: '?_', owner: '191624702614175744', invite: 'https://discord.gg/9KWKcEfg' });
+// client.registry;
+
+// const bot = new Discord.Client({ presence: { activity: { name: require('./package.json').version, type: 'PLAYING' } } });
+// const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
 const parseQuery = require('./redrix.js').parseQuery;
 const searchCmd = require('./commands/search.js');
-const bot = new Discord.Client({ presence: { activity: { name: version, type: 'PLAYING' } } });
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-function errorResponse(err, msg, errCode = undefined) {
-    console.error(err);
+if (env === 'development') {
+    require('dotenv').config({ path: './config/config.env' });
+}
+
+function errorResponse(err, msg, errCode) {
+    log.error(err);
     msg.reply('There was an error trying to execute that command!' + (!!errCode ? ` Error Code: ${errCode}` : ''));
 }
 
@@ -24,10 +34,10 @@ for (const file of commandFiles) {
 
 // Login with the bot token
 const TOKEN = process.env.TOKEN;
-bot.login(TOKEN).then((data) => { console.log(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`) }, (err) => { console.error(err); });
+bot.login(TOKEN).then((data) => { log.info(`Logged in with username ${bot.user.tag} (ID: ${bot.user.id})`) }, (err) => { log.error(err); });
 
 bot.on('ready', () => {
-    console.info('Connected to Discord');
+    log.info('Connected to Discord');
 });
 
 bot.on('message', msg => {
@@ -66,13 +76,12 @@ bot.on('message', msg => {
 
         // execute the command
         try {
-            console.log(command.execute(msg, args));
+            log.info(command.execute(msg, args));
         } catch (error) {
             errorResponse(error, msg);
         } finally {
             stopTime = new Date();
-            console.log(`Responded in ${stopTime - startTime}ms`);
-            console.log();
+            log.debug(`Responded in ${stopTime - startTime}ms`);
             return;
         }
 
@@ -81,11 +90,10 @@ bot.on('message', msg => {
             query.forEach((queryI) => {
                 // Execute search command
                 if (queryI) {
-                    console.log(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI.queryText}' of game ${queryI.game}`);
-                    console.log(searchCmd.execute(msg, queryI.queryText, queryI.game));
+                    log.trace(`User ${msg.author.tag} (ID: ${msg.author.id}) in ${(!!msg.guild ? `channel \#${msg.channel.name} (Chnl ID: ${msg.channel.id}) of server ${msg.guild.name}` : `a Direct Message`)} requested '${queryI.queryText}' of game ${queryI.game}`);
+                    log.info(searchCmd.execute(msg, queryI.queryText, queryI.game));
                     stopTime = new Date();
-                    console.log(`Responded in ${stopTime - startTime}ms`);
-                    console.log();
+                    log.debug(`Responded in ${stopTime - startTime}ms`);
                     return;
                 }
             });

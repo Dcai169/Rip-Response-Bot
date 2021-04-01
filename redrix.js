@@ -42,9 +42,9 @@ function parseQueryRecursable(inputText, msg = undefined) {
         return sentences.map(sentence => parseQueryRecursable(sentence, msg));
     }
 
-    if (inputText.includes('\n')) { // newlines bad
-        return null;
-    }
+    // if (inputText.includes('\n')) { // newlines bad
+    //     return null;
+    // }
 
     let query = normalized;
 
