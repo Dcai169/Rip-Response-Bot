@@ -1,15 +1,10 @@
 const env = process.env.NODE_ENV || 'development';
 const fs = require('fs');
 const log = require('pino')();
-
 const Discord = require('discord.js');
-const { CommandoClient } = require('discord.js-commando');
 
-const client = CommandoClient({ commandPrefix: '?_', owner: '191624702614175744', invite: 'https://discord.gg/9KWKcEfg' });
-// client.registry;
-
-// const bot = new Discord.Client({ presence: { activity: { name: require('./package.json').version, type: 'PLAYING' } } });
-// const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const bot = new Discord.Client({ presence: { activity: { name: require('./package.json').version, type: 'PLAYING' } } });
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 const parseQuery = require('./redrix.js').parseQuery;
 const searchCmd = require('./commands/search.js');

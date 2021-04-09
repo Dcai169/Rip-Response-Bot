@@ -16,17 +16,7 @@ class BaseResponder {
         const KEY = process.env.GSHEETAPI;
         this.doc.useApiKey(KEY);
         this.loadIndexes();
-        // this.readyListener = (val) => {};
     }
-
-    // get ready() {
-    //     return this.ready;
-    // }
-
-    // set ready(val) {
-    //     this.ready = !!val;
-    //     this.readyListener(val);
-    // }
 
     // INDEXING
     resetIndexes() {
@@ -86,8 +76,9 @@ class BaseResponder {
     }
 
     static resultResponse(result, responderClass) {
-        let name = responderClass.generateFullyQualifiedName(result)
-        return `${(name.substring(0, 4) === 'The ' ? '' : 'The ')}${name} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
+        let name = responderClass.generateFullyQualifiedName(result);
+        // return `${(name.substring(0, 4) === 'The ' ? '' : 'The ')}${name} model is ${evaluateReplace(result.entry.hyperlink, { replacement: 'not available yet.', callback: (res) => { return `available at <${res}>.` } })}`;
+        return `${evaluateReplace(result.entry.hyperlink, { replacement: '❌', callback: (res) => { return '✅' } })} ${name}${evaluateReplace(result.entry.hyperlink, { replacement: '', callback: (res) => { return `: <${res}>` } })}`;
     }
 
     static fallbackResponse(query) {
