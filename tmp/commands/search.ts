@@ -1,9 +1,8 @@
-const baseResponder = require('../responders/BaseResponder.js');
-const destinyResponder = require('../responders/DestinyResponder.js');
-const haloResponder = require('../responders/HaloResponder.js');
-const warframeResponder = require('../responders/WarframeResponder.js');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const evaluateReplace = require('../evaluateReplace.js');
+import baseResponder = require('../../src/responders/BaseResponder.js.js.js');
+import destinyResponder = require('../../src/responders/DestinyResponder.js.js.js');
+import haloResponder = require('../../src/responders/HaloResponder.js.js.js');
+import warframeResponder = require('../../src/responders/WarframeResponder.js.js.js');
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 const games = {
     destiny: {

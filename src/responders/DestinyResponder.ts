@@ -1,11 +1,13 @@
-const fs = require('fs');
-const BaseResponder = require('./BaseResponder.js');
+import { SheetBaseResponder } from './SheetBaseResponder';
+import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+import Discord = require('discord.js');
 const removeArticles = require('../redrix.js').removeArticles;
-const queryOverrides = JSON.parse(fs.readFileSync('./config/query_overrides.json', 'utf8')).destiny;
-const evaluateReplace = require('../evaluateReplace.js');
+const queryOverrides = JSON.parse(require('fs').readFileSync('./config/query_overrides.json', 'utf8')).destiny;
 
-class DestinyResponder extends BaseResponder {
-    constructor(doc) {
+export class DestinyResponder extends SheetBaseResponder {
+    items: { hunterArmor: any[]; titanArmor: any[]; warlockArmor: any[]; elseItems: any[]; };
+
+    constructor(doc: GoogleSpreadsheet) {
         super(doc, 'destiny', '461093992499773440', 12);
     }
 
@@ -20,7 +22,7 @@ class DestinyResponder extends BaseResponder {
         };
     }
 
-    static async createItemObj(sheet, row) {
+    static async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number) {
         return {
             entry: sheet.getCell(row, 0),
             gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : null),
@@ -31,10 +33,6 @@ class DestinyResponder extends BaseResponder {
     loadIndexes(callback = () => { }) {
         // clear arrays
         this.resetIndexes();
-
-        // start timer
-        let startTime = new Date();
-        let stopTime = undefined;
 
         // get new data
         this.doc.loadInfo().then(() => {
@@ -88,8 +86,6 @@ class DestinyResponder extends BaseResponder {
                 }).then(console.log(`${sheet.title} indexed`));
             });
         }).then(() => {
-            stopTime = new Date();
-            console.log(`${this.doc.title} indexed in ${stopTime - startTime}ms`);
             // probably needs to be async
             console.log('Destiny Ready');
             this.ready = true;
@@ -102,7 +98,7 @@ class DestinyResponder extends BaseResponder {
         return super.itemFilter(cell) || cell.aliases.includes(this.toLowerCase()); // or if the query matches an alias
     }
 
-    search(_msg, query) {
+    search(interaction: Discord.Interaction) {
         /* 
         message: Message object as described by the discord.js library.
         query: The query the user searched.
