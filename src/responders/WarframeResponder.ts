@@ -6,7 +6,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 
 export class WarframeResponder extends SheetBaseResponder {
     ready: boolean;
-    items: any[];
+    items: warframeEntry[];
 
     constructor(doc: GoogleSpreadsheet) {
         super(doc, 'warframe', '190672762270908416');
@@ -18,7 +18,7 @@ export class WarframeResponder extends SheetBaseResponder {
         this.items = [];
     }
 
-    async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number) {
+    async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<warframeEntry> {
         return {
             name: sheet.getCell(row, 0).formattedValue,
             baseRip: evaluateReplace(sheet.getCell(row, 3).hyperlink),
@@ -29,38 +29,34 @@ export class WarframeResponder extends SheetBaseResponder {
         };
     }
 
-    loadIndexes(callback = () => { }) {
+    async loadIndexes() {
         // clear arrays
         this.resetIndexes();
 
         // get new data
-        this.doc.loadInfo().then(() => {
-            this.doc.sheetsByIndex.forEach(sheet => {
-                sheet.loadCells().then(() => {
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            let item = await this.getItem(sheet, row, this.headerSize);
-                            if (item) {
-                                this.items.push(item);
-                            }
-                        })();
+        await this.doc.loadInfo();
+        this.doc.sheetsByIndex.forEach(async sheet => {
+            await sheet.loadCells();
+            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                (async () => {
+                    let item = await this.getItem(sheet, row, this.headerSize);
+                    if (item) {
+                        this.items.push(item);
                     }
-                }).then(() => {console.log(`${sheet.title} indexed`)});
-            });
-        }).then(() => {
-            console.log('Warframe Ready');
-            this.ready = true;
-            callback();
+                })();
+            }
+            console.log(`${sheet.title} indexed`);
         });
+        console.log('Halo Indexed');
+        this.ready = true;
     }
 
     // SEARCHING
-    itemFilter(cell) { // return true or false based on if the item should be included or not
-        return levenshtien((!!cell.name ? // if the cell's formattedValue exists i.e. is not empty
-            cell.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
+    itemFilter(this: string, entry: warframeEntry) { // return true or false based on if the item should be included or not
+        return levenshtien((!!entry.name ? // if the cell's formattedValue exists i.e. is not empty
+            entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
             ''), this).similarity > parseInt(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number
     }
-
 
     search(query: string) {
         let results: warframeEntry[] = [];
@@ -73,7 +69,7 @@ export class WarframeResponder extends SheetBaseResponder {
         return '';
     }
 
-    generateFullyQualifiedName(item) {
-        return `${String(item.name).trim()}`;
+    generateFullyQualifiedName(entry: warframeEntry) {
+        return `${String(entry.name).trim()}`;
     }
 }

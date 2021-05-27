@@ -37,34 +37,31 @@ export class HaloResponder extends SheetBaseResponder {
         };
     }
 
-    loadIndexes(callback = () => { }) {
+    async loadIndexes() {
         // clear arrays
         this.resetIndexes();
 
         // get new data
-        this.doc.loadInfo().then(() => {
-            this.doc.sheetsByIndex.forEach(sheet => {
-                sheet.loadCells().then(() => {
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            let item = await this.getItem(sheet, row, this.headerSize);
-                            if (item) {
-                                try {
-                                    this.items.get(sheet.title).push(item.entry);
-                                } catch (error) {
-                                    // This gives an a TypeError for some reason even though the program works properly.
-                                    // Just ignore the error.
-                                }
-                            }
-                        })();
+        await this.doc.loadInfo();
+        this.doc.sheetsByIndex.forEach(async sheet => {
+            await sheet.loadCells();
+            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                (async () => {
+                    let item = await this.getItem(sheet, row, this.headerSize);
+                    if (item) {
+                        try {
+                            this.items.get(sheet.title).push(item.entry);
+                        } catch (error) {
+                            // This gives an a TypeError for some reason even though the program works properly.
+                            // Just ignore the error.
+                        }
                     }
-                }).then(() => { console.log(`${sheet.title} indexed`) });
-            });
-        }).then(() => {
-            console.log('Halo Ready');
-            this.ready = true;
-            callback();
+                })();
+            }
+            console.log(`${sheet.title} indexed`);
         });
+        console.log('Halo Ready');
+        this.ready = true;
     }
 
     // SEARCHING
@@ -92,8 +89,8 @@ export class HaloResponder extends SheetBaseResponder {
     }
 
     itemFilter(this: string, item: haloEntry) {
-        return levenshtien((!!item.entry.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
-        item.entry.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
+        return levenshtien((!!item.cell.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
+        item.cell.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
             ''), this).similarity > parseInt(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number
     }
 
@@ -102,7 +99,7 @@ export class HaloResponder extends SheetBaseResponder {
     }
 
     generateFullyQualifiedName(responseItem: haloEntry) {
-        return `${this.generateQualifierString(responseItem.game)}${String(responseItem.entry.formattedValue).trim()}`;
+        return `${this.generateQualifierString(responseItem.game)}${String(responseItem.cell.formattedValue).trim()}`;
     }
 
 

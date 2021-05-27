@@ -20,7 +20,7 @@ export abstract class BaseResponder {
     }
 
     // return a string with all qualifiers i.e. 'male warlock'
-    abstract generateQualifierString(item: any): string;
+    abstract generateQualifierString(item: any, options?: {[key: string]: any}): string;
 
     // return a string that includes all qualifiers and the item name i.e. 'male warlock seventh seraph helm'
     abstract generateFullyQualifiedName(item: any): string;
@@ -53,5 +53,3 @@ export abstract class BaseResponder {
         return response;
     }
 }
-
-module.exports = BaseResponder;
