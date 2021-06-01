@@ -1,6 +1,5 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
 import { warframeEntry } from './../types'
-import levenshtien = require('damerau-levenshtein');
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 
 export class WarframeResponder extends SheetBaseResponder {
