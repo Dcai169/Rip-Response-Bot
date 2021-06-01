@@ -1,0 +1,140 @@
+{
+    "724365082787708949": [
+        {
+            "name": "search",
+            "description": "Search Warframe Models",
+            "options": [
+                {
+                    "name": "query",
+                    "type": "STRING",
+                    "description": "The query to search for.",
+                    "required": true
+                }
+            ]
+        }
+    ],
+    "671183775454986240": [
+        {
+            "name": "search",
+            "description": "Search Halo Models",
+            "options": [
+                {
+                    "name": "query",
+                    "type": "STRING",
+                    "description": "The query to search for.",
+                    "required": true
+                },
+                {
+                    "name": "game",
+                    "type": "STRING",
+                    "description": "The game to filter by.",
+                    "required": false,
+                    "choices": [
+                        {
+                            "name": "Halo CE",
+                            "value": "Halo CE"
+                        },
+                        {
+                            "name": "Halo CEA",
+                            "value": "Halo CEA"
+                        },
+                        {
+                            "name": "Halo 2 Classic",
+                            "value": "Halo 2 Classic"
+                        },
+                        {
+                            "name": "Halo 2 Anniversary",
+                            "value": "Halo 2 Anniversary"
+                        },
+                        {
+                            "name": "Halo 2 A Multiplayer",
+                            "value": "Halo 2 A Multiplayer"
+                        },
+                        {
+                            "name": "Halo 3",
+                            "value": "Halo 3"
+                        },
+                        {
+                            "name": "Halo 3: ODST",
+                            "value": "Halo 3: ODST"
+                        },
+                        {
+                            "name": "Halo Reach",
+                            "value": "Halo Reach"
+                        },
+                        {
+                            "name": "Halo 4",
+                            "value": "Halo 4"
+                        },
+                        {
+                            "name": "Halo 5",
+                            "value": "Halo 5"
+                        },
+                        {
+                            "name": "Halo Wars",
+                            "value": "Halo Wars"
+                        },
+                        {
+                            "name": "Halo Wars 2",
+                            "value": "Halo Wars 2"
+                        },
+                        {
+                            "name": "Halo: Spartan Strike",
+                            "value": "Halo: Spartan Strike"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "514059860489404417": [
+        {
+            "name": "search",
+            "description": "Search Destiny Models",
+            "options": [
+                {
+                    "name": "query",
+                    "type": "STRING",
+                    "description": "The query to search for.",
+                    "required": true
+                },
+                {
+                    "name": "class",
+                    "type": "STRING",
+                    "description": "The class to filter by. Applies only to armor.",
+                    "required": false,
+                    "choices": [
+                        {
+                            "name": "Titan",
+                            "value": "titan"
+                        },
+                        {
+                            "name": "Hunter",
+                            "value": "hunter"
+                        },
+                        {
+                            "name": "Warlock",
+                            "value": "warlock"
+                        }
+                    ]
+                },
+                {
+                    "name": "gender",
+                    "type": "STRING",
+                    "description": "The gender to filter by. Applies only to armor.",
+                    "required": false,
+                    "choices": [
+                        {
+                            "name": "Male",
+                            "value": "male"
+                        },
+                        {
+                            "name": "Female",
+                            "value": "female"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
