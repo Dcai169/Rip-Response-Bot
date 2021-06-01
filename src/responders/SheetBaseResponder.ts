@@ -23,8 +23,8 @@ export abstract class SheetBaseResponder extends BaseResponder {
         this.ready = false;
     }
 
-    itemFilter(this: string, entry: Entry) {
-        return levenshtein(entry.cell.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number || entry.aliases.includes(this.toLowerCase()); // or if the query matches an alias
+    itemFilter(this: string, entry: Entry): boolean {
+        return levenshtein((entry.cell.formattedValue ? entry.cell.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : ' '), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number || entry.aliases.includes(this.toLowerCase()); // or if the query matches an alias
     }
 
     abstract createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<{[key: string]: any}>;

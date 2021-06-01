@@ -1,6 +1,7 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
 import { warframeEntry } from './../types'
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+import levenshtein = require('damerau-levenshtein');
 
 export class WarframeResponder extends SheetBaseResponder {
     ready: boolean;
@@ -17,18 +18,22 @@ export class WarframeResponder extends SheetBaseResponder {
     }
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<warframeEntry> {
-        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
-            return {
-                name: sheet.getCell(row, 0).formattedValue,
-                cell: sheet.getCell(row, 3),
-                skins: sheet.getCell(row, 4),
-                sfm1: sheet.getCell(row, 5),
-                sfm2: sheet.getCell(row, 6),
-                sfm3: sheet.getCell(row, 7),
-            };
-        } else {
-            return null;
-        }
+        return new Promise((resolve) => {
+            if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+                resolve({
+                    name: sheet.getCell(row, 0).formattedValue,
+                    cell: sheet.getCell(row, 3),
+                    skins: sheet.getCell(row, 4),
+                    sfm1: sheet.getCell(row, 5),
+                    sfm2: sheet.getCell(row, 6),
+                    sfm3: sheet.getCell(row, 7),
+                });
+            }
+        });   
+    }
+
+    itemFilter(this: string, entry: warframeEntry): boolean {
+        return levenshtein(entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD);
     }
 
     async loadIndexes() {
