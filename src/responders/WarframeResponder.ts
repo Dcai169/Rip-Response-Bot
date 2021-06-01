@@ -1,5 +1,4 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
-import { evaluateReplace } from '../evaluateReplace';
 import { warframeEntry } from './../types'
 import levenshtien = require('damerau-levenshtein');
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
@@ -8,8 +7,8 @@ export class WarframeResponder extends SheetBaseResponder {
     ready: boolean;
     items: warframeEntry[];
 
-    constructor(doc: GoogleSpreadsheet) {
-        super(doc, 'warframe', '190672762270908416');
+    constructor() {
+        super(new GoogleSpreadsheet('12GEPZuEBhQozCZjTTYMAQzK9iqAHuOC6zzr_cn5mi8o'), 'warframe', '190672762270908416');
     }
 
     // INDEXING
@@ -19,14 +18,18 @@ export class WarframeResponder extends SheetBaseResponder {
     }
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<warframeEntry> {
-        return {
-            name: sheet.getCell(row, 0).formattedValue,
-            baseRip: evaluateReplace(sheet.getCell(row, 3).hyperlink),
-            skins: evaluateReplace(sheet.getCell(row, 4).hyperlink),
-            sfm1: evaluateReplace(sheet.getCell(row, 5).hyperlink),
-            sfm2: evaluateReplace(sheet.getCell(row, 6).hyperlink),
-            sfm3: evaluateReplace(sheet.getCell(row, 7).hyperlink),
-        };
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+            return {
+                name: sheet.getCell(row, 0).formattedValue,
+                cell: sheet.getCell(row, 3),
+                skins: sheet.getCell(row, 4),
+                sfm1: sheet.getCell(row, 5),
+                sfm2: sheet.getCell(row, 6),
+                sfm3: sheet.getCell(row, 7),
+            };
+        } else {
+            return null;
+        }
     }
 
     async loadIndexes() {
@@ -37,9 +40,9 @@ export class WarframeResponder extends SheetBaseResponder {
         await this.doc.loadInfo();
         this.doc.sheetsByIndex.forEach(async sheet => {
             await sheet.loadCells();
-            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+            for (let row = 1; row < sheet.rowCount; row++) { // then add the data to the array
                 (async () => {
-                    let item = await this.getItem(sheet, row, this.headerSize);
+                    let item = await this.createItemObj(sheet, row);
                     if (item) {
                         this.items.push(item);
                     }
@@ -47,21 +50,12 @@ export class WarframeResponder extends SheetBaseResponder {
             }
             console.log(`${sheet.title} indexed`);
         });
-        console.log('Halo Indexed');
+        console.log('Warframe Indexed');
         this.ready = true;
     }
 
-    // SEARCHING
-    itemFilter(this: string, entry: warframeEntry) { // return true or false based on if the item should be included or not
-        return levenshtien((!!entry.name ? // if the cell's formattedValue exists i.e. is not empty
-            entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
-            ''), this).similarity > parseInt(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number
-    }
-
-    search(query: string) {
-        let results: warframeEntry[] = [];
-        results = results.concat(this.items.filter(this.itemFilter, query.toLowerCase()));
-        return results
+    search(query: string): warframeEntry[] {
+        return [].concat(this.items.filter(this.itemFilter, query.toLowerCase()));
     }
 
     // RESPONDING

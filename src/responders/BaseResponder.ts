@@ -1,5 +1,6 @@
 require('dotenv').config({ path: './config.env' });
-const evaluateReplace = require('../evaluateReplace.js');
+import { Entry } from 'src/types.js';
+import { evaluateReplace } from '../evaluateReplace.js';
 
 export abstract class BaseResponder {
     game: string;
@@ -12,7 +13,7 @@ export abstract class BaseResponder {
     }
 
     // search indexes for provided query
-    abstract search(query: string, options?: {[key: string]: string}): any[];
+    abstract search(query: string, options?: {[key: string]: string}): Entry[];
 
     // RESPONDING
     static capitalizeWord(word: string) {
@@ -27,7 +28,7 @@ export abstract class BaseResponder {
 
     static resultResponse(result: any, responderClass: BaseResponder) {
         let name = responderClass.generateFullyQualifiedName(result);
-        return `${name}: ${evaluateReplace(result.entry.hyperlink, { replacement: '❌', callback: (res: string) => { return `✔️ <${res}>.` } })}`;
+        return `${name}: ${evaluateReplace(result.cell.hyperlink, { replacement: '❌', callback: (res: string) => { return `✅ <${res}>` } })}`;
     }
 
     static fallbackResponse() {

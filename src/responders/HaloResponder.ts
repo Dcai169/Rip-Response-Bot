@@ -1,13 +1,14 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import levenshtien = require('damerau-levenshtein');
 import { overridePair, haloEntry } from './../types';
-const queryOverrides = JSON.parse(require('fs').readFileSync('./config/query_overrides.json', 'utf8')).halo;
+const queryOverrides = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/query_overrides.json`, 'utf8')).halo;
 
 export class HaloResponder extends SheetBaseResponder {
     items: Map<string, haloEntry[]>;
-    constructor(doc: GoogleSpreadsheet) {
-        super(doc, 'halo', '341213672947056651', 18);
+    ready: boolean;
+
+    constructor() {
+        super(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'), 'halo', '341213672947056651', 18);
     }
 
     // INDEXING
@@ -30,11 +31,15 @@ export class HaloResponder extends SheetBaseResponder {
         ]);
     }
 
-    async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number) {
-        return {
-            entry: sheet.getCell(row, 0),
-            game: sheet.title
-        };
+    async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<haloEntry> {
+        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+            return {
+                cell: sheet.getCell(row, 0),
+                game: sheet.title
+            };
+        } else {
+            return null;
+        }
     }
 
     async loadIndexes() {
@@ -47,14 +52,9 @@ export class HaloResponder extends SheetBaseResponder {
             await sheet.loadCells();
             for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
                 (async () => {
-                    let item = await this.getItem(sheet, row, this.headerSize);
+                    let item = await this.createItemObj(sheet, row);
                     if (item) {
-                        try {
-                            this.items.get(sheet.title).push(item.entry);
-                        } catch (error) {
-                            // This gives an a TypeError for some reason even though the program works properly.
-                            // Just ignore the error.
-                        }
+                        this.items.get(sheet.title).push(item);
                     }
                 })();
             }
@@ -80,22 +80,16 @@ export class HaloResponder extends SheetBaseResponder {
         if (gameToQuery) {
             results = this.items.get(gameToQuery).filter(this.itemFilter, query.toLowerCase());
         } else {
-            for (let key in this.items.keys()) {
-                results = results.concat(this.items.get(key).filter(this.itemFilter, query.toLowerCase()));
-            }
+            this.items.forEach((items) => {
+                results = results.concat(items.filter(this.itemFilter, query.toLowerCase()));
+            });
         }
 
         return results;
     }
 
-    itemFilter(this: string, item: haloEntry) {
-        return levenshtien((!!item.cell.formattedValue ? // if the cell's formattedValue exists i.e. is not empty
-        item.cell.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : // if it does exist, do more filtering
-            ''), this).similarity > parseInt(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number
-    }
-
     generateQualifierString(game: string) {
-        return (game ? game : '');
+        return (game ? `${game} ` : '');
     }
 
     generateFullyQualifiedName(responseItem: haloEntry) {
