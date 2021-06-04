@@ -48,11 +48,15 @@ export class DestinyDriveResponder extends DriveResponderBase {
     reduceName(fullName: string) {
         // (\(|\[)(((\b.*(ed|s)( fix)?)( by|-) \b.*\b)+|(\d)+|(BIOS|Delta))(\)|\])
         return fullName.split('.')[0]
-            .replace(new RegExp('\\((((\\b.*(ed|s)( fix)?)( by|-) \\b.*\\b)+|(\\d)+|(BIOS|Delta|taylor4224))\\)', 'gmi'), '')
+            .replace('_', ' ')
+            .replace(new RegExp('\\((\\d)+\\)', 'gmi'), '')
             .replace('Copy of ', '')
+            .replace(new RegExp('(BIOS|Delta|taylor4224|TheSinkingSponge|Reed)', 'gmi'), '')
+            .replace(new RegExp('(((\\w*(e[rdl]|s)( fix)?( and)? ?))+( by|-) ?[a-zA-Z0-9-_ ]*( ?([,;:&]) )?)+', 'gmi'), '')
             .replace(new RegExp('(fe)?male', 'gmi'), '')
             .replace(new RegExp('(titan|hunter|warlock)', 'gmi'), '')
-            .replace('_', ' ')
+            .replace(new RegExp('(\\[\\])|(\\(\\))', 'gmi'), '')
+            .replace(new RegExp(' {2,}', 'gmi'), ' ')
             .trim();
     }
 
@@ -70,7 +74,7 @@ export class DestinyDriveResponder extends DriveResponderBase {
             ['Season 6_Drifter', []],
             ['Season 5_Forge', []],
             ['Season 4_Outlaw', []],
-            ['Season 3 _Warmind', []],
+            ['Season 3_Warmind', []],
             ['Season 2_Curse of Osiris', []],
             ['Season 1_Red War', []],
             ['NPCs', []],
