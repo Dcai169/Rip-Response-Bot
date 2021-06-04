@@ -93,44 +93,100 @@
             "description": "Search Destiny Models",
             "options": [
                 {
-                    "name": "query",
-                    "type": "STRING",
-                    "description": "The query to search for.",
-                    "required": true
-                },
-                {
-                    "name": "class",
-                    "type": "STRING",
-                    "description": "The class to filter by. Applies only to armor.",
-                    "required": false,
-                    "choices": [
+                    "name": "sheet",
+                    "description": "Search Ripping Sheet Content",
+                    "type": "SUB_COMMAND",
+                    "options": [
                         {
-                            "name": "Titan",
-                            "value": "titan"
+                            "name": "query",
+                            "type": "STRING",
+                            "description": "The query to search for.",
+                            "required": true
                         },
                         {
-                            "name": "Hunter",
-                            "value": "hunter"
+                            "name": "class",
+                            "type": "STRING",
+                            "description": "The class to filter by. Applies only to armor.",
+                            "required": false,
+                            "choices": [
+                                {
+                                    "name": "Titan",
+                                    "value": "titan"
+                                },
+                                {
+                                    "name": "Hunter",
+                                    "value": "hunter"
+                                },
+                                {
+                                    "name": "Warlock",
+                                    "value": "warlock"
+                                }
+                            ]
                         },
                         {
-                            "name": "Warlock",
-                            "value": "warlock"
+                            "name": "gender",
+                            "type": "STRING",
+                            "description": "The gender to filter by. Applies only to armor.",
+                            "required": false,
+                            "choices": [
+                                {
+                                    "name": "Male",
+                                    "value": "male"
+                                },
+                                {
+                                    "name": "Female",
+                                    "value": "female"
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "name": "gender",
-                    "type": "STRING",
-                    "description": "The gender to filter by. Applies only to armor.",
-                    "required": false,
-                    "choices": [
+                    "name": "community",
+                    "description": "Search Community Submissions",
+                    "type": "SUB_COMMAND",
+                    "options": [
                         {
-                            "name": "Male",
-                            "value": "male"
+                            "name": "query",
+                            "type": "STRING",
+                            "description": "The query to search for.",
+                            "required": true
                         },
                         {
-                            "name": "Female",
-                            "value": "female"
+                            "name": "class",
+                            "type": "STRING",
+                            "description": "The class to filter by. Applies only to armor.",
+                            "required": false,
+                            "choices": [
+                                {
+                                    "name": "Titan",
+                                    "value": "titan"
+                                },
+                                {
+                                    "name": "Hunter",
+                                    "value": "hunter"
+                                },
+                                {
+                                    "name": "Warlock",
+                                    "value": "warlock"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "gender",
+                            "type": "STRING",
+                            "description": "The gender to filter by. Applies only to armor.",
+                            "required": false,
+                            "choices": [
+                                {
+                                    "name": "Male",
+                                    "value": "male"
+                                },
+                                {
+                                    "name": "Female",
+                                    "value": "female"
+                                }
+                            ]
                         }
                     ]
                 }

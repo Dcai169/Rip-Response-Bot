@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './config.env' });
+import * as levenshtein from 'damerau-levenshtein';
 import { Entry } from 'src/types.js';
 import { evaluateReplace } from '../evaluateReplace.js';
 
@@ -24,18 +25,18 @@ export abstract class BaseResponder {
     abstract generateQualifierString(item: any, options?: {[key: string]: any}): string;
 
     // return a string that includes all qualifiers and the item name i.e. 'male warlock seventh seraph helm'
-    abstract generateFullyQualifiedName(item: any): string;
+    abstract generateFullyQualifiedName(item: Entry): string;
 
-    static resultResponse(result: any, responderClass: BaseResponder) {
+    static resultResponse(result: Entry, responderClass: BaseResponder) {
         let name = responderClass.generateFullyQualifiedName(result);
-        return `${name}: ${evaluateReplace(result.cell.hyperlink, { replacement: '❌', callback: (res: string) => { return `✅ <${res}>` } })}`;
+        return `${name}: ${evaluateReplace(result.link, { replacement: '❌', callback: (res: string) => { return `✅ <${res}>` } })}`;
     }
 
     static fallbackResponse() {
         return 'No results found.';
     }
 
-    static respond(results: any[], responderClass: BaseResponder) {
+    static respond(results: Entry[], responderClass: BaseResponder) {
         let response = '';
         // generate response text
         if (results) {
@@ -50,7 +51,10 @@ export abstract class BaseResponder {
                 });
             }
         }
-
         return response;
+    }
+
+    itemFilter(this: string, entry: Entry): boolean {
+        return levenshtein((entry.name ? entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') : ' '), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) // the Damerau-Levenshtien distance must greater than the specified number || entry.aliases.includes(this.toLowerCase()); // or if the query matches an alias
     }
 }

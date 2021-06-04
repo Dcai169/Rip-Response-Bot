@@ -1,10 +1,9 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
-import { warframeEntry } from './../types'
+import { warframeEntry } from '../types'
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import levenshtein = require('damerau-levenshtein');
+import * as levenshtein from 'damerau-levenshtein';
 
-export class WarframeResponder extends SheetBaseResponder {
-    ready: boolean;
+export class WarframeSheetResponder extends SheetBaseResponder {
     items: warframeEntry[];
 
     constructor() {
@@ -19,10 +18,11 @@ export class WarframeResponder extends SheetBaseResponder {
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<warframeEntry> {
         return new Promise((resolve) => {
-            if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+            let cell = sheet.getCell(row, 0);
+            if (!!cell.formattedValue && cell.effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
                 resolve({
-                    name: sheet.getCell(row, 0).formattedValue,
-                    cell: sheet.getCell(row, 3),
+                    name: (cell.formattedValue as string).trim(),
+                    link: sheet.getCell(row, 3).hyperlink,
                     skins: sheet.getCell(row, 4),
                     sfm1: sheet.getCell(row, 5),
                     sfm2: sheet.getCell(row, 6),
@@ -52,7 +52,7 @@ export class WarframeResponder extends SheetBaseResponder {
                     }
                 })();
             }
-            console.log(`${sheet.title} indexed`);
+            // console.log(`${sheet.title} indexed`);
         });
         console.log('Warframe Indexed');
         this.ready = true;

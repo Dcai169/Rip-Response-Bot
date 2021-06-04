@@ -9,12 +9,12 @@
       "moduleResolution": "node",
 
       "noImplicitReturns": true,
-      "noUnusedLocals": true,
+      "noUnusedLocals": false,
       "noImplicitAny": true,
       "removeComments": true,
 
       "declaration": true,
-      "sourceMap": true
+      "sourceMap": false
     },
     "include": ["./src/**/*"]
 }

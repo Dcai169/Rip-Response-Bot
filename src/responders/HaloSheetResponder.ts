@@ -1,11 +1,10 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import { overridePair, haloEntry } from './../types';
-const queryOverrides = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/query_overrides.json`, 'utf8')).halo;
+import { overridePair, haloEntry } from '../types';
+const queryOverrides: overridePair[] = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/query_overrides.json`, 'utf8')).halo;
 
-export class HaloResponder extends SheetBaseResponder {
+export class HaloSheetResponder extends SheetBaseResponder {
     items: Map<string, haloEntry[]>;
-    ready: boolean;
 
     constructor() {
         super(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'), 'halo', '341213672947056651', 18);
@@ -32,9 +31,11 @@ export class HaloResponder extends SheetBaseResponder {
     }
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<haloEntry> {
-        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+        let cell = sheet.getCell(row, 0);
+        if (!!cell.formattedValue && cell.effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
             return {
-                cell: sheet.getCell(row, 0),
+                name: (cell.formattedValue as string).trim(),
+                link: cell.hyperlink,
                 game: sheet.title
             };
         } else {
@@ -58,7 +59,7 @@ export class HaloResponder extends SheetBaseResponder {
                     }
                 })();
             }
-            console.log(`${sheet.title} indexed`);
+            // console.log(`${sheet.title} indexed`);
         });
         console.log('Halo Ready');
         this.ready = true;
@@ -70,7 +71,7 @@ export class HaloResponder extends SheetBaseResponder {
 
         if (query === 'chief') { query = 'master chief'; }
         // check if the query should be overridden
-        queryOverrides.forEach((overridePair: overridePair) => {
+        queryOverrides.forEach((overridePair) => {
             if (overridePair.replaces.includes(query.toLowerCase())) {
                 query = overridePair.replacement;
             }
@@ -93,7 +94,7 @@ export class HaloResponder extends SheetBaseResponder {
     }
 
     generateFullyQualifiedName(responseItem: haloEntry) {
-        return `${this.generateQualifierString(responseItem.game)}${String(responseItem.cell.formattedValue).trim()}`;
+        return `${this.generateQualifierString(responseItem.game)}${responseItem.name}`;
     }
 
 

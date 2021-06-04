@@ -1,14 +1,13 @@
 import { SheetBaseResponder } from './SheetBaseResponder';
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import { evaluateReplace } from './../evaluateReplace';
+import { evaluateReplace } from '../evaluateReplace';
 import { destinyEntry, overridePair } from 'src/types';
 import { BaseResponder } from './BaseResponder';
-import levenshtein = require('damerau-levenshtein');
-const queryOverrides = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/query_overrides.json`, 'utf8')).destiny;
+import * as levenshtein from 'damerau-levenshtein';
+const queryOverrides: overridePair[] = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/query_overrides.json`, 'utf8')).destiny;
 
-export class DestinyResponder extends SheetBaseResponder {
+export class DestinySheetResponder extends SheetBaseResponder {
     items: Map<string, destinyEntry[]>;
-    ready: boolean;
 
     constructor() {
         super(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'), 'destiny', '461093992499773440', 12);
@@ -26,9 +25,11 @@ export class DestinyResponder extends SheetBaseResponder {
     }
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<destinyEntry> {
-        if (!!sheet.getCell(row, 0).formattedValue && sheet.getCell(row, 0).effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
+        let cell = sheet.getCell(row, 0); 
+        if (!!cell.formattedValue && cell.effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
             return {
-                cell: sheet.getCell(row, 0),
+                name: (cell.formattedValue as string).trim(),
+                link: cell.hyperlink,
                 gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : undefined),
                 aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(', ').map((alias: string) => { return alias.replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '')}) } })
             };
@@ -38,7 +39,7 @@ export class DestinyResponder extends SheetBaseResponder {
     }
 
     itemFilter(this: string, entry: destinyEntry) {
-        return levenshtein(entry.cell.formattedValue.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '').replace(/ (suit|set)/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase()); 
+        return levenshtein(entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '').replace(/ (suit|set)/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase()); 
     }
 
     async loadIndexes() {
@@ -97,7 +98,7 @@ export class DestinyResponder extends SheetBaseResponder {
                     }
                     break;
             }
-            console.log(`${sheet.title} indexed`);
+            // console.log(`${sheet.title} indexed`);
         });
         console.log('Destiny Ready');
         this.ready = true;
@@ -114,7 +115,7 @@ export class DestinyResponder extends SheetBaseResponder {
         query = query.toLowerCase();
 
         // check if the query should be overridden
-        queryOverrides.forEach((overridePair: overridePair) => {
+        queryOverrides.forEach((overridePair) => {
             if (overridePair.replaces.includes(query.toLowerCase())) {
                 query = overridePair.replacement;
             }
@@ -122,9 +123,9 @@ export class DestinyResponder extends SheetBaseResponder {
 
         let results: destinyEntry[] = [];
         if (armorClass || gender) { // if a class or gender is specified
-            console.log(armorClass, gender);
+            // console.log(armorClass, gender);
             if (armorClass) { // If a class is specified, (Warlock, Titan, Hunter) only look at that classes armor
-                results = this.items.get(`${armorClass}Armor`).filter(this.itemFilter, query);
+                results = results.concat(this.items.get(`${armorClass}Armor`).filter(this.itemFilter, query));
             } else { // Otherwise look at all items
                 for (let key in this.items) {
                     results = results.concat(this.items.get(key).filter(this.itemFilter, query));
@@ -132,10 +133,7 @@ export class DestinyResponder extends SheetBaseResponder {
             }
 
             if (gender) { // If a gender is specified, search the armors
-                results = results.filter((item) => {
-                    if (!item.gender) { return true }
-                    return item.gender.toLowerCase() === gender.toLowerCase()
-                });
+                results = results.filter((item) => {return !item.gender || item.gender.toLowerCase() === gender.toLowerCase()});
             }
         } else { // otherwise...
             this.items.forEach((items) => {
@@ -152,8 +150,6 @@ export class DestinyResponder extends SheetBaseResponder {
     }
 
     generateFullyQualifiedName(responseItem: destinyEntry) {
-        return `${this.generateQualifierString(responseItem.gender, {armorClass: responseItem.armorClass})}${String(responseItem.cell.formattedValue).trim()}`;
+        return `${this.generateQualifierString(responseItem.gender, {armorClass: responseItem.armorClass})}${String(responseItem.name).trim()}`;
     }
-
-    // static fallbackResponse(query = '') { (!!query ? `The ${query} model was not found.` : 'Your query did not return a valid result.') + '\n#frequently-asked-questions #2 \nYou can check the Google Drive first, but if it isn't there you can learn to rip yourself! Learn more here: <https://discordapp.com/channels/514059860489404417/592620141909377026/684604120820482087> \nThere's a guide on how to rip from the game too if it's a boss or environment asset you need: <http://bit.ly/36CI6d8>'; }
 }

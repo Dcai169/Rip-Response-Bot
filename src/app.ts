@@ -1,20 +1,18 @@
-import Discord = require('discord.js');
+import * as Discord from 'discord.js';
 import * as dotenv from 'dotenv';
 import { BaseResponder } from './responders/BaseResponder';
-import { WarframeResponder } from './responders/WarframeResponder';
-import { DestinyResponder } from './responders/DestinyResponder';
-import { HaloResponder } from './responders/HaloResponder';
+import { WarframeSheetResponder } from './responders/WarframeSheetResponder';
+import { DestinySheetResponder } from './responders/DestinySheetResponder';
+import { HaloSheetResponder } from './responders/HaloSheetResponder';
+import { DestinyDriveResponder } from './responders/DestinyDriveResponder';
 dotenv.config({ path: `${__dirname}/config/config.env` });
-const version = require('../package.json').version
-const commands: {[key: string]: Discord.ApplicationCommandData[]} = JSON.parse(require('fs').readFileSync(`${__dirname}/config/commands.json`, 'utf8'))
+const version = require('../package.json').version;
+const commands: {[key: string]: Discord.ApplicationCommandData[]} = require(`${__dirname}/config/commands.json`);
 
-// import destinyResponder = require('./src/responders/DestinyResponder');
-// import haloResponder = require('./responders/HaloResponder');
-
-let responders: { [key: string]: BaseResponder } = {
-    'destiny': new DestinyResponder(),
-    'halo': new HaloResponder(),
-    'warframe': new WarframeResponder()
+let responders = {
+    'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
+    'halo': [new HaloSheetResponder()],
+    'warframe': [new WarframeSheetResponder()]
 }
 
 const bot = new Discord.Client({
@@ -69,26 +67,38 @@ bot.on('interaction', async interaction => {
     switch (interaction.commandName) {
         case 'search':
             await interaction.defer();
-            let options: Map<string, string> = new Map(interaction.options.map((option) => { return [option.name, (option.value as string)] }));
+            let optionsMap: Map<string, string> = new Map(interaction.options.map((option) => { return [option.name, (option.value as string)] }));
             switch (interaction.guildID) {
                 // Library
                 case '705230123745542184':
-                    interaction.editReply('IMPLEMENTATION PENDING');
-                    break;
+                    
 
                 // DMR
                 case '514059860489404417':
-                    interaction.editReply(BaseResponder.respond(responders.destiny.search(options.get('query'), { armorClass: options.get('class'), gender: options.get('gender') }), responders.destiny));
+                    optionsMap = new Map(interaction.options[0].options.map((option) => { return [option.name, (option.value as string)] }));
+                    
+                    switch (interaction.options[0].name) {
+                        case 'sheet':
+                            interaction.editReply(BaseResponder.respond(responders.destiny[0].search(optionsMap.get('query'), { armorClass: optionsMap.get('class'), gender: optionsMap.get('gender') }), responders.destiny[0]));
+                            break;
+
+                        case 'community':
+                            interaction.editReply(BaseResponder.respond(responders.destiny[1].search(optionsMap.get('query'), { armorClass: optionsMap.get('class'), gender: optionsMap.get('gender') }), responders.destiny[1]));
+                            break;
+                    
+                        default:
+                            break;
+                    }
                     break;
 
                 // HMR
                 case '671183775454986240':
-                    interaction.editReply(BaseResponder.respond(responders.halo.search(options.get('query'), { game: options.get('game') }), responders.halo));
+                    interaction.editReply(BaseResponder.respond(responders.halo[0].search(optionsMap.get('query'), { game: optionsMap.get('game') }), responders.halo[0]));
                     break;
 
                 // WMR
                 case '724365082787708949':
-                    interaction.editReply(BaseResponder.respond(responders.warframe.search(options.get('query')), responders.warframe));
+                    interaction.editReply(BaseResponder.respond(responders.warframe[0].search(optionsMap.get('query')), responders.warframe[0]));
                     break;
 
                 default:
@@ -112,10 +122,7 @@ bot.on('interaction', async interaction => {
             break;
 
         default:
+            console.table(interaction);
             break;
     }
 });
-
-// bot.on('message', msg => {
-
-// });
