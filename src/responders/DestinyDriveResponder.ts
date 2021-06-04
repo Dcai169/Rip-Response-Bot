@@ -15,7 +15,7 @@ export class DestinyDriveResponder extends DriveResponderBase {
 
     async findItems(parentFolderId: string, folderName?: string) {
         let res = await drive.files.list({
-            q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'application/vnd.rar' or mimeType = 'application/zip' or mimeType = 'application/x-7z-compressed')`,
+            q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'application/rar' or mimeType = 'application/zip' or mimeType = 'application/x-7z-compressed')`,
             fields: 'files(name, id, mimeType, webViewLink, parents)'
         });
         res.data.files.forEach((file) => {
