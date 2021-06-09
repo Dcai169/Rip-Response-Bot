@@ -10,54 +10,70 @@ export class DestinyDriveResponder extends DriveResponderBase {
     constructor() {
         super('14Ry-piQtH3j6MlfoVLfFfu98c4pcTJUb', 'destiny', '461093992499773440');
 
-        this.findItems(this.driveRoot);
+        console.time('findItems');
+        this.loadItems(this.driveRoot, '').then(() => {
+            this.ready = true;
+            console.timeEnd('findItems');
+            setTimeout(() => {
+                this.items.forEach((folder, key) => {
+                    console.log(key);
+                    console.table(folder);
+                });
+            }, 20000)
+        });
     }
 
-    async findItems(parentFolderId: string, folderName?: string) {
-        let res = await drive.files.list({
-            q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'application/rar' or mimeType = 'application/zip' or mimeType = 'application/x-7z-compressed')`,
-            fields: 'files(name, id, mimeType, webViewLink, parents)'
-        });
-        res.data.files.forEach((file) => {
-            if (file.mimeType === 'application/vnd.google-apps.folder') {
-                if (file.parents.includes(this.driveRoot)) {
-                    this.findItems(file.id, file.name);
-                } else {
-                    this.findItems(file.id, folderName);
-                }
-            } else {
-                let itemEntry: destinyEntry = { name: this.reduceName(file.name), link: file.webViewLink }
+    async loadItems(parentFolderId: string, folderName: string) {
+        function reduceItemName(fullName: string) {
+            return fullName.split('.')[0]
+                .replace('_', ' ')
+                .replace(new RegExp('\\((\\d)+\\)', 'gmi'), '')
+                .replace('Copy of ', '')
+                .replace(new RegExp('(BIOS|Delta|taylor4224|TheSinkingSponge|Reed)', 'gmi'), '')
+                .replace(new RegExp('(((\\w*(e[rdl]|s)( fix)?( and)? ?))+( by|-) ?[a-zA-Z0-9-_ ]*( ?([,;:&]) )?)+', 'gmi'), '')
+                .replace(new RegExp('(fe)?male', 'gmi'), '')
+                .replace(new RegExp('(titan|hunter|warlock)', 'gmi'), '')
+                .replace(new RegExp('(\\[\\])|(\\(\\))', 'gmi'), '')
+                .replace(new RegExp(' {2,}', 'gmi'), ' ')
+                .trim();
+        }
 
-                DestinyClassArray.forEach((_class) => {
-                    if (file.name.toLowerCase().includes(_class)) {
-                        itemEntry.armorClass = (_class as typeof DestinyClassUnion);
-                    }
+        return new Promise<void>((resolve, reject) => {
+            try {
+                drive.files.list({
+                    q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'application/rar' or mimeType = 'application/x-zip-compressed' or mimeType = 'application/x-7z-compressed')`,
+                    fields: 'files(name, id, mimeType, webViewLink, parents)'
+                }).then((res) => {
+                    res.data.files.forEach((file, index, arr) => {
+                        if (file.mimeType === 'application/vnd.google-apps.folder') {   
+                            this.loadItems(file.id, (file.parents.includes(this.driveRoot) ? file.name : folderName)).then(resolve);
+                        } else {
+                            let itemEntry: destinyEntry = { name: reduceItemName(file.name), link: file.webViewLink }
+                            
+                            DestinyClassArray.forEach((_class) => {
+                                if (file.name.toLowerCase().includes(_class)) {
+                                    itemEntry.armorClass = (_class as typeof DestinyClassUnion);
+                                }
+                            });
+            
+                            GenderArray.forEach((gender) => {
+                                if (file.name.toLowerCase().includes(gender)) {
+                                    itemEntry.gender = (gender as typeof GenderUnion);
+                                }
+                            });
+            
+                            this.items.get(folderName).push(itemEntry);
+    
+                            if (index === (arr.length - 1)) {
+                                resolve();
+                            }
+                        }
+                    });
                 });
-
-                GenderArray.forEach((gender) => {
-                    if (file.name.toLowerCase().includes(gender)) {
-                        itemEntry.gender = (gender as typeof GenderUnion);
-                    }
-                });
-
-                this.items.get(folderName).push(itemEntry);
+            } catch (error) {
+                reject(error);
             }
         });
-    }
-
-    reduceName(fullName: string) {
-        // (\(|\[)(((\b.*(ed|s)( fix)?)( by|-) \b.*\b)+|(\d)+|(BIOS|Delta))(\)|\])
-        return fullName.split('.')[0]
-            .replace('_', ' ')
-            .replace(new RegExp('\\((\\d)+\\)', 'gmi'), '')
-            .replace('Copy of ', '')
-            .replace(new RegExp('(BIOS|Delta|taylor4224|TheSinkingSponge|Reed)', 'gmi'), '')
-            .replace(new RegExp('(((\\w*(e[rdl]|s)( fix)?( and)? ?))+( by|-) ?[a-zA-Z0-9-_ ]*( ?([,;:&]) )?)+', 'gmi'), '')
-            .replace(new RegExp('(fe)?male', 'gmi'), '')
-            .replace(new RegExp('(titan|hunter|warlock)', 'gmi'), '')
-            .replace(new RegExp('(\\[\\])|(\\(\\))', 'gmi'), '')
-            .replace(new RegExp(' {2,}', 'gmi'), ' ')
-            .trim();
     }
 
     resetIndexes() {
@@ -82,6 +98,7 @@ export class DestinyDriveResponder extends DriveResponderBase {
             ['Holiday Events', []],
             ['Enemy Races', []],
             ['Destiny 1', []],
+            ['Shaders', []]
         ]);
     }
 
