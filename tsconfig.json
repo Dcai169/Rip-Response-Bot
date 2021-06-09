@@ -14,7 +14,7 @@
       "removeComments": true,
 
       "declaration": true,
-      "sourceMap": false
+      "sourceMap": true
     },
     "include": ["./src/**/*"]
 }
