@@ -16,5 +16,5 @@ export abstract class DriveResponderBase extends BaseResponder {
 
     abstract resetIndexes(): void
 
-    abstract findItems(parentFolderId: string, folder?: string): void
+    abstract loadItems(parentFolderId: string, folderName: string, recursionDepth: number): Promise<any>
 }

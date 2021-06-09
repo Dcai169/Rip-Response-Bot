@@ -96,6 +96,4 @@ export class HaloSheetResponder extends SheetBaseResponder {
     generateFullyQualifiedName(responseItem: haloEntry) {
         return `${this.generateQualifierString(responseItem.game)}${responseItem.name}`;
     }
-
-
 }
