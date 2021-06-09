@@ -39,7 +39,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
     }
 
     itemFilter(this: string, entry: destinyEntry) {
-        return levenshtein(entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '').replace(/ (suit|set)/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase()); 
+        return levenshtein(BaseResponder.reduceCompareName(entry.name.toLowerCase()), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase()); 
     }
 
     async loadIndexes() {
