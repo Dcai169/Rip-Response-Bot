@@ -14,12 +14,10 @@ export class DestinyDriveResponder extends DriveResponderBase {
         this.loadItems(this.driveRoot, '').then(() => {
             this.ready = true;
             console.timeEnd('findItems');
-            setTimeout(() => {
-                this.items.forEach((folder, key) => {
-                    console.log(key);
-                    console.table(folder);
-                });
-            }, 20000)
+            this.items.forEach((folder, key) => {
+                console.log(key);
+                console.table(folder);
+            });
         });
     }
 
@@ -45,31 +43,30 @@ export class DestinyDriveResponder extends DriveResponderBase {
                     fields: 'files(name, id, mimeType, webViewLink, parents)'
                 }).then((res) => {
                     res.data.files.forEach((file, index, arr) => {
-                        if (file.mimeType === 'application/vnd.google-apps.folder') {   
+                        if (file.mimeType === 'application/vnd.google-apps.folder') {
                             this.loadItems(file.id, (file.parents.includes(this.driveRoot) ? file.name : folderName)).then(resolve);
                         } else {
                             let itemEntry: destinyEntry = { name: reduceItemName(file.name), link: file.webViewLink }
-                            
+
                             DestinyClassArray.forEach((_class) => {
                                 if (file.name.toLowerCase().includes(_class)) {
                                     itemEntry.armorClass = (_class as typeof DestinyClassUnion);
                                 }
                             });
-            
+
                             GenderArray.forEach((gender) => {
                                 if (file.name.toLowerCase().includes(gender)) {
                                     itemEntry.gender = (gender as typeof GenderUnion);
                                 }
                             });
-            
+
                             this.items.get(folderName).push(itemEntry);
-    
-                            if (index === (arr.length - 1)) {
-                                resolve();
-                            }
+
+
                         }
                     });
                 });
+                resolve();
             } catch (error) {
                 reject(error);
             }
@@ -137,6 +134,6 @@ export class DestinyDriveResponder extends DriveResponderBase {
     }
 
     generateFullyQualifiedName(responseItem: destinyEntry) {
-        return `${this.generateQualifierString(responseItem.gender, {armorClass: responseItem.armorClass})}${String(responseItem.name).trim()}`;
+        return `${this.generateQualifierString(responseItem.gender, { armorClass: responseItem.armorClass })}${String(responseItem.name).trim()}`;
     }
 }
