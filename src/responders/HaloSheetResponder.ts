@@ -7,7 +7,7 @@ export class HaloSheetResponder extends SheetBaseResponder {
     items: Map<string, haloEntry[]>;
 
     constructor() {
-        super(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'), 'halo', '341213672947056651', 18);
+        super(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'), 'Halo', '341213672947056651', 18);
     }
 
     // INDEXING
@@ -47,22 +47,27 @@ export class HaloSheetResponder extends SheetBaseResponder {
         // clear arrays
         this.resetIndexes();
 
-        // get new data
-        await this.doc.loadInfo();
-        this.doc.sheetsByIndex.forEach(async sheet => {
-            await sheet.loadCells();
-            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                (async () => {
-                    let item = await this.createItemObj(sheet, row);
-                    if (item) {
-                        this.items.get(sheet.title).push(item);
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                // get new data
+                await this.doc.loadInfo();
+                this.doc.sheetsByIndex.forEach(async sheet => {
+                    await sheet.loadCells();
+                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                        (async () => {
+                            let item = await this.createItemObj(sheet, row);
+                            if (item) {
+                                this.items.get(sheet.title).push(item);
+                            }
+                        })();
                     }
-                })();
+                    // console.log(`${sheet.title} indexed`);
+                });
+                resolve();
+            } catch (error) {
+                reject(error);
             }
-            // console.log(`${sheet.title} indexed`);
         });
-        console.log('Halo Ready');
-        this.ready = true;
     }
 
     // SEARCHING

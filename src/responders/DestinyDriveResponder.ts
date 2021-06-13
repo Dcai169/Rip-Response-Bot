@@ -10,14 +10,8 @@ export class DestinyDriveResponder extends DriveResponderBase {
     constructor() {
         super('14Ry-piQtH3j6MlfoVLfFfu98c4pcTJUb', 'destiny', '461093992499773440');
 
-        console.time('findItems');
         this.loadItems(this.driveRoot, '').then(() => {
             this.ready = true;
-            console.timeEnd('findItems');
-            this.items.forEach((folder, key) => {
-                console.log(key);
-                console.table(folder);
-            });
         });
     }
 
@@ -61,8 +55,6 @@ export class DestinyDriveResponder extends DriveResponderBase {
                             });
 
                             this.items.get(folderName).push(itemEntry);
-
-
                         }
                     });
                 });

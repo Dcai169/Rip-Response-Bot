@@ -12,7 +12,7 @@ const commands: {[key: string]: Discord.ApplicationCommandData[]} = require(`${_
 
 let responders = {
     'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
-    'halo': [new HaloSheetResponder()], //, new HaloDriveResponder()],
+    'halo': [new HaloSheetResponder(), new HaloDriveResponder()],
     'warframe': [new WarframeSheetResponder()]
 }
 
@@ -130,3 +130,4 @@ bot.on('interaction', async interaction => {
         interaction.editReply(`The system encountered an error: ${error}`);
     }
 });
+

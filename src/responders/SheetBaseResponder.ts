@@ -13,8 +13,13 @@ export abstract class SheetBaseResponder extends BaseResponder {
         this.headerSize = headerSize;
         this.ready = false;
 
+        console.time(`${this.game}Sheet`);
         this.doc.useApiKey(process.env.GSHEETAPI);
-        this.loadIndexes();
+        this.loadIndexes().then(() => {
+            console.timeEnd(`${this.game}Sheet`);
+            // console.log(`${this.game} Ready`);
+            this.ready = true;
+        });
     }
 
     abstract resetIndexes(): void
@@ -29,5 +34,5 @@ export abstract class SheetBaseResponder extends BaseResponder {
         }
     }
 
-    abstract loadIndexes(): void
+    abstract loadIndexes(): Promise<void>
 }

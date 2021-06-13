@@ -10,7 +10,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
     items: Map<string, destinyEntry[]>;
 
     constructor() {
-        super(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'), 'destiny', '461093992499773440', 12);
+        super(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'), 'Destiny', '461093992499773440', 12);
     }
 
     // INDEXING
@@ -25,13 +25,13 @@ export class DestinySheetResponder extends SheetBaseResponder {
     }
 
     async createItemObj(sheet: GoogleSpreadsheetWorksheet, row: number): Promise<destinyEntry> {
-        let cell = sheet.getCell(row, 0); 
+        let cell = sheet.getCell(row, 0);
         if (!!cell.formattedValue && cell.effectiveFormat.textFormat.fontSize < this.headerSize) { // Header and empty row detection
             return {
                 name: (cell.formattedValue as string).trim(),
                 link: cell.hyperlink,
                 gender: (sheet.title.toLowerCase().includes('armor') ? sheet.getCell(row, 2).formattedValue : undefined),
-                aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(', ').map((alias: string) => { return alias.replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '')}) } })
+                aliases: evaluateReplace(sheet.getCell(row, 3).formattedValue, { replacement: [], callback: (res) => { return res.split(', ').map((alias: string) => { return alias.replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, '') }) } })
             };
         } else {
             return null;
@@ -39,69 +39,74 @@ export class DestinySheetResponder extends SheetBaseResponder {
     }
 
     itemFilter(this: string, entry: destinyEntry) {
-        return levenshtein(BaseResponder.reduceCompareName(entry.name.toLowerCase()), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase()); 
+        return levenshtein(BaseResponder.reduceCompareName(entry.name.toLowerCase()), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase());
     }
 
     async loadIndexes() {
         // clear arrays
         this.resetIndexes();
 
-        // get new data
-        await this.doc.loadInfo();
-        this.doc.sheetsByIndex.forEach(async sheet => { // for each sheet
-            await sheet.loadCells(); // load the sheet
-            switch (sheet.title.toLowerCase().split(' ').shift()) {
-                case 'hunter':
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            let item = await this.createItemObj(sheet, row);
-                            if (item) {
-                                item.armorClass = 'hunter';
-                                this.items.get('hunterArmor').push(item);
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                // get new data
+                await this.doc.loadInfo();
+                this.doc.sheetsByIndex.forEach(async sheet => { // for each sheet
+                    await sheet.loadCells(); // load the sheet
+                    switch (sheet.title.toLowerCase().split(' ').shift()) {
+                        case 'hunter':
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    let item = await this.createItemObj(sheet, row);
+                                    if (item) {
+                                        item.armorClass = 'hunter';
+                                        this.items.get('hunterArmor').push(item);
+                                    }
+                                })();
                             }
-                        })();
-                    }
-                    break;
+                            break;
 
-                case 'warlock':
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            let item = await this.createItemObj(sheet, row);
-                            if (item) {
-                                item.armorClass = 'warlock';
-                                this.items.get('warlockArmor').push(item);
+                        case 'warlock':
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    let item = await this.createItemObj(sheet, row);
+                                    if (item) {
+                                        item.armorClass = 'warlock';
+                                        this.items.get('warlockArmor').push(item);
+                                    }
+                                })();
                             }
-                        })();
-                    }
-                    break;
+                            break;
 
-                case 'titan':
-                    for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
-                        (async () => {
-                            let item = await this.createItemObj(sheet, row);
-                            if (item) {
-                                item.armorClass = 'titan';
-                                this.items.get('titanArmor').push(item);
+                        case 'titan':
+                            for (let row = 0; row < sheet.rowCount; row++) { // then add the data to the array
+                                (async () => {
+                                    let item = await this.createItemObj(sheet, row);
+                                    if (item) {
+                                        item.armorClass = 'titan';
+                                        this.items.get('titanArmor').push(item);
+                                    }
+                                })();
                             }
-                        })();
-                    }
-                    break;
+                            break;
 
-                default:
-                    for (let row = 0; row < sheet.rowCount; row++) {
-                        (async () => {
-                            let item = await this.createItemObj(sheet, row);
-                            if (item) {
-                                this.items.get('elseItems').push(item);
+                        default:
+                            for (let row = 0; row < sheet.rowCount; row++) {
+                                (async () => {
+                                    let item = await this.createItemObj(sheet, row);
+                                    if (item) {
+                                        this.items.get('elseItems').push(item);
+                                    }
+                                })();
                             }
-                        })();
+                            break;
                     }
-                    break;
+                    // console.log(`${sheet.title} indexed`);
+                });
+                resolve();
+            } catch (error) {
+                reject()
             }
-            // console.log(`${sheet.title} indexed`);
         });
-        console.log('Destiny Ready');
-        this.ready = true;
     }
 
     // SEARCHING
@@ -133,7 +138,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
             }
 
             if (gender) { // If a gender is specified, search the armors
-                results = results.filter((item) => {return !item.gender || item.gender.toLowerCase() === gender.toLowerCase()});
+                results = results.filter((item) => { return !item.gender || item.gender.toLowerCase() === gender.toLowerCase() });
             }
         } else { // otherwise...
             this.items.forEach((items) => {
@@ -150,6 +155,6 @@ export class DestinySheetResponder extends SheetBaseResponder {
     }
 
     generateFullyQualifiedName(responseItem: destinyEntry) {
-        return `${this.generateQualifierString(responseItem.gender, {armorClass: responseItem.armorClass})}${String(responseItem.name).trim()}`;
+        return `${this.generateQualifierString(responseItem.gender, { armorClass: responseItem.armorClass })}${String(responseItem.name).trim()}`;
     }
 }

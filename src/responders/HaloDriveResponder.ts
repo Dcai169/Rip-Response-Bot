@@ -9,7 +9,7 @@ export class HaloDriveResponder extends DriveResponderBase {
 
     constructor() {
         super('13yzFdyxeBHBOql4GOXmaFfQMDD1ehgTZ', 'halo', '365611267374841856');
-        this.recursionLimit = 0;
+        this.recursionLimit = 2;
 
         console.time('findItems');
         this.loadItems(this.driveRoot, '').then(() => {
@@ -20,7 +20,7 @@ export class HaloDriveResponder extends DriveResponderBase {
                     console.log(key);
                     console.table(folder);
                 });
-            }, 20000)
+            }, 1000);
         });
     }
 
@@ -57,13 +57,11 @@ export class HaloDriveResponder extends DriveResponderBase {
                         } else {
                             folderName = folderName.replace(/\[.*\]/gmi, '').trim();
                             this.items.get(folderName)?.push({ name: file.name, link: file.webViewLink, game: folderName });
-
-                            if (index === (arr.length - 1)) {
-                                resolve();
-                            }
                         }
                     });
                 });
+
+                resolve();
             } catch (error) {
                 reject(error);
             }
