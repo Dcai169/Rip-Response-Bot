@@ -2,3 +2,6 @@ node_modules
 *.env
 live_url.txt
 TODO.txt
+dist
+client_secret.json
+.vscode
