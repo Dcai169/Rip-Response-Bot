@@ -15,12 +15,12 @@ export class HaloDriveResponder extends DriveResponderBase {
         this.loadItems(this.driveRoot, '').then(() => {
             this.ready = true;
             console.timeEnd('findItems');
-            setTimeout(() => {
-                this.items.forEach((folder, key) => {
-                    console.log(key);
-                    console.table(folder);
-                });
-            }, 1000);
+            // setTimeout(() => {
+            //     this.items.forEach((folder, key) => {
+            //         console.log(key);
+            //         console.table(folder);
+            //     });
+            // }, 1000);
         });
     }
 
@@ -42,17 +42,23 @@ export class HaloDriveResponder extends DriveResponderBase {
         ]);
     }
 
+    // and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'text/xml' or mimeType = 'application/octet-stream')
+
     async loadItems(parentFolderId: string, folderName: string, recursionDepth?: number) {
         return new Promise<void>((resolve, reject) => {
             try {
                 drive.files.list({
-                    q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'application/rar' or mimeType = 'application/x-zip-compressed' or mimeType = 'application/x-7z-compressed')`,
+                    q: `'${parentFolderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType = 'text/xml' or mimeType = 'application/octet-stream')`,
                     fields: 'files(name, id, mimeType, webViewLink, parents)'
                 }).then((res) => {
                     recursionDepth = recursionDepth ?? 0;
 
                     res.data.files.forEach((file, index, arr) => {
-                        if (recursionDepth <= this.recursionLimit && file.mimeType === 'application/vnd.google-apps.folder') {
+                        console.log(file.name, file.mimeType)
+                        if (recursionDepth <= this.recursionLimit && file.mimeType === 'application/vnd.google-apps.folder' && !file.name.toLowerCase().includes('sound')) {
+                            // if () { 
+
+                            // }
                             this.loadItems(file.id, (file.parents.includes(this.driveRoot) ? file.name: folderName), recursionDepth += 1).then(resolve);
                         } else {
                             folderName = folderName.replace(/\[.*\]/gmi, '').trim();

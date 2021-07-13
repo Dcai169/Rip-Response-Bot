@@ -5,14 +5,14 @@ import { WarframeSheetResponder } from './responders/WarframeSheetResponder';
 import { DestinySheetResponder } from './responders/DestinySheetResponder';
 import { HaloSheetResponder } from './responders/HaloSheetResponder';
 import { DestinyDriveResponder } from './responders/DestinyDriveResponder';
-import { HaloDriveResponder } from './responders/HaloDriveResponder';
+// import { HaloDriveResponder } from './responders/HaloDriveResponder';
 dotenv.config({ path: `${__dirname}/config/config.env` });
 const version = require('../package.json').version;
 const commands: {[key: string]: Discord.ApplicationCommandData[]} = require(`${__dirname}/config/commands.json`);
 
 let responders = {
     'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
-    'halo': [new HaloSheetResponder(), new HaloDriveResponder()],
+    'halo': [new HaloSheetResponder()],
     'warframe': [new WarframeSheetResponder()]
 }
 
@@ -131,3 +131,4 @@ bot.on('interaction', async interaction => {
     }
 });
 
+console.log()
