@@ -48,8 +48,8 @@ bot.on('ready', async () => {
     // Library
     // await bot.guilds.cache.get('705230123745542184')?.commands.create();
 
-    for (const [guildID, guildCommands] of Object.entries(commands)) {
-        await bot.guilds.cache.get(guildID)?.commands.set(guildCommands)
+    for (const [guildId, guildCommands] of Object.entries(commands)) {
+        await bot.guilds.cache.get((guildId as `${bigint}`))?.commands.set(guildCommands);
     }
 
     await bot.application?.commands.set(commandData);
@@ -59,7 +59,7 @@ bot.on('ready', async () => {
     console.log('Ready');
 });
 
-bot.on('interaction', async interaction => {
+bot.on('interactionCreate', async interaction => {
     // If the interaction isn't a slash command, return
     if (!interaction.isCommand()) {
         return;
@@ -68,23 +68,21 @@ bot.on('interaction', async interaction => {
         switch (interaction.commandName) {
             case 'search':
                 await interaction.defer();
-                let optionsMap: Map<string, string> = new Map(interaction.options.map((option) => { return [option.name, (option.value as string)] }));
-                switch (interaction.guildID) {
+                switch (interaction.guildId) {
                     // Library
                     case '705230123745542184':
-                        
+                        interaction.editReply('Not implemented');
+                        break;
     
                     // DMR
-                    case '514059860489404417':
-                        optionsMap = new Map(interaction.options[0].options.map((option) => { return [option.name, (option.value as string)] }));
-                        
-                        switch (interaction.options[0].name) {
+                    case '514059860489404417':                        
+                        switch ([...interaction.options.keys()][0]) {
                             case 'sheet':
-                                interaction.editReply(BaseResponder.respond(responders.destiny[0].search(optionsMap.get('query'), { armorClass: optionsMap.get('class'), gender: optionsMap.get('gender') }), responders.destiny[0]));
+                                interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('sheet').options.get('query').value as string), { armorClass: (interaction.options.get('sheet').options.get('class').value as string), gender: (interaction.options.get('sheet').options.get('gender').value as string) }), responders.destiny[0]));
                                 break;
     
                             case 'community':
-                                interaction.editReply(BaseResponder.respond(responders.destiny[1].search(optionsMap.get('query'), { armorClass: optionsMap.get('class'), gender: optionsMap.get('gender') }), responders.destiny[1]));
+                                interaction.editReply(BaseResponder.respond(responders.destiny[1].search((interaction.options.get('community').options.get('query').value as string), { armorClass: (interaction.options.get('community').options.get('class').value as string), gender: (interaction.options.get('community').options.get('gender').value as string) }), responders.destiny[1]));
                                 break;
                         
                             default:
@@ -94,17 +92,17 @@ bot.on('interaction', async interaction => {
     
                     // HMR
                     case '671183775454986240':
-                        interaction.editReply(BaseResponder.respond(responders.halo[0].search(optionsMap.get('query'), { game: optionsMap.get('game') }), responders.halo[0]));
+                        interaction.editReply(BaseResponder.respond(responders.halo[0].search((interaction.options.get('query').value as string), { game: (interaction.options.get('game').value as string) }), responders.halo[0]));
                         break;
     
                     // WMR
                     case '724365082787708949':
-                        interaction.editReply(BaseResponder.respond(responders.warframe[0].search(optionsMap.get('query')), responders.warframe[0]));
+                        interaction.editReply(BaseResponder.respond(responders.warframe[0].search((interaction.options.get('query').value as string)), responders.warframe[0]));
                         break;
     
                     default:
                         interaction.editReply('IMPLEMENTATION PENDING');
-                        console.log(interaction.guildID);
+                        console.log(interaction.guildId);
                         console.log(interaction.options);
                         break;
                 }
