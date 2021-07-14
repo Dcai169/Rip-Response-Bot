@@ -104,7 +104,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
                 });
                 resolve();
             } catch (error) {
-                reject()
+                throw error;
             }
         });
     }
