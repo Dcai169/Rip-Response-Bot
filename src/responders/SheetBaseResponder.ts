@@ -5,7 +5,6 @@ import { BaseResponder } from './BaseResponder';
 export abstract class SheetBaseResponder extends BaseResponder {
     doc: GoogleSpreadsheet;
     headerSize: number;
-    ready: boolean;
 
     constructor(doc: GoogleSpreadsheet, game: string, ownerId: string | string[], headerSize = 12) {
         super(game, ownerId);
