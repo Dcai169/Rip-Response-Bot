@@ -57,7 +57,11 @@ export class HaloSheetResponder extends SheetBaseResponder {
                         (async () => {
                             let item = await this.createItemObj(sheet, row);
                             if (item) {
-                                this.items.get(sheet.title).push(item);
+                                if ([...this.items.keys()].includes(sheet.title)) {
+                                    this.items.get(sheet.title).push(item);
+                                } else {
+                                    throw new Error(`${sheet.title} is not a valid key.`);
+                                }
                             }
                         })();
                     }
