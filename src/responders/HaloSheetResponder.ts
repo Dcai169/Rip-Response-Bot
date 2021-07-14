@@ -60,7 +60,7 @@ export class HaloSheetResponder extends SheetBaseResponder {
                                 if ([...this.items.keys()].includes(sheet.title)) {
                                     this.items.get(sheet.title).push(item);
                                 } else {
-                                    console.error(`${sheet.title} is not a valid key.`);
+                                    throw new Error(`${sheet.title} is not a valid key.`);
                                 }
                             }
                         })();
