@@ -8,6 +8,8 @@ export class WarframeSheetResponder extends SheetBaseResponder {
 
     constructor() {
         super(new GoogleSpreadsheet('12GEPZuEBhQozCZjTTYMAQzK9iqAHuOC6zzr_cn5mi8o'), 'Warframe', '190672762270908416');
+
+        this.items = [];
     }
 
     // INDEXING
