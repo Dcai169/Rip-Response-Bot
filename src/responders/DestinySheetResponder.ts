@@ -43,8 +43,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
     }
 
     async loadIndexes() {
-        // clear arrays
-        this.resetIndexes();
+        this.resetIndexes(); // clear arrays
 
         return new Promise<void>(async (resolve, reject) => {
             try {
@@ -104,7 +103,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
                 });
                 resolve();
             } catch (error) {
-                throw error;
+                reject(error);
             }
         });
     }
