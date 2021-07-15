@@ -8,10 +8,7 @@ try {
     credentials = JSON.parse(require('fs').readFileSync(`${__dirname}/../config/client_secret.json`, 'utf8'));
 } catch (error) {
     if (error.code === 'ENOENT') {
-        credentials = {
-            client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY
-        }
+        credentials = JSON.parse(process.env['GOOGLE_CLIENT_SECRET']);
     } else {
         throw error;
     }
