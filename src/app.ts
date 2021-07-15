@@ -12,7 +12,7 @@ const commands: {[key: string]: Discord.ApplicationCommandData[]} = require(`${_
 
 let responders = {
     // 'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
-    // 'halo': [new HaloSheetResponder()],
+    'halo': [new HaloSheetResponder()],
     'warframe': [new WarframeSheetResponder()]
 }
 
