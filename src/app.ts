@@ -11,7 +11,7 @@ const version = require('../package.json').version;
 const commands: {[key: string]: Discord.ApplicationCommandData[]} = require(`${__dirname}/config/commands.json`);
 
 let responders = {
-    // 'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
+    'destiny': [new DestinySheetResponder(), new DestinyDriveResponder()],
     'halo': [new HaloSheetResponder()],
     'warframe': [new WarframeSheetResponder()]
 }

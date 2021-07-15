@@ -10,6 +10,29 @@ export class DestinyDriveResponder extends DriveResponderBase {
     constructor() {
         super('14Ry-piQtH3j6MlfoVLfFfu98c4pcTJUb', 'destiny', '461093992499773440');
 
+        this.items = new Map([
+            ['Season 14_Splicer', []],
+            ['Season 13_Chosen', []],
+            ['Season 12_Hunt', []],
+            ['Season 11_Arrivals', []],
+            ['Season 10_Worthy', []],
+            ['Season 9_Dawn', []],
+            ['Season 8_Undying', []],
+            ['Season 7_Opulence', []],
+            ['Season 6_Drifter', []],
+            ['Season 5_Forge', []],
+            ['Season 4_Outlaw', []],
+            ['Season 3_Warmind', []],
+            ['Season 2_Curse of Osiris', []],
+            ['Season 1_Red War', []],
+            ['NPCs', []],
+            ['Misc', []],
+            ['Holiday Events', []],
+            ['Enemy Races', []],
+            ['Destiny 1', []],
+            ['Shaders', []]
+        ]);
+
         this.loadItems(this.driveRoot, '').then(() => {
             this.ready = true;
         });
