@@ -71,29 +71,29 @@ bot.on('interactionCreate', async interaction => {
                 switch (interaction.guildId) {
                     // Library
                     case '705230123745542184':
-                        // interaction.editReply('Not implemented');
-                        // break;
+                        interaction.editReply('Not implemented');
+                        break;
     
-                    // // DMR
-                    // case '514059860489404417':                        
-                    //     switch ([...interaction.options.keys()][0]) {
-                    //         case 'sheet':
-                    //             interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('sheet').options.get('query').value as string), { armorClass: (interaction.options.get('sheet').options.get('class').value as string), gender: (interaction.options.get('sheet').options.get('gender').value as string) }), responders.destiny[0]));
-                    //             break;
+                    // DMR
+                    case '514059860489404417':                        
+                        switch ([...interaction.options.keys()][0]) {
+                            case 'sheet':
+                                interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('sheet').options.get('query').value as string), { armorClass: (interaction.options.get('sheet').options.get('class').value as string), gender: (interaction.options.get('sheet').options.get('gender').value as string) }), responders.destiny[0]));
+                                break;
     
-                    //         case 'community':
-                    //             interaction.editReply(BaseResponder.respond(responders.destiny[1].search((interaction.options.get('community').options.get('query').value as string), { armorClass: (interaction.options.get('community').options.get('class').value as string), gender: (interaction.options.get('community').options.get('gender').value as string) }), responders.destiny[1]));
-                    //             break;
+                            case 'community':
+                                interaction.editReply(BaseResponder.respond(responders.destiny[1].search((interaction.options.get('community').options.get('query').value as string), { armorClass: (interaction.options.get('community').options.get('class').value as string), gender: (interaction.options.get('community').options.get('gender').value as string) }), responders.destiny[1]));
+                                break;
                         
-                    //         default:
-                    //             break;
-                    //     }
-                    //     break;
+                            default:
+                                break;
+                        }
+                        break;
     
-                    // // HMR
-                    // case '671183775454986240':
-                    //     interaction.editReply(BaseResponder.respond(responders.halo[0].search((interaction.options.get('query').value as string), { game: (interaction.options.get('game').value as string) }), responders.halo[0]));
-                    //     break;
+                    // HMR
+                    case '671183775454986240':
+                        interaction.editReply(BaseResponder.respond(responders.halo[0].search((interaction.options.get('query').value as string), { game: (interaction.options.get('game').value as string) }), responders.halo[0]));
+                        break;
     
                     // WMR
                     case '724365082787708949':
