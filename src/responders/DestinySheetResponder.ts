@@ -11,6 +11,13 @@ export class DestinySheetResponder extends SheetBaseResponder {
 
     constructor() {
         super(new GoogleSpreadsheet('18-pxaUaUvYxACE5uMveCE9_bewwhfbd93ZaLIyP_rxQ'), 'Destiny', '461093992499773440', 12);
+
+        this.items = new Map([
+            ['hunterArmor', []],
+            ['titanArmor', []],
+            ['warlockArmor', []],
+            ['elseItems', []]
+        ]);
     }
 
     // INDEXING

@@ -8,6 +8,22 @@ export class HaloSheetResponder extends SheetBaseResponder {
 
     constructor() {
         super(new GoogleSpreadsheet('11FSNqnAicEaHAXNmzJE7iA9zPPZILwOvK9iBDGuCNHo'), 'Halo', '341213672947056651', 18);
+
+        this.items = new Map([
+            ['Halo CE', []],
+            ['Halo CEA', []],
+            ['Halo 2 Classic', []],
+            ['Halo 2 Anniversary', []],
+            ['Halo 2 A Multiplayer', []],
+            ['Halo 3', []],
+            ['Halo 3: ODST', []],
+            ['Halo Reach', []],
+            ['Halo 4', []],
+            ['Halo 5', []],
+            ['Halo Wars', []],
+            ['Halo Wars 2', []],
+            ['Halo: Spartan Strike', []]
+        ]);
     }
 
     // INDEXING
