@@ -25,10 +25,9 @@ export class WarframeSheetResponder extends SheetBaseResponder {
                 resolve({
                     name: (cell.formattedValue as string).trim(),
                     link: sheet.getCell(row, 3).hyperlink,
-                    skins: sheet.getCell(row, 4),
-                    sfm1: sheet.getCell(row, 5),
-                    sfm2: sheet.getCell(row, 6),
-                    sfm3: sheet.getCell(row, 7),
+                    sfm1: sheet.getCell(row, 4).hyperlink,
+                    sfm2: sheet.getCell(row, 5).hyperlink,
+                    sfm3: sheet.getCell(row, 6).hyperlink
                 });
             }
         });   
