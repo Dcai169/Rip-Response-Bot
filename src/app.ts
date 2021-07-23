@@ -71,8 +71,8 @@ bot.on('interactionCreate', async interaction => {
                 switch (interaction.guildId) {
                     // Library
                     case '705230123745542184':
-                        interaction.editReply('Not implemented');
-                        break;
+                        // interaction.editReply('Not implemented');
+                        // break;
     
                     // DMR
                     case '514059860489404417': 
@@ -126,7 +126,8 @@ bot.on('interactionCreate', async interaction => {
                 break;
         }
     } catch (error) {
-        interaction.editReply(`The system encountered an error: ${error}`);
+        interaction.editReply(`The system encountered error: ${error}`);
+        throw error;
     }
 });
 
