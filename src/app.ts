@@ -76,7 +76,7 @@ bot.on('interactionCreate', async interaction => {
     
                     // DMR
                     case '514059860489404417': 
-                        switch ([...interaction.options.keys()][0]) {
+                        switch (interaction.options.firstKey() as string) {
                             case 'sheet':
                                 console.log();
                                 interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('sheet').options.get('query').value as string), { armorClass: (interaction.options.get('sheet').options.get('class')?.value as string), gender: (interaction.options.get('sheet').options.get('gender')?.value as string) }), responders.destiny[0]));
@@ -126,8 +126,9 @@ bot.on('interactionCreate', async interaction => {
                 break;
         }
     } catch (error) {
-        interaction.editReply(`The system encountered error: ${error}`);
-        throw error;
+        await interaction.defer();
+        interaction.editReply(`The system encountered error: ${error.stack}`);
+        console.error(error.stack);
     }
 });
 

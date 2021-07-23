@@ -55,7 +55,7 @@ export class WarframeSheetResponder extends SheetBaseResponder {
             }
             // console.log(`${sheet.title} indexed`);
         });
-        console.log('Warframe Indexed');
+        // console.log('Warframe Indexed');
         this.ready = true;
     }
 
