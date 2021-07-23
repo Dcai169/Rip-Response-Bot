@@ -65,9 +65,9 @@ bot.on('interactionCreate', async interaction => {
         return;
     }
     try {
+        await interaction.defer();
         switch (interaction.commandName) {
             case 'search':
-                await interaction.defer();
                 switch (interaction.guildId) {
                     // Library
                     case '705230123745542184':
@@ -126,7 +126,6 @@ bot.on('interactionCreate', async interaction => {
                 break;
         }
     } catch (error) {
-        await interaction.defer();
         interaction.editReply(`The system encountered error: ${error.stack}`);
         console.error(error.stack);
     }
