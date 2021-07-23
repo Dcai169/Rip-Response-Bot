@@ -110,15 +110,15 @@ bot.on('interactionCreate', async interaction => {
                 break;
     
             case 'about':
-                interaction.reply('I am The Librarian. I was built to serve the patrons of this server in their quest for models. If you need me, use the \`search\` command, and I\'ll do my best to find them for you. If you find an error, contact my creator, MrTrainCow#5154.');
+                interaction.editReply('I am The Librarian. I was built to serve the patrons of this server in their quest for models. If you need me, use the \`search\` command, and I\'ll do my best to find them for you. If you find an error, contact my creator, MrTrainCow#5154.');
                 break;
     
             case 'bots-promise':
-                interaction.reply((Math.random() >= 0.5 ? 'My purpose is to suck Jud\'s toes.' : 'My purpose is to serve the patrons of this server.'));
+                interaction.editReply((Math.random() >= 0.5 ? 'My purpose is to suck Jud\'s toes.' : 'My purpose is to serve the patrons of this server.'));
                 break;
     
             case 'source':
-                interaction.reply('My source code can be found at <https://github.com/Dcai169/Rip-Response-Bot>.');
+                interaction.editReply('My source code can be found at <https://github.com/Dcai169/Rip-Response-Bot>.');
                 break;
     
             default:
