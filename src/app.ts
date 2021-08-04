@@ -49,7 +49,7 @@ bot.on('ready', async () => {
     // await bot.guilds.cache.get('705230123745542184')?.commands.create();
 
     for (const [guildId, guildCommands] of Object.entries(commands)) {
-        await bot.guilds.cache.get((guildId as `${bigint}`))?.commands.set(guildCommands);
+        await bot.guilds.cache.get(guildId)?.commands.set(guildCommands);
     }
 
     await bot.application?.commands.set(commandData);
@@ -71,19 +71,18 @@ bot.on('interactionCreate', async interaction => {
                 switch (interaction.guildId) {
                     // Library
                     case '705230123745542184':
-                        // interaction.editReply('Not implemented');
-                        // break;
+                        interaction.editReply('Not implemented');
+                        break;
     
                     // DMR
                     case '514059860489404417': 
-                        switch (interaction.options.firstKey() as string) {
+                        switch (interaction.options.getSubcommand()) {
                             case 'sheet':
-                                console.log();
-                                interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('sheet').options.get('query').value as string), { armorClass: (interaction.options.get('sheet').options.get('class')?.value as string), gender: (interaction.options.get('sheet').options.get('gender')?.value as string) }), responders.destiny[0]));
+                                interaction.editReply(BaseResponder.respond(responders.destiny[0].search((interaction.options.get('query').value as string), { armorClass: (interaction.options.get('class')?.value as string), gender: (interaction.options.get('gender')?.value as string) }), responders.destiny[0]));
                                 break;
     
                             case 'community':
-                                interaction.editReply(BaseResponder.respond(responders.destiny[1].search((interaction.options.get('community').options.get('query').value as string), { armorClass: (interaction.options.get('community').options.get('class')?.value as string), gender: (interaction.options.get('community').options.get('gender')?.value as string) }), responders.destiny[1]));
+                                interaction.editReply(BaseResponder.respond(responders.destiny[1].search((interaction.options.get('query').value as string), { armorClass: (interaction.options.get('class')?.value as string), gender: (interaction.options.get('gender')?.value as string) }), responders.destiny[1]));
                                 break;
                         
                             default:
@@ -122,7 +121,7 @@ bot.on('interactionCreate', async interaction => {
                 break;
     
             default:
-                console.table(interaction);
+                console.log(interaction.options);
                 break;
         }
     } catch (error) {
