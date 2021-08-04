@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "engines": {
-    "node": ">=14.15.3",
-    "npm": ">=7.20.3"
+    "node": "14.15.3",
+    "npm": "7.20.3"
   },
   "main": "dist/app.js",
   "scripts": {
