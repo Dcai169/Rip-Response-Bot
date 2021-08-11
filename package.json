@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "engines": {
-    "node": "14.15.3",
+    "node": "16.6.1",
     "npm": "7.20.3"
   },
   "main": "dist/app.js",
@@ -22,7 +22,7 @@
     "async-limiter": "^2.0.0",
     "compromise": "^13.2.0",
     "damerau-levenshtein": "^1.0.6",
-    "discord.js": "github:discordjs/discord.js#00d5ceebf775a0aafd8c94f0e40db1b2ffb06b04",
+    "discord.js": "^13.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "google-spreadsheet": "^3.0.11",

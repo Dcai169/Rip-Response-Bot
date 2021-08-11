@@ -65,7 +65,7 @@ bot.on('interactionCreate', async interaction => {
         return;
     }
     try {
-        await interaction.defer();
+        await interaction.deferReply();
         switch (interaction.commandName) {
             case 'search':
                 switch (interaction.guildId) {
