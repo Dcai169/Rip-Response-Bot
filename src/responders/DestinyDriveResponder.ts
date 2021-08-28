@@ -11,6 +11,7 @@ export class DestinyDriveResponder extends DriveResponderBase {
         super('14Ry-piQtH3j6MlfoVLfFfu98c4pcTJUb', 'destiny', '461093992499773440');
 
         this.items = new Map([
+            ['Season 15_Lost', []],
             ['Season 14_Splicer', []],
             ['Season 13_Chosen', []],
             ['Season 12_Hunt', []],
