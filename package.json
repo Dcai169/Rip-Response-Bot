@@ -3,13 +3,13 @@
   "version": "2.0.0",
   "description": "A Discord bot for use on Model Ripping servers to search their spreadsheets for items.",
   "engines": {
-    "node": "16.6.1",
-    "npm": "7.20.3"
+    "node": "16.8.0",
+    "npm": "7.22.0"
   },
   "main": "dist/app.js",
   "scripts": {
+    "prestart": "tsc && cp -r src/config dist/",
     "start": "node dist/app.js",
-    "postinstall": "tsc && cp -r src/config dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DCai169",
