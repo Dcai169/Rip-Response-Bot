@@ -37,7 +37,7 @@ export class WarframeSheetResponder extends SheetBaseResponder {
         return levenshtein(entry.name.toLowerCase().replace(/(\W)?$/gmi, '').replace(/\b((the\s)?((an?)\s)?(is)?){1}\b/gi, ''), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD);
     }
 
-    async loadIndexes() {
+    async loadItems() {
         // clear arrays
         this.resetIndexes();
 

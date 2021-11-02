@@ -14,7 +14,7 @@ export abstract class SheetBaseResponder extends BaseResponder {
 
         console.time(`${this.game}Sheet`);
         this.doc.useApiKey(process.env.GSHEETAPI);
-        this.loadIndexes().then(() => {
+        this.loadItems().then(() => {
             console.timeEnd(`${this.game}Sheet`);
             // console.log(`${this.game} Ready`);
             this.ready = true;
@@ -33,5 +33,5 @@ export abstract class SheetBaseResponder extends BaseResponder {
         }
     }
 
-    abstract loadIndexes(): Promise<void>
+    abstract loadItems(): Promise<void>
 }

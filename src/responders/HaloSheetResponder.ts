@@ -59,7 +59,7 @@ export class HaloSheetResponder extends SheetBaseResponder {
         }
     }
 
-    async loadIndexes() {
+    async loadItems() {
         // clear arrays
         this.resetIndexes();
 

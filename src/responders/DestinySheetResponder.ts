@@ -49,7 +49,7 @@ export class DestinySheetResponder extends SheetBaseResponder {
         return levenshtein(BaseResponder.reduceCompareName(entry.name.toLowerCase()), this).similarity > parseFloat(process.env.SIMILARITY_THRESHOLD) || entry.aliases.includes(this.toLowerCase());
     }
 
-    async loadIndexes() {
+    async loadItems() {
         this.resetIndexes(); // clear arrays
 
         return new Promise<void>(async (resolve, reject) => {
