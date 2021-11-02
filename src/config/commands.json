@@ -11,6 +11,10 @@
                     "required": true
                 }
             ]
+        },
+        {
+            "name": "reload",
+            "description": "Reload cached results"
         }
     ],
     "671183775454986240": [
@@ -85,6 +89,10 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "reload",
+            "description": "Reload cached results"
         }
     ],
     "514059860489404417": [
@@ -191,6 +199,10 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "reload",
+            "description": "Reload cached results"
         }
     ]
 }
