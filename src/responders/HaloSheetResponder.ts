@@ -42,7 +42,8 @@ export class HaloSheetResponder extends SheetBaseResponder {
             ['Halo 5', []],
             ['Halo Wars', []],
             ['Halo Wars 2', []],
-            ['Halo: Spartan Strike', []]
+            ['Halo: Spartan Strike', []],
+            ['Halo Infinite', []]
         ]);
     }
 
